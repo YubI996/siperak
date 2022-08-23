@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('receptions', function (Blueprint $table) {
+        Schema::create('rts', function (Blueprint $table) {
             $table->id();
-            
+            $table->string('nama_rt', 20);
+            $table->integer('kel_id')->unsigned();
             $table->timestamps();
+            $table->foreign('kel_id')->references('id')->on('kelurahans')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('receptions');
+        Schema::dropIfExists('rts');
     }
 };
