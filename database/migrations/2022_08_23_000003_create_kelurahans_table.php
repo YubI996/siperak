@@ -16,9 +16,8 @@ return new class extends Migration
         Schema::create('kelurahans', function (Blueprint $table) {
             $table->id();
             $table->string('nama_kel', 20);
-            $table->integer('kec_id')->unsigned();
+            $table->foreignId('kecamatan_id')->constrained()->onDelete('restrict');
             $table->timestamps();
-            $table->foreign('kec_id')->references('id')->on('kecamatans')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

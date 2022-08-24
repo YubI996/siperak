@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
-            $table->integer('pokmas')->unsigned();
+            $table->foreignId('pokma_id')->constrained()->onDelete('restrict');
             $table->string('karbo')->nullable();
             $table->string('l_hewani')->nullable();
             $table->string('l_nabati')->nullable();

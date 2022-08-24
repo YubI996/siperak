@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             KecamatanSeeder::class,
             kelurahanSeeder::class,
-            RtTableSeeder::class,
+            RtSeeder::class,
         ]);
 
         // \App\Models\User::factory(10)->create();
@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
             'name' => 'Darius Gaines',
             'email' => 'cybusupup@mailinator.com',
-            'role' => '1',
+            'role_id' => '1',
             'password' => '$2y$10$Y1jYmrR/8RL/ySnVt/uC8OohXNdyXjt6R85nm1xBMJaHMnsulkPWa',
         ]);
     }

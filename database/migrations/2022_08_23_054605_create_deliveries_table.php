@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('deliveries', function (Blueprint $table) {
             $table->id();
-            $table->integer('penerima')->unsigned();
-            $table->integer('menu')->unsigned();
-            $table->integer('pengantar')->unsigned();
+            $table->unsignedBigInteger('penerima');
+            $table->unsignedBigInteger('menu');
+            $table->unsignedBigInteger('pengantar');
             $table->string('keterangan', 200)->nullable();
             $table->string('pengaduan',300)->comment('kondisi lansia');
             $table->string('dok',100)->comment('foto dokumentasi')->nullable();
@@ -27,9 +27,9 @@ return new class extends Migration
             $table->enum('sayur_consmd',['0','0.25','0.50','0.75','1'])->comment('rasio dimakan')->default('1');
             $table->enum('buah_consmd',['0','0.25','0.50','0.75','1'])->comment('rasio dimakan')->default('1');
             $table->timestamps();
-            $table->foreign('pengantar')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('penerima')->references('id')->on('receptions')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('menu')->references('id')->on('menus')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('pengantar')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class RtSeeder extends Seeder
 {
@@ -37,7 +38,7 @@ class RtSeeder extends Seeder
             for ($i=1; $i <= $v ; $i++) {
                 DB::table('rts')->insert([
                     'nama_rt' => $i,
-                    'kel_id' => $k
+                    'kelurahan_id' => $k
                 ]);
             }
         }

@@ -15,11 +15,10 @@ return new class extends Migration
     {
         Schema::create('histories', function (Blueprint $table) {
             $table->id();
-            $table->integer('reception')->unsigned()->nullable();
+            $table->foreignId('reception')->constrained()->onDelete('restrict');
             $table->enum('status_trima',['Diajukan', 'Menerima', 'Menolak', 'Pindah', 'Meninggal'])->default('Diajukan');
             $table->string('alasan')->default('-')->nullable();
             $table->timestamps();
-            $table->foreign('reception')->references('id')->on('receptions')->onUpdate('cascade')->onDelete('cascade');
 
         });
     }

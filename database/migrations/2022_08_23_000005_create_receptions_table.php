@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('alamat',200);
             $table->string('pekerjaan',20)->default('Tidak Bekerja');
             $table->string('penyakit',500)->nullable();
-            $table->integer('rt')->unsigned()->nullable();
+            $table->unsignedBigInteger('rt')->nullable();
             $table->string('foto_ktp')->nullable();
             $table->string('foto_kk')->nullable();
             $table->string('foto_rumah')->nullable();

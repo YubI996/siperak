@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pokmases', function (Blueprint $table) {
+        Schema::create('pokmas', function (Blueprint $table) {
             $table->id();
             $table->string('nama',30)->comment('Nama pokmas')->default('pokmas');
             $table->string('alamat')->nullable();
-            $table->integer('rt')->unsigned();
-            $table->integer('ketua')->unsigned();
+            $table->foreignId('rt_id')->constrained()->onDelete('restrict');
+            $table->foreignId('user_id')->constrained()->onDelete('restrict');
             $table->timestamps();
-            $table->foreign('rt')->references('id')->on('rts')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('ketua')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
