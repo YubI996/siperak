@@ -14,6 +14,19 @@ class KecamatanSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('kecamatans')->insert([
+            [
+                'id' => 1,
+                'nama_kec' => 'Bontang Barat',
+            ],
+            [
+                'id' => 2,
+                'nama_kec' => 'Bontang Selatan',
+            ],
+            [
+                'id' => 3,
+                'nama_kec' => 'Bontang Utara',
+            ]
+        ]);
     }
 }
