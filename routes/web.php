@@ -21,4 +21,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+// MENAMBAHKAN ROUTE BARU UNTUK MENAMPILKAN MAP
+Route::get('/map', function () {
+    return view('map');
+});
+
 require __DIR__.'/auth.php';
