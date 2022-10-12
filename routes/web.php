@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controller\centrePointController;
+use App\Http\Controller\dataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,5 +27,7 @@ Route::get('/dashboard', function () {
 Route::get('/map', function () {
     return view('map');
 });
+Route::resource('centre-point', (centrePointController::class));
+Route::get('/centrepoint/data', [dataController::class, 'centrepoint'])->name('centre-point-data');
 
 require __DIR__.'/auth.php';
