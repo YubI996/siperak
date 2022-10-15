@@ -14,18 +14,27 @@
 
 	<style>
 		html, body {
-			height: 100%;
-			margin: 0;
+			height: 87%;
+			margin: 3%;
 		}
 		.leaflet-container {
 			height: 400px;
 			width: 600px;
-			max-width: 100%;
+			max-width: 94%;
 			max-height: 100%;
 		}
 	</style>
 
-<style>body { padding: 0; margin: 0; } #map { height: 100%; width: 100vw; }</style>
+<style>
+    body {
+            padding: 0; margin: 0;
+        }
+        #map {
+            height: 50vw;
+            width: 88vw;
+            padding: 3vw;
+        }
+</style>
 </head>
 <body>
     <div><center><h1>Peta Sebaran Penerima Rantang Kasih</h1></center>
@@ -35,15 +44,12 @@
     {{-- <div id="map"></div> --}}
 </div>
 <script>
-	var map = L.map('map').fitWorld().setView([0.114627, 117.476463], 12.5);
-	var tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-		maxZoom: 18,
-		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-		id: 'mapbox/streets-v11',
-		tileSize: 512,
-		zoomOffset: -1
-	}).addTo(map);
+	var map = L.map('map').fitWorld().setView([0.114627, 117.476463], 12);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
 	var marker = L.marker([0.17473, 117.466164]).addTo(map)
 	var marker = L.marker([0.10967, 117.453632]).addTo(map)
 	var marker = L.marker([0.131299, 117.507019]).addTo(map)

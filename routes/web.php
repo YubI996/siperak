@@ -26,7 +26,7 @@ Route::get('/dashboard', function () {
 // MENAMBAHKAN ROUTE BARU UNTUK MENAMPILKAN MAP
 Route::get('/map', function () {
     return view('map');
-});
+})->name('map');
 Route::resource('centre-point', (centrePointController::class));
 Route::get('/centrepoint/data', [dataController::class, 'centrepoint'])->name('centre-point-data');
 
