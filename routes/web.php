@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controller\centrePointController;
-use App\Http\Controller\dataController;
+use App\Http\Controllers\QrGenerator;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,3 +30,5 @@ Route::resource('centre-point', (centrePointController::class));
 Route::get('/centrepoint/data', [dataController::class, 'centrepoint'])->name('centre-point-data');
 
 require __DIR__.'/auth.php';
+
+Route::get('qrcode',[QrGenerator::class, 'index']);
