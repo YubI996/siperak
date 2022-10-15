@@ -31,4 +31,4 @@ Route::get('/centrepoint/data', [dataController::class, 'centrepoint'])->name('c
 
 require __DIR__.'/auth.php';
 
-Route::get('qrcode',[QrGenerator::class, 'index']);
+Route::get('qrcode',[QrGenerator::class, 'index'])->name('qrcode');
