@@ -39,5 +39,6 @@
             $('#myTable').DataTable();
         } );
         </script>
+        @stack('custom-scripts')
     </body>
 </html>

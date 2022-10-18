@@ -28,6 +28,9 @@ Route::get('/dashboard', function () {
 Route::get('/map', function () {
     return view('map');
 })->name('map');
+Route::get('/scan', function () {
+    return view('scan');
+})->name('scan');
 Route::resource('centre-point', (centrePointController::class));
 Route::get('/centrepoint/data', [dataController::class, 'centrepoint'])->name('centre-point-data');
 
