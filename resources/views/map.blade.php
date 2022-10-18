@@ -1,49 +1,48 @@
+<x-app-layout>
+    <x-slot name="header">
+    <head>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Peta Sebaran Penerima Rantang Kasih') }}
+        </h2>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            /* html, body {
+                height: 87%;
+                margin: 3%;
+            } */
+            .leaflet-container {
+                height: 400px;
+                width: 600px;
+                max-width: 94%;
+                max-height: 100%;
+            }
+        </style>
 
-	<title>Peta</title>
+    <style>
 
-	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
-
-	<style>
-		html, body {
-			height: 87%;
-			margin: 3%;
-		}
-		.leaflet-container {
-			height: 400px;
-			width: 600px;
-			max-width: 94%;
-			max-height: 100%;
-		}
-	</style>
-
-<style>
-    body {
+    /* body {
             padding: 0; margin: 0;
-        }
+        } */
         #map {
-            height: 50vw;
+            height: 35vw;
             width: 88vw;
             padding: 3vw;
         }
-</style>
-</head>
-<body>
-    <div><center><h1>Peta Sebaran Penerima Rantang Kasih</h1></center>
+    </style>
+    </head>
+    </x-slot>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200 mx-auto" id="map">
+                </div>
+            </div>
+        </div>
     </div>
-<div class="row" id="map">
-    {{-- <div><h1>Peta Sebaran Penerima Rantang Kasih</h1></div> --}}
-    {{-- <div id="map"></div> --}}
-</div>
-<script>
+
+    <script>
 	var map = L.map('map').fitWorld().setView([0.114627, 117.476463], 12);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -4438,6 +4437,5 @@
 		.setContent('Kota Bontang.')
 		.openOn(map);
 	map.on('click', onMapClick);
-</script>
-</body>
-</html>
+    </script>
+    </x-app-layout>

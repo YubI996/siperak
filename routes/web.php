@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QrGenerator;
+use App\Http\Controllers\UserController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,3 +34,8 @@ Route::get('/centrepoint/data', [dataController::class, 'centrepoint'])->name('c
 require __DIR__.'/auth.php';
 
 Route::get('qrcode',[QrGenerator::class, 'index'])->name('qrcode');
+Route::get('table', function(){
+    return view('table', [
+        'users' => User::get(),
+    ]);
+})->name('datatable');
