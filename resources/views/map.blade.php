@@ -13,11 +13,16 @@
                 margin: 3%;
             } */
             .leaflet-container {
-                height: 400px;
-                width: 600px;
+                height: 73.5vh;
+                width: 90vw;
                 max-width: 94%;
                 max-height: 100%;
+                padding-left: 82vw
             }
+            /* #map {
+              height: 50vh;
+              width: 50vw;
+            } */
         </style>
 
     <style>
@@ -25,18 +30,14 @@
     /* body {
             padding: 0; margin: 0;
         } */
-        #map {
-            height: 35vw;
-            width: 88vw;
-            padding: 3vw;
-        }
+
     </style>
     </head>
     </x-slot>
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="mx-auto sm:px-6 lg:px-8 w-screen h-screen">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200 mx-auto" id="map">
+                <div class=" bg-white border-b border-gray-200 mx-auto" id="map">
                 </div>
             </div>
         </div>

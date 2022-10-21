@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <input type="text" id="hasil">
-                    <div id="reader" width="12000px"></div>
+                    <div id="reader" width="75%"></div>
                 </div>
             </div>
         </div>
@@ -18,12 +18,13 @@
     @push('custom-scripts')
         <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
         <script>
+            const html5QrCode = new Html5Qrcode(/* element id */ "reader");
 
             function onScanSuccess(decodedText, decodedResult) {
             // handle the scanned code as you like, for example:
             // console.log(`Code matched = ${decodedText}`, decodedResult);
-                $("#hasil").val(decodedText);
-                // html5QrcodeScanner.stop();
+            $('#hasil').val(decodedText);
+            html5QrCode.stop();
             }
 
             function onScanFailure(error) {
@@ -34,9 +35,11 @@
 
             let html5QrcodeScanner = new Html5QrcodeScanner(
             "reader",
-            { fps: 10, qrbox: {width: 1000, height: 1000} },
+            { fps: 10, qrbox: {width: 250, height: 250} },
             /* verbose= */ false);
             html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+
+
 
         </script>
     @endpush

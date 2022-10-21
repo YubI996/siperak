@@ -33,9 +33,12 @@
             </div>
         </div>
     </div>
+    @push('custom-script')
     <script>
         $(document).ready( function () {
             $('#myTable').DataTable();
         } );
-        </script>
+    </script>
+    @endpush
+
 </x-app-layout>
