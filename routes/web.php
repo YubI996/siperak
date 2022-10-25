@@ -28,6 +28,9 @@ Route::get('/dashboard', function () {
 Route::get('/map', function () {
     return view('map');
 })->name('map');
+Route::get('/form', function () {
+    return view('form');
+})->name('form');
 Route::get('/scan', function () {
     return view('scan');
 })->name('scan');
