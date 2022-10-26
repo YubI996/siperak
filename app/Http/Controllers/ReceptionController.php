@@ -25,7 +25,7 @@ class ReceptionController extends Controller
      */
     public function create()
     {
-        //
+        return view('aplikasi.create');
     }
 
     /**
@@ -36,7 +36,10 @@ class ReceptionController extends Controller
      */
     public function store(StorereceptionRequest $request)
     {
-        //
+        $input = $request->all();
+        $user = reception::create($input);
+
+        return back()->with('success', 'User created successfully.');
     }
 
     /**

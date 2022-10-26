@@ -24,22 +24,22 @@ class StorereceptionRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama' => 'required|string',
-            'nik' => 'required|numeric',
-            'bd' => 'required|string',
-            'jk' => 'required|string',
-            'alamat' => 'required|string',
-            'pekerjaan' => 'required|string',
-            'penyakit' => 'required|string',
-            'rt' => 'required|string',
-            'hp' => 'required|numeric|min:9',
-            'ft' => 'required|string',
-            'ft_ktp' => 'required|string',
-            'ft_kk' => 'required|string',
-            'ft_rmh' => 'required|string',
-            'tmpt' => 'required|string',
-            'long' => 'required|numeric',
-            'lat' => 'required|numeric',
+            // 'nama' => 'required|string',
+            // 'nik' => 'required|numeric',
+            // 'bd' => 'required|string',
+            // 'jk' => 'required|string',
+            // 'alamat' => 'required|string',
+            // 'pekerjaan' => 'required|string',
+            // 'penyakit' => 'required|string',
+            // 'rt' => 'required|string',
+            // 'hp' => 'required|numeric|min:9',
+            // 'ft' => 'required|string',
+            // 'ft_ktp' => 'required|string',
+            // 'ft_kk' => 'required|string',
+            // 'ft_rmh' => 'required|string',
+            // 'tmpt' => 'required|string',
+            // 'long' => 'required|numeric',
+            // 'lat' => 'required|numeric',
         ];
     }
 }

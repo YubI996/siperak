@@ -59,7 +59,7 @@ Route::get('/celendar', function () {
 })->name('calendar');
 
 Route::get('/form2', function () {
-    return view('aplikasi.form');
+    return view('aplikasi.create');
 })->name('form2');
 
 Route::resource('receptions', ReceptionController::class);
