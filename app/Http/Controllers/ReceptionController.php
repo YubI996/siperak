@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\reception;
+use App\Models\History;
 use App\Http\Requests\StorereceptionRequest;
 use App\Http\Requests\UpdatereceptionRequest;
+use Illuminate\Http\Request;
 
 class ReceptionController extends Controller
 {
@@ -25,7 +27,7 @@ class ReceptionController extends Controller
      */
     public function create()
     {
-        //
+        return view('aplikasi.create');
     }
 
     /**
@@ -34,9 +36,18 @@ class ReceptionController extends Controller
      * @param  \App\Http\Requests\StorereceptionRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorereceptionRequest $request)
+    // public function store(StorereceptionRequest $request)
+    public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        $reception = reception::create($input);
+        $history = History::create([
+            'reception' => $reception->id,
+            'status_trima' => 'Diajukan',
+            'alasan' => $input['alasan']
+        ]);
+
+        return back()->with('success', 'User created successfully.');
     }
 
     /**

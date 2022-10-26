@@ -22,7 +22,7 @@ class reception extends Model
      * @var array
      */
     protected $fillable =
-    ['nama', 'nik', 'foto_penerima', 'no_hp', 'jenkel', 'alamat', 'pekerjaan', 'penyakit', 'rt', 'foto_ktp', 'foto_kk',
+    ['nama', 'bd', 'nik', 'foto_penerima', 'no_hp', 'jenkel', 'alamat', 'pekerjaan', 'penyakit', 'rt', 'foto_ktp', 'foto_kk',
     'foto_rumah', 'status_rumah', 'long', 'lat'];
 
     protected $guarded = ['id'];

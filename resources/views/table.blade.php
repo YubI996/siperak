@@ -33,7 +33,7 @@
             </div>
         </div>
     </div>
-    @push('custom-script')
+    @push('custom-scripts')
     <script>
         $(document).ready( function () {
             $('#myTable').DataTable();
