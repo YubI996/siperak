@@ -24,29 +24,29 @@
 						</div>
 
 					</div>
-					<form name="input-penerima" method="POST" action="{{url('receptions')}}">
+					<form name="input-penerima" id="input-penerima" method="POST" action="{{route('receptions.store')}}">
                         @csrf
 						<div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Nama Lengkap</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" type="text" placeholder="Nama Lengkap" id="nama" />
+								<input class="form-control" type="text" placeholder="Nama Lengkap" id="nama" name="nama"/>
 							</div>
 						</div>
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Tanggal Lahir</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control date-picker" placeholder="Pilih tanggal lahir" type="text" name="bd"/>
+								<input class="form-control " placeholder="Pilih tanggal lahir" type="date" name="bd"/>
 							</div>
 						</div>
                         <div class="form-group row">
                             <label class="col-sm-12 col-md-2 col-form-label">Jenis Kelamin</label>
 									<div class="custom-control custom-radio mb-5">
-										<input type="radio" id="jk1" name="jk"
+										<input type="radio" id="jk1" name="jenkel"
 											class="custom-control-input" value="Laki-laki" />
 										<label class="custom-control-label" for="jk1">Laki-laki</label>
 									</div>
 									<div class="custom-control custom-radio mb-5">
-										<input type="radio" id="jk2" name="jk"
+										<input type="radio" id="jk2" name="jenkel"
 											class="custom-control-input" value="Perempuan" />
 										<label class="custom-control-label" for="jk2">Perempuan</label>
 									</div>
@@ -54,25 +54,25 @@
 						<div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Nomor Induk Kependudukan (NIK)</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" type="number" placeholder="Nomor Induk Kependudukan(NIK)" id="nik" />
+								<input class="form-control" type="number" placeholder="Nomor Induk Kependudukan(NIK)" id="nik" name="nik"/>
 							</div>
 						</div>
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Alamat</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" type="text" placeholder="Alamat" id="alamat" />
+								<input class="form-control" type="text" placeholder="Alamat" id="alamat" name="alamat"/>
 							</div>
 						</div>
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Pekerjaan</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" type="text" placeholder="Pekerjaan" id="pekerjaan" />
+								<input class="form-control" type="text" placeholder="Pekerjaan" id="pekerjaan" name="pekerjaan"/>
 							</div>
 						</div>
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Penyakit</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" type="text" placeholder="Penyakit" id="penyakit" />
+								<input class="form-control" type="text" placeholder="Penyakit" id="penyakit" name="penyakit"/>
 							</div>
 						</div>
                         <div class="form-group row">
@@ -111,47 +111,47 @@
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Nomor Handphone</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" type="number" placeholder="Nomor handphone" id="hp" />
+								<input class="form-control" type="number" placeholder="Nomor handphone" id="hp" name="no_hp"/>
 							</div>
 						</div>
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Foto Penerima</label>
                             <div class="custom-file col-sm-12 col-md-10">
-                                <input type="file" class="form-control-file form-control height-auto" name="ft" />
+                                <input type="file" class="form-control-file form-control height-auto" name="foto_penerima" />
 							</div>
                         </div>
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Foto Kartu Tanda Penduduk</label>
                             <div class="custom-file col-sm-12 col-md-10">
-                                <input type="file" class="form-control-file form-control height-auto" name="ft_ktp" />
+                                <input type="file" class="form-control-file form-control height-auto" name="foto_ktp" />
 							</div>
                         </div>
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Foto Kartu Keluarga</label>
                             <div class="custom-file col-sm-12 col-md-10">
-                                <input type="file" class="form-control-file form-control height-auto" name="ft_kk" />
+                                <input type="file" class="form-control-file form-control height-auto" name="foto_kk" />
 							</div>
                         </div>
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Foto Rumah/Tempat Tinggal</label>
                             <div class="custom-file col-sm-12 col-md-10">
-                                <input type="file" class="form-control-file form-control height-auto" name="ft_rmh" />
+                                <input type="file" class="form-control-file form-control height-auto" name="foto_rumah" />
 							</div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-12 col-md-2 col-form-label">Status Kepemilikan Tempat Tinggal</label>
 									<div class="custom-control custom-radio mb-5">
-										<input type="radio" id="tmpt1" name="tmpt"
+										<input type="radio" id="tmpt1" name="status_rumah"
 											class="custom-control-input" value="Milik Sendiri" />
 										<label class="custom-control-label" for="tmpt1">Milik Sendiri</label>
 									</div>
 									<div class="custom-control custom-radio mb-5">
-										<input type="radio" id="tmpt2" name="tmpt"
-											class="custom-control-input" value="Menyewa/Mengontrak" />
-										<label class="custom-control-label" for="tmpt2">Menyewa/Mengontrak</label>
+										<input type="radio" id="tmpt2" name="status_rumah"
+											class="custom-control-input" value="Mengontrak/Menyewa" />
+										<label class="custom-control-label" for="tmpt2">Mengontrak/Menyewa</label>
 									</div>
 									<div class="custom-control custom-radio mb-5">
-										<input type="radio" id="tmpt3" name="tmpt"
+										<input type="radio" id="tmpt3" name="status_rumah"
 											class="custom-control-input" value="Menumpang" />
 										<label class="custom-control-label" for="tmpt3">Menumpang</label>
 									</div>
@@ -164,8 +164,15 @@
 								<input class="form-control" type="hidden" id="lat" name="lat" />
 							</div>
                         </div>
+                        <div class="form-group row">
+							<label class="col-sm-12 col-md-2 col-form-label">Alasan Pengajuan</label>
+							<div class="col-sm-12 col-md-10">
+								<input class="form-control" type="text" placeholder="Isi alasan pengajuan" id="alasan" name="alasan"/>
+							</div>
+						</div>
+
                         <div class="form-group row pull-right">
-                            <button type="button" class="btn btn-primary">Simpan</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
 						</div>
 					</form>
 				</div>
