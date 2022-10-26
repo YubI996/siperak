@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama',100);
             $table->string('nik',16)->nullable();
+            $table->date('bd')->nullable();
             $table->string('foto_penerima')->nullable();
             $table->string('no_hp',16)->nullable();
             $table->enum('jenkel',['Laki-laki', 'Perempuan']);

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QrGenerator;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReceptionController;
 use App\Models\User;
 
 /*
@@ -20,28 +21,46 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+require __DIR__.'/auth.php';
+
+
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-// MENAMBAHKAN ROUTE BARU UNTUK MENAMPILKAN MAP
+// ROUTES AT DEVELOPMENT
 Route::get('/map', function () {
     return view('map');
 })->name('map');
+
 Route::get('/form', function () {
     return view('form');
 })->name('form');
+
 Route::get('/scan', function () {
     return view('scan');
 })->name('scan');
-Route::resource('centre-point', (centrePointController::class));
-Route::get('/centrepoint/data', [dataController::class, 'centrepoint'])->name('centre-point-data');
 
-require __DIR__.'/auth.php';
-
+Route::get('/home2', function () {
+    return view('aplikasi.dashboard2');
+})->name('home2');
 Route::get('qrcode',[QrGenerator::class, 'index'])->name('qrcode');
+
 Route::get('table', function(){
     return view('table', [
         'users' => User::get(),
     ]);
 })->name('datatable');
+//ROUTES TEMPLATE
+Route::get('/celendar', function () {
+    return view('aplikasi.calendar');
+})->name('calendar');
+
+Route::get('/form2', function () {
+    return view('aplikasi.form');
+})->name('form2');
+
+Route::resource('receptions', ReceptionController::class);
+

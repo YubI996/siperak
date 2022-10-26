@@ -26,7 +26,7 @@
 							<span class="micon dw dw-edit2"></span><span class="mtext">Forms</span>
 						</a>
 						<ul class="submenu">
-							<li><a href="form-basic.html">Form Basic</a></li>
+							<li><a href="{{route('form2')}}">Form Basic</a></li>
 							<li><a href="advanced-components.html">Advanced Components</a></li>
 							<li><a href="form-wizard.html">Form Wizard</a></li>
 							<li><a href="html5-editor.html">HTML5 Editor</a></li>
@@ -45,7 +45,7 @@
 						</ul>
 					</li>
 					<li>
-						<a href="calendar.html" class="dropdown-toggle no-arrow">
+						<a href="{{route('calendar')}}" class="dropdown-toggle no-arrow">
 							<span class="micon dw dw-calendar1"></span><span class="mtext">Calendar</span>
 						</a>
 					</li>
