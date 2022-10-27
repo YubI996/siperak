@@ -24,9 +24,7 @@ class RegisteredUserController extends Controller
     public function create()
     {
         $kecs = kec::get(['id', 'nama_kec']);
-        $kels = kel::get(['id', 'nama_kel']);
-        $rts = rt::get(['id', 'nama_rt']);
-        return view('auth.register', compact('kecs', 'kels', 'rts'));
+        return view('auth.register', compact('kecs'));
     }
 
     /**
@@ -39,16 +37,17 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'rt' => ['required'],
+            'rt_id' => ['required'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
-            'rt' => $request->rt,
+            'rt_id' => $request->rt_id,
             'role_id' => 2,
             'email' => $request->email,
             'password' => Hash::make($request->password),

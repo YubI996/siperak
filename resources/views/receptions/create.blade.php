@@ -168,6 +168,7 @@
                                 <div id="map"></div>
 								<input class="form-control" type="hidden" id="long" name="long"/>
 								<input class="form-control" type="hidden" id="lat" name="lat" />
+								<input class="form-control" type="hidden" id="lat" name="actor"  value="{{Auth::user()->id}}"/>
 							</div>
                         </div>
                         <div class="form-group row">

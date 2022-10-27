@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QrGenerator;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReceptionController;
+use App\Http\Controllers\PilihRTController;
 use App\Models\User;
 
 /*
@@ -61,6 +62,9 @@ Route::get('/celendar', function () {
 Route::get('/form2', function () {
     return view('aplikasi.create');
 })->name('form2');
+
+Route::post('api/fetch-kelurahan', [PilihRTController::class, 'fetchKel']);
+Route::post('api/fetch-rt', [PilihRTController::class, 'fetchRt']);
 
 Route::resource('receptions', ReceptionController::class);
 

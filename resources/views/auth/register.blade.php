@@ -29,7 +29,7 @@
             <!-- Kecamatan -->
             <div class="mt-4">
                 <x-label for="kec" :value="__('Kecamatan')" />
-                <select class="block mt-1 w-full rounded border-green-500" name="kec">
+                <select class="block mt-1 w-full rounded border-green-500" name="kec" id="kec">
                     <option selected="0">Pilih Kecamatan...</option>
                     @forelse ($kecs as $dc)
                     <option value="{{$dc->id}}">Kecamatan {{$dc->nama_kec}}</option>
@@ -42,26 +42,16 @@
             <!-- Kelurahan -->
             <div class="mt-4">
                 <x-label for="kel" :value="__('Kelurahan')" />
-                <select class="block mt-1 w-full rounded col-12" name="kel">
-                    <option selected="0">Pilih Kelurahan...</option>
-                    @forelse ($kels as $dl)
-                    <option value="{{$dl->id}}">Kelurahan {{$dl->nama_kel}}</option>
-                    @empty
-                    <option value="">Data Kelurahan tidak ditemukan</option>
-                    @endforelse
+                <select class="block mt-1 w-full rounded col-12" name="kel" id="kel">
+
                 </select>
             </div>
 
             <!-- RT -->
             <div class="mt-4">
                 <x-label for="rt" :value="__('Rukun Tetangga')" />
-                <select class="block mt-1 w-full rounded col-12" name="rt">
-                    <option selected="0">Pilih Rukun Tetangga(RT)...</option>
-                    @forelse ($rts as $dr)
-                    <option value="{{$dr->id}}">Rukun Tetangga(RT) {{$dr->nama_rt}}</option>
-                    @empty
-                    <option value="">Data Rukun Tetangga(RT) tidak ditemukan</option>
-                    @endforelse
+                <select class="block mt-1 w-full rounded col-12" name="rt_id" id="rt">
+
                 </select>
             </div>
 
@@ -94,5 +84,64 @@
                 </x-button>
             </div>
         </form>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            /*------------------------------------------
+            --------------------------------------------
+            Country Dropdown Change Event
+            --------------------------------------------
+            --------------------------------------------*/
+            $('#kec').on('change', function () {
+                var idKec = this.value;
+                $("#kel").html('');
+                $.ajax({
+                    url: "{{url('api/fetch-kelurahan')}}",
+                    type: "POST",
+                    data: {
+                        kec_id: idKec,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+                        $('#kel').html('<option value="">-- Pilih Kelurahan --</option>');
+                        $.each(result.kels, function (key, value) {
+                            $("#kel").append('<option value="' + value
+                                .id + '">' +'Kelurahan '+ value.nama_kel + '</option>');
+                        });
+                        $('#rt').html('<option value="">-- Pilih Rukun Tetangga --</option>');
+                    }
+                });
+            });
+
+            /*------------------------------------------
+            --------------------------------------------
+            State Dropdown Change Event
+            --------------------------------------------
+            --------------------------------------------*/
+            $('#kel').on('change', function () {
+                var idKel = this.value;
+                $("#rt").html('');
+                $.ajax({
+                    url: "{{url('api/fetch-rt')}}",
+                    type: "POST",
+                    data: {
+                        kel_id: idKel,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        $('#rt').html('<option value="">-- Pilih Rukun Tetangga --</option>');
+                        $.each(res.rts, function (key, value) {
+                            $("#rt").append('<option value="' + value
+                                .id + '">'  +'RT '+ value.nama_rt + '</option>');
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
     </x-auth-card>
 </x-guest-layout>

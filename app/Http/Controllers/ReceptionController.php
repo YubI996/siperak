@@ -21,7 +21,8 @@ class ReceptionController extends Controller
      */
     public function index()
     {
-        return view('receptions.index');
+        $penerima = Reception::with('History')->get();
+        return view('receptions.index', compact('penerima'));
     }
 
     /**
@@ -51,7 +52,8 @@ class ReceptionController extends Controller
         $history = History::create([
             'reception' => $reception->id,
             'status_trima' => 'Diajukan',
-            'alasan' => $input['alasan']
+            'alasan' => $input['alasan'],
+            'actor' => $input['actor']
         ]);
 
         return back()->with('success', 'Data penerima berhasil disimpan.');

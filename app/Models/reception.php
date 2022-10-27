@@ -34,11 +34,11 @@ class Reception extends Model
 
     public function Delivery()
     {
-        return $this->HasMany('Delivery');
+        return $this->HasMany('Delivery', 'penerima');
     }
 
     public function History()
     {
-        return $this->HasMany('History');
+        return $this->HasMany('History', 'reception');
     }
 }
