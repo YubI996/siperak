@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Kecamatan as kec;
+use App\Models\Kelurahan as kel;
+use App\Models\Rt as rt;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -20,7 +23,10 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        return view('auth.register');
+        $kecs = kec::get(['id', 'nama_kec']);
+        $kels = kel::get(['id', 'nama_kel']);
+        $rts = rt::get(['id', 'nama_rt']);
+        return view('auth.register', compact('kecs', 'kels', 'rts'));
     }
 
     /**
@@ -35,12 +41,15 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'rt' => ['required'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
+            'rt' => $request->rt,
+            'role_id' => 2,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

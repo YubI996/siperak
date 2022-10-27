@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pokma_id')->onDelete('cascade');
+            $table->foreignId('pokmas')->constrained('pokmases')->onDelete('cascade');
             $table->string('karbo')->nullable();
             $table->string('l_hewani')->nullable();
             $table->string('l_nabati')->nullable();

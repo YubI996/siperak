@@ -23,7 +23,46 @@
             <div class="mt-4">
                 <x-label for="email" :value="__('Email')" />
 
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+                <x-input id="email" class="block mt-1 w-full border-black" type="email" name="email" :value="old('email')" required />
+            </div>
+
+            <!-- Kecamatan -->
+            <div class="mt-4">
+                <x-label for="kec" :value="__('Kecamatan')" />
+                <select class="block mt-1 w-full rounded border-green-500" name="kec">
+                    <option selected="0">Pilih Kecamatan...</option>
+                    @forelse ($kecs as $dc)
+                    <option value="{{$dc->id}}">Kecamatan {{$dc->nama_kec}}</option>
+                    @empty
+                    <option value="">Data Kecamatan tidak ditemukan</option>
+                    @endforelse
+            </select>
+            </div>
+
+            <!-- Kelurahan -->
+            <div class="mt-4">
+                <x-label for="kel" :value="__('Kelurahan')" />
+                <select class="block mt-1 w-full rounded col-12" name="kel">
+                    <option selected="0">Pilih Kelurahan...</option>
+                    @forelse ($kels as $dl)
+                    <option value="{{$dl->id}}">Kelurahan {{$dl->nama_kel}}</option>
+                    @empty
+                    <option value="">Data Kelurahan tidak ditemukan</option>
+                    @endforelse
+                </select>
+            </div>
+
+            <!-- RT -->
+            <div class="mt-4">
+                <x-label for="rt" :value="__('Rukun Tetangga')" />
+                <select class="block mt-1 w-full rounded col-12" name="rt">
+                    <option selected="0">Pilih Rukun Tetangga(RT)...</option>
+                    @forelse ($rts as $dr)
+                    <option value="{{$dr->id}}">Rukun Tetangga(RT) {{$dr->nama_rt}}</option>
+                    @empty
+                    <option value="">Data Rukun Tetangga(RT) tidak ditemukan</option>
+                    @endforelse
+                </select>
             </div>
 
             <!-- Password -->
@@ -38,7 +77,7 @@
 
             <!-- Confirm Password -->
             <div class="mt-4">
-                <x-label for="password_confirmation" :value="__('Confirm Password')" />
+                <x-label for="password_confirmation" :value="__('Konfirmasi Password')" />
 
                 <x-input id="password_confirmation" class="block mt-1 w-full"
                                 type="password"
@@ -47,11 +86,11 @@
 
             <div class="flex items-center justify-end mt-4">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
+                    {{ __('Sudah punya akun?') }}
                 </a>
 
                 <x-button class="ml-4">
-                    {{ __('Register') }}
+                    {{ __('Mendaftar') }}
                 </x-button>
             </div>
         </form>

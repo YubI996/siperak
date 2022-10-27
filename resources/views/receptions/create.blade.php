@@ -80,9 +80,11 @@
 							<div class="col-sm-12 col-md-10">
 								<select class="custom-select" name="kec">
 									<option selected="0">Pilih Kecamatan...</option>
-									<option value="1">Kecamatan Bontang Utara</option>
-									<option value="2">Kecamatan Bontang Barat</option>
-									<option value="3">Kecamatan Bontang Selatan</option>
+                                    @forelse ($kecs as $dc)
+									<option value="{{$dc->id}}">Kecamatan {{$dc->nama_kec}}</option>
+                                    @empty
+									<option value="">Data Kecamatan tidak ditemukan</option>
+                                    @endforelse
 								</select>
 							</div>
 						</div>
@@ -91,9 +93,11 @@
 							<div class="col-sm-12 col-md-10">
 								<select class="custom-select col-12" name="kel">
 									<option selected="0">Pilih Kelurahan...</option>
-									<option value="1">Kelurahan Bontang Kuala</option>
-									<option value="2">Kelurahan Belimbing</option>
-									<option value="3">Kelurahan Bontang Lestari</option>
+                                    @forelse ($kels as $dl)
+									<option value="{{$dl->id}}">Kelurahan {{$dl->nama_kel}}</option>
+                                    @empty
+									<option value="">Data Kelurahan tidak ditemukan</option>
+                                    @endforelse
 								</select>
 							</div>
 						</div>
@@ -102,9 +106,11 @@
 							<div class="col-sm-12 col-md-10">
 								<select class="custom-select col-12" name="rt">
 									<option selected="0">Pilih Rukun Tetangga(RT)...</option>
-									<option value="1">Rukun Tetangga(RT) 1</option>
-									<option value="2">Rukun Tetangga(RT) 2</option>
-									<option value="3">Rukun Tetangga(RT) 3</option>
+                                    @forelse ($rts as $dr)
+									<option value="{{$dr->id}}">Rukun Tetangga(RT) {{$dr->nama_rt}}</option>
+                                    @empty
+									<option value="">Data Rukun Tetangga(RT) tidak ditemukan</option>
+                                    @endforelse
 								</select>
 							</div>
 						</div>

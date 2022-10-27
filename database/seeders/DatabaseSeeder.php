@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Darius Gaines',
             'email' => 'cybusupup@mailinator.com',
             'role_id' => '1',
+            'rt_id' => 103,
             'password' => '$2y$10$Y1jYmrR/8RL/ySnVt/uC8OohXNdyXjt6R85nm1xBMJaHMnsulkPWa',
         ]);
     }

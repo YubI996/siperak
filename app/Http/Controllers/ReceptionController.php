@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\reception;
+use App\Models\Reception;
 use App\Models\History;
+use App\Models\Kecamatan;
+use App\Models\Kelurahan;
+use App\Models\Rt;
 use App\Http\Requests\StorereceptionRequest;
 use App\Http\Requests\UpdatereceptionRequest;
 use Illuminate\Http\Request;
+
 
 class ReceptionController extends Controller
 {
@@ -17,7 +21,7 @@ class ReceptionController extends Controller
      */
     public function index()
     {
-        //
+        return view('receptions.index');
     }
 
     /**
@@ -27,7 +31,10 @@ class ReceptionController extends Controller
      */
     public function create()
     {
-        return view('aplikasi.create');
+        $kecs = Kecamatan::all();
+        $kels = Kelurahan::all();
+        $rts = Rt::all();
+        return view('receptions.create', compact('kecs', 'kels', 'rts'));
     }
 
     /**
@@ -47,13 +54,13 @@ class ReceptionController extends Controller
             'alasan' => $input['alasan']
         ]);
 
-        return back()->with('success', 'User created successfully.');
+        return back()->with('success', 'Data penerima berhasil disimpan.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\reception  $reception
+     * @param  \App\Models\Reception  $reception
      * @return \Illuminate\Http\Response
      */
     public function show(reception $reception)
@@ -64,7 +71,7 @@ class ReceptionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\reception  $reception
+     * @param  \App\Models\Reception  $reception
      * @return \Illuminate\Http\Response
      */
     public function edit(reception $reception)
@@ -76,7 +83,7 @@ class ReceptionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdatereceptionRequest  $request
-     * @param  \App\Models\reception  $reception
+     * @param  \App\Models\Reception  $reception
      * @return \Illuminate\Http\Response
      */
     public function update(UpdatereceptionRequest $request, reception $reception)
@@ -87,7 +94,7 @@ class ReceptionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\reception  $reception
+     * @param  \App\Models\Reception  $reception
      * @return \Illuminate\Http\Response
      */
     public function destroy(reception $reception)

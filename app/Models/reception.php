@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class reception extends Model
+class Reception extends Model
 {
     use HasFactory;
     /**
@@ -26,4 +26,19 @@ class reception extends Model
     'foto_rumah', 'status_rumah', 'long', 'lat'];
 
     protected $guarded = ['id'];
+
+    public function Rt()
+    {
+        return $this->BelongsTo('Rt', 'rt');
+    }
+
+    public function Delivery()
+    {
+        return $this->HasMany('Delivery');
+    }
+
+    public function History()
+    {
+        return $this->HasMany('History');
+    }
 }

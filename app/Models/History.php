@@ -9,4 +9,14 @@ class History extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    public function User()
+    {
+        return $this->BelongsTo('User', 'actor');
+    }
+
+    public function Reception()
+    {
+        return $this->BelongsTo('Reception', 'reception');
+    }
 }
