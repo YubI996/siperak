@@ -23,7 +23,7 @@ class Reception extends Model
      */
     protected $fillable =
     ['nama', 'bd', 'nik', 'foto_penerima', 'no_hp', 'jenkel', 'alamat', 'pekerjaan', 'penyakit', 'rt', 'foto_ktp', 'foto_kk',
-    'foto_rumah', 'status_rumah', 'long', 'lat'];
+    'foto_rumah', 'status_rumah', 'long', 'lat', 'slug'];
 
     protected $guarded = ['id'];
 

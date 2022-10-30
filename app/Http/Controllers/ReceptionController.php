@@ -7,10 +7,12 @@ use App\Models\History;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Rt;
+
 use App\Http\Requests\StoreReceptionRequest;
 use App\Http\Requests\UpdateReceptionRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ReceptionController extends Controller
 {
@@ -49,8 +51,12 @@ class ReceptionController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
+        $sl = $this->random_slug();
+        $slug = ['slug' => $sl];
+        $input = array_merge($input, $slug);
+        // dd($input);
         $reception = Reception::create($input);
-        Storage::disk('local')->put('foto_'.$request->id, $request->foto_penerima);
+        // Storage::disk('local')->put('foto_'.$request->id, $request->foto_penerima);
 
         $history = History::create([
             'reception' => $reception->id,
@@ -107,14 +113,17 @@ class ReceptionController extends Controller
         //
     }
 
-    public function slug_maker(Reception $reception)
+    public function random_slug(int $length = 15,
+        string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'): string
     {
-        $id = $reception->id;
-        $kb = ['aKp', 'Ldw', 'CPX', 'GaU'];//kecamatan bontang barat
-        $ks = ['cUb', 'Mxo', 'ZXP', 'ZaX'];//kecamatan bontang selatan
-        $ku = ['Vrs', 'Das', 'WaU', 'FRE'];//kecamatan bontang utara
-
-        $ku = [];//kecamatan bontang utara
-
+        if ($length < 1) {
+            throw new \RangeException("Length must be a positive integer");
+        }
+        $pieces = [];
+        $max = mb_strlen($keyspace, '8bit') - 1;
+        for ($i = 0; $i < $length; ++$i) {
+            $pieces []= $keyspace[random_int(0, $max)];
+        }
+        return implode('', $pieces);
     }
 }

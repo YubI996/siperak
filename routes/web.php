@@ -66,5 +66,5 @@ Route::get('/form2', function () {
 Route::post('api/fetch-kelurahan', [PilihRTController::class, 'fetchKel']);
 Route::post('api/fetch-rt', [PilihRTController::class, 'fetchRt']);
 
-Route::resource('receptions', ReceptionController::class);
+Route::resource('receptions', ReceptionController::class)->middleware(['auth']);
 
