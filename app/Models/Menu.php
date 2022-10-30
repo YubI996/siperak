@@ -10,13 +10,13 @@ class Menu extends Model
     use HasFactory;
 
 
-    public function Pokmas()
+    public function Pokmases()
     {
-        return $this->BelongsTo('Pokmas', 'pokmas');
+        return $this->BelongsTo(Pokmas::class, 'pokmas');
     }
 
-    public function Delivery()
+    public function Deliveries()
     {
-        return $this->HasMany('Delivery');
+        return $this->HasMany(Delivery::class);
     }
 }

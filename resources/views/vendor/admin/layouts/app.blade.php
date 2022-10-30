@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="footer-wrap pd-20 mb-20 card-box">
-                DeskApp - Bootstrap 4 Admin Template Modified By <a href="https://github.com/taufikhdyt17" target="_blank">Taufik Hidayat</a>
+                Diskominfo Kota Bontang - 2022
             </div>
         </div>
     </div>

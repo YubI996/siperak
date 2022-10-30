@@ -10,23 +10,23 @@ class Rt extends Model
 {
     use HasFactory;
 
-    public function Kelurahan()
+    public function Kelurahans()
     {
-        return $this->BelongsTo('Kelurahan', 'kelurahan_id');
+        return $this->BelongsTo(Kelurahan::class, 'kelurahan_id');
     }
 
-    public function User()
+    public function Users()
     {
-        return $this->HasMany('User');
+        return $this->HasMany(User::class);
     }
 
-    public function Pokmas()
+    public function Pokmases()
     {
-        return $this->HasMany('Pokmas');
+        return $this->HasMany(Pokmas::class);
     }
 
-    public function Reception()
+    public function Receptions()
     {
-        return $this->HasMany('Reception');
+        return $this->HasMany(Reception::class);
     }
 }

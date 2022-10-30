@@ -9,23 +9,23 @@ class Delivery extends Model
 {
     use HasFactory;
 
-    public function Menu()
+    public function Menus()
     {
-        return $this->BelongsTo('Menu', 'menu');
+        return $this->BelongsTo(Menu::class, 'menu');
     }
 
     public function Pengantar()
     {
-        return $this->BelongsTo('User', 'pengantar');
+        return $this->BelongsTo(User::class, 'pengantar');
     }
 
-    public function Pokmas()
+    public function Pokmases()
     {
-        return $this->BelongsTo('Pokmas', 'pokmas');
+        return $this->BelongsTo(Pokmas::class, 'pokmas');
     }
 
     public function Penerima()
     {
-        return $this->BelongsTo('Reception', 'penerima');
+        return $this->BelongsTo(Reception::class, 'penerima');
     }
 }

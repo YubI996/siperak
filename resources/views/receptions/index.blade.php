@@ -37,7 +37,7 @@
                         <td>{{Carbon::parse($data->bd)->age}} Tahun</td>
                         <td>{{$data->alamat}}</td>
                         <td>{{$data->penyakit}}</td>
-                        <td>{{$data->History()->status_trima}}</td>
+                        <td>{{$data->Histories[0]->status_trima}}</td>
                         <td>
                             <div class="dropdown">
                                 <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle"

@@ -10,8 +10,13 @@ class Kecamatan extends Model
 {
     use HasFactory;
 
-    public function Kelurahan()
+    public function Kelurahans()
     {
-        return $this->HasMany('Kelurahan');
+        return $this->HasMany(Kelurahan::class);
+    }
+
+    public function Rts()
+    {
+        return $this->hasManyThrough(Rt::class, Kelurahan::class, 'kecamatan_id', 'kelurahan_id', 'id', 'id');
     }
 }

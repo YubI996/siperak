@@ -10,13 +10,13 @@ class History extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
-    public function User()
+    public function Users()
     {
-        return $this->BelongsTo('User', 'actor');
+        return $this->BelongsTo(User::class, 'actor');
     }
 
-    public function Reception()
+    public function Receptions()
     {
-        return $this->BelongsTo('Reception', 'reception');
+        return $this->BelongsTo(Reception::class, 'reception');
     }
 }

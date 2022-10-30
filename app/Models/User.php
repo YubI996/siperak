@@ -44,18 +44,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function Role()
+    public function Roles()
     {
-        return $this->BelongsTo('Role', 'role_id');
+        return $this->BelongsTo(Role::class, 'role_id');
     }
 
-    public function History()
+    public function Histories()
     {
-        return $this->HasMany('History');
+        return $this->HasMany(History::class);
     }
 
-    public function Delivery()
+    public function Deliveries()
     {
-        return $this->HasMany('Delivery');
+        return $this->HasMany(Delivery::class);
     }
 }

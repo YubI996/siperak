@@ -7,8 +7,8 @@ use App\Models\History;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Rt;
-use App\Http\Requests\StorereceptionRequest;
-use App\Http\Requests\UpdatereceptionRequest;
+use App\Http\Requests\StoreReceptionRequest;
+use App\Http\Requests\UpdateReceptionRequest;
 use Illuminate\Http\Request;
 
 
@@ -21,7 +21,7 @@ class ReceptionController extends Controller
      */
     public function index()
     {
-        $penerima = Reception::with('History')->get();
+        $penerima = Reception::with('Histories')->get();
         return view('receptions.index', compact('penerima'));
     }
 
@@ -41,14 +41,14 @@ class ReceptionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StorereceptionRequest  $request
+     * @param  \App\Http\Requests\StoreReceptionRequest  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(StorereceptionRequest $request)
+    // public function store(StoreReceptionRequest $request)
     public function store(Request $request)
     {
         $input = $request->all();
-        $reception = reception::create($input);
+        $reception = Reception::create($input);
         $history = History::create([
             'reception' => $reception->id,
             'status_trima' => 'Diajukan',
@@ -62,10 +62,10 @@ class ReceptionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Reception  $reception
+     * @param  \App\Models\Reception  $Reception
      * @return \Illuminate\Http\Response
      */
-    public function show(reception $reception)
+    public function show(Reception $reception)
     {
         //
     }
@@ -76,7 +76,7 @@ class ReceptionController extends Controller
      * @param  \App\Models\Reception  $reception
      * @return \Illuminate\Http\Response
      */
-    public function edit(reception $reception)
+    public function edit(Reception $reception)
     {
         //
     }
@@ -84,11 +84,11 @@ class ReceptionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatereceptionRequest  $request
+     * @param  \App\Http\Requests\UpdateReceptionRequest  $request
      * @param  \App\Models\Reception  $reception
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatereceptionRequest $request, reception $reception)
+    public function update(UpdateReceptionRequest $request, Reception $reception)
     {
         //
     }
@@ -99,7 +99,7 @@ class ReceptionController extends Controller
      * @param  \App\Models\Reception  $reception
      * @return \Illuminate\Http\Response
      */
-    public function destroy(reception $reception)
+    public function destroy(Reception $reception)
     {
         //
     }

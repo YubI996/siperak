@@ -27,18 +27,18 @@ class Reception extends Model
 
     protected $guarded = ['id'];
 
-    public function Rt()
+    public function Rts()
     {
-        return $this->BelongsTo('Rt', 'rt');
+        return $this->BelongsTo(Rt::class, 'rt');
     }
 
-    public function Delivery()
+    public function Deliveries()
     {
-        return $this->HasMany('Delivery', 'penerima');
+        return $this->HasMany(Delivery::class, 'penerima');
     }
 
-    public function History()
+    public function Histories()
     {
-        return $this->HasMany('History', 'reception');
+        return $this->HasMany(History::class, 'reception');
     }
 }
