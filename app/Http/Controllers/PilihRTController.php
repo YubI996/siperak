@@ -31,7 +31,7 @@ class PilihRTController extends Controller
      */
     public function fetchRt(Request $request)
     {
-        $data['rts'] = Rt::where("kelurahan_id", 2)->get(["nama_rt", "id"]);
+        $data['rts'] = Rt::where("kelurahan_id", $request->kel_id)->get(["nama_rt", "id"]);
         return response()->json($data);
     }
 }

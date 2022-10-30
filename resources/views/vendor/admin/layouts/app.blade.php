@@ -5,7 +5,7 @@
 @show
 
 <body>
-    @include('admin::layouts.partials.preloader')
+    {{-- @include('admin::layouts.partials.preloader') --}}
     @include('admin::layouts.partials.mainheader')
     @include('admin::layouts.partials.rightsidebar')
     @include('admin::layouts.partials.leftsidebar')

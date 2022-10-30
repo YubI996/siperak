@@ -10,7 +10,7 @@ use App\Models\Rt;
 use App\Http\Requests\StoreReceptionRequest;
 use App\Http\Requests\UpdateReceptionRequest;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Storage;
 
 class ReceptionController extends Controller
 {
@@ -22,7 +22,8 @@ class ReceptionController extends Controller
     public function index()
     {
         $penerima = Reception::with('Histories')->get();
-        return view('receptions.index', compact('penerima'));
+        $kecs = Kecamatan::all();
+        return view('receptions.index', compact('penerima', 'kecs'));
     }
 
     /**
@@ -49,6 +50,8 @@ class ReceptionController extends Controller
     {
         $input = $request->all();
         $reception = Reception::create($input);
+        Storage::disk('local')->put('foto_'.$request->id, $request->foto_penerima);
+
         $history = History::create([
             'reception' => $reception->id,
             'status_trima' => 'Diajukan',
@@ -102,5 +105,16 @@ class ReceptionController extends Controller
     public function destroy(Reception $reception)
     {
         //
+    }
+
+    public function slug_maker(Reception $reception)
+    {
+        $id = $reception->id;
+        $kb = ['aKp', 'Ldw', 'CPX', 'GaU'];//kecamatan bontang barat
+        $ks = ['cUb', 'Mxo', 'ZXP', 'ZaX'];//kecamatan bontang selatan
+        $ku = ['Vrs', 'Das', 'WaU', 'FRE'];//kecamatan bontang utara
+
+        $ku = [];//kecamatan bontang utara
+
     }
 }
