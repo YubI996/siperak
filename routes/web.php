@@ -19,7 +19,8 @@ use App\Models\User;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('receptions.index');
+    // return view('welcome');
 });
 
 require __DIR__.'/auth.php';

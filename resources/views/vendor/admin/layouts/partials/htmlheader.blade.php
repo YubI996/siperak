@@ -10,6 +10,7 @@
 
 	<!-- Mobile Specific Metas -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
 	<!-- Google Font -->
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -21,13 +22,5 @@
 	<link rel="stylesheet" type="text/css" href="{{asset('admin/vendors/styles/style.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{asset('admin/src/plugins/jquery-steps/jquery.steps.css')}}">
     @yield('custom-css')
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script> -->
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
 
-		gtag('config', 'UA-119386393-1');
-	</script>
 </head>

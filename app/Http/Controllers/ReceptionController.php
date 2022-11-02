@@ -50,12 +50,28 @@ class ReceptionController extends Controller
     // public function store(StoreReceptionRequest $request)
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'foto_penerima' => 'image|nullable|max:10000'
+        ]);
+
+        $slug = ['slug' => $this->random_slug()];
         $input = $request->all();
-        $sl = $this->random_slug();
-        $slug = ['slug' => $sl];
+        if ($request->hasFile('foto_penerima')) {
+            $filenameWithExt = $request->file('foto_penerima')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('foto_penerima')->getClientOriginalExtension();
+            $filenameSimpan = $filename.'_'.$slug['slug'].'.'.$extension;
+            $path = $request->file('foto_penerima')->storeAs('public/foto_penerima', $filenameSimpan);
+            $input['foto_penerima'] = $filenameSimpan;
+        }
+        else{
+
+        }
+
         $input = array_merge($input, $slug);
         // dd($input);
         $reception = Reception::create($input);
+
         // Storage::disk('local')->put('foto_'.$request->id, $request->foto_penerima);
 
         $history = History::create([
@@ -76,7 +92,8 @@ class ReceptionController extends Controller
      */
     public function show(Reception $reception)
     {
-        //
+        $data['penerima'] = Reception::where('slug', $reception->slug)->first();
+        return response()->json($data);
     }
 
     /**

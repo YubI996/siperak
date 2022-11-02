@@ -47,14 +47,14 @@
                         @forelse ($penerima as $data)
                             <tr>
                             <td class="table-plus">
-                                <img src="{{asset('storage/'.$data->foto_penerima)}}" alt="">
+                                <img class="border-radius-100 shadow" style="max-height: 118pt; max-:99pt" src="{{asset('storage/foto_penerima/'.$data->foto_penerima)}}" alt="">
                                 {{-- {{file_exist(asset('storage/'.$data->foto_penerima))?'default.png':$data->foto_penerima}} --}}
                             </td>
                             <td>{{$data->nama}}</td>
                             <td>{{Carbon::parse($data->bd)->age}} Tahun</td>
                             <td>{{$data->alamat}}</td>
                             <td>{{$data->penyakit}}</td>
-                            <td>{{$data->Histories[0]->status_trima}}</td>
+                            <td>{{$data->Histories[0]->status_trima ?? 'Data tidak ada.'}}</td>
                             <td>
                                 <div class="dropdown">
                                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle"
@@ -62,7 +62,7 @@
                                         <i class="dw dw-more"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                                        <a class="dropdown-item" href="#"><i class="dw dw-eye"></i> View</a>
+                                        <a class="dropdown-item view-data" id="{{$data->slug}}" url="{{ url('receptions', $data->id) }}" href="#"  data-toggle="modal" data-target="#view-penerima"><i class="dw dw-eye"></i> View</a>
                                         <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
                                         <a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i>
                                             Delete</a>
@@ -243,6 +243,75 @@
             </form>
         </div>
     <!-- akhir form input penerima -->
+
+    {{-- modal view --}}
+        <div class="modal fade bs-example-modal-lg" id="view-penerima" tabindex="-1"
+            role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" >
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myLargeModalLabel">
+                            Biodata Penerima Bantuan
+                        </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            ×
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-striped table-responsive table-bordered tableView">
+                            <tbody>
+                            <tr>
+                                <td style="text-align: center;" valign="middle">Nama</td>
+                                <td style="text-align: center;" valign="middle" id="nama"></td>
+                                <td style="text-align: center;" valign="middle">Penyakit</td>
+                                <td style="text-align: center;" valign="middle" id="penyakit"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center;" valign="middle">Nomor Induk Kependudukan</td>
+                                <td style="text-align: center;" valign="middle" id="nik"></td>
+                                <td style="text-align: center;" valign="middle">Status Kepemilikan Rumah</td>
+                                <td style="text-align: center;" valign="middle" id="status"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center;" valign="middle">Tangal Lahir (Umur)</td>
+                                <td style="text-align: center;" valign="middle" id="tgl"></td>
+                                <td style="text-align: center;" valign="middle">Foto KTP</td>
+                                <td style="text-align: center;" valign="middle" id="ktp"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center;" valign="middle">Pekerjaan</td>
+                                <td style="text-align: center;" valign="middle" id="pekerjaan"></td>
+                                <td style="text-align: center;" valign="middle">Foto Kartu Keluarga</td>
+                                <td style="text-align: center;" valign="middle" id="ft_kk"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center;" valign="middle">Jenis Kelamin</td>
+                                <td style="text-align: center;" valign="middle" id="jk"></td>
+                                <td style="text-align: center;" valign="middle">Foto Rumah</td>
+                                <td style="text-align: center;" valign="middle" id="ft_rmh"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center;" valign="middle">Alamat</td>
+                                <td style="text-align: center;" valign="middle" id="alamat"></td>
+                                <td style="text-align: center;" valign="middle">Lokasi</td>
+                                <td style="text-align: center;" valign="middle"><a  target=”_blank” id="lokasi" href=""></a> </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="button" class="btn btn-primary">
+                            Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- akhir modal view --}}
 @endsection
 
 @section('custom-scripts')
@@ -269,11 +338,38 @@
                     $("#alert").slideUp(500);
                     });
                 });
+
+                $(".view-data").click(function(){
+                // $('body').on('click', '#view-data', function (){
+                    var userURL = $(this).attr('url');
+                    $.get(userURL, function (data) {
+                        data = data.penerima
+                        console.log(data);
+                            // $('#userShowModal').modal('show');
+                            $('.tableView #nama').text(data.nama);
+                            $('.tableView #penyakit').text(data.penyakit);
+                            $('.tableView #nik').text(data.nik);
+                            $('.tableView #status').text(data.status_rumah);
+                            var ageDifMs = Date.now() - data.bd;
+                            var ageDate = new Date(ageDifMs); // miliseconds from epoch
+                            var umur =  Math.abs(ageDate.getUTCFullYear() - 1970);
+                            $('.tableView #tgl').text(data.bd +' ('+ ageDifMs+')'+' Tahun');
+                            $('.tableView #ktp').text(data.foto_ktp);
+                            $('.tableView #pekerjaan').text(data.pekerjaan);
+                            $('.tableView #ft_kk').text(data.foto_kk);
+                            $('.tableView #jk').text(data.jenkel);
+                            $('.tableView #ft_rmh').text(data.foto_rumah);
+                            $('.tableView #alamat').text(data.alamat);
+                            $('.tableView #lokasi').attr("href", 'https://www.google.com/maps/search/?api=1&query='+data.lat+','+data.long );
+                            $('.tableView #lokasi').text('Tautan Lokasi Google Map' );
+                    })
+                });
             });
             $("#tambah-button").click(function(){
                 $("#create-box").show();
                 $("#data-box").hide();
             });
+
         </script>
         @include('peta.index')
         @include('aplikasi.dropdown')
