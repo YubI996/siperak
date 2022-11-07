@@ -63,7 +63,7 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                                         <a class="dropdown-item view-data" id="{{$data->slug}}" url="{{ url('receptions', $data->id) }}" href="#"  data-toggle="modal" data-target="#view-penerima"><i class="dw dw-eye"></i> View</a>
-                                        <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
+                                        <a class="dropdown-item edit-data" id="edit-{{$data->slug}}" url="{{ url('receptions/'.$data->id.'/edit') }}" href="#"><i class="dw dw-edit2"></i> Edit</a>
                                         <a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i>
                                             Delete</a>
                                     </div>
@@ -85,15 +85,18 @@
     <!-- Simple Datatable End -->
 
     <!-- form input penerima-->
-        <div class="pd-20 card-box mb-30" id="create-box">
+    {{-- ubah form input ini menjadi form input dan edit, keterangan input atau edit diset lewat jquery.
+        pemanggilan input lewat button tambah penerima, menyiapkan form untuk input dengan ngeset action form ke insert, dan keterangan form input.
+        trigger edit lewat menu edit di data row. Menyiapkan form untuk edit dengan mengeset action form ke update, populating old values, dan keterangan form edit.--}}
+        <div class="pd-20 card-box mb-30" id="form-box">
             <div class="clearfix">
                 <div class="pull-left">
-                    <h4 class="text-blue h4">Input Data Penerima</h4>
-                    <p class="mb-30">Mengajukan penerima Rantang Kasih</p>
+                    <h4 class="text-blue h4 judul-form"></h4>{{--set judul form--}}
+                    <p class="mb-30 ket-form"></p>{{--set keterangan form, +edit data {{nama_penerima}} --}}
                 </div>
 
             </div>
-            <form name="input-penerima" id="input-penerima" method="POST" action="{{route('receptions.store')}}" enctype="multipart/form-data">
+            <form name="input-penerima" id="input-penerima" method="POST" action="" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Nama Lengkap</label>
@@ -258,46 +261,151 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <table class="table table-striped table-responsive table-bordered tableView">
-                            <tbody>
-                            <tr>
-                                <td style="text-align: center;" valign="middle">Nama</td>
-                                <td style="text-align: center;" valign="middle" id="nama"></td>
-                                <td style="text-align: center;" valign="middle">Penyakit</td>
-                                <td style="text-align: center;" valign="middle" id="penyakit"></td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center;" valign="middle">Nomor Induk Kependudukan</td>
-                                <td style="text-align: center;" valign="middle" id="nik"></td>
-                                <td style="text-align: center;" valign="middle">Status Kepemilikan Rumah</td>
-                                <td style="text-align: center;" valign="middle" id="status"></td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center;" valign="middle">Tangal Lahir (Umur)</td>
-                                <td style="text-align: center;" valign="middle" id="tgl"></td>
-                                <td style="text-align: center;" valign="middle">Foto KTP</td>
-                                <td style="text-align: center;" valign="middle" id="ktp"></td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center;" valign="middle">Pekerjaan</td>
-                                <td style="text-align: center;" valign="middle" id="pekerjaan"></td>
-                                <td style="text-align: center;" valign="middle">Foto Kartu Keluarga</td>
-                                <td style="text-align: center;" valign="middle" id="ft_kk"></td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center;" valign="middle">Jenis Kelamin</td>
-                                <td style="text-align: center;" valign="middle" id="jk"></td>
-                                <td style="text-align: center;" valign="middle">Foto Rumah</td>
-                                <td style="text-align: center;" valign="middle" id="ft_rmh"></td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center;" valign="middle">Alamat</td>
-                                <td style="text-align: center;" valign="middle" id="alamat"></td>
-                                <td style="text-align: center;" valign="middle">Lokasi</td>
-                                <td style="text-align: center;" valign="middle"><a  target=”_blank” id="lokasi" href=""></a> </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div id="carouselPenerima" class="carousel slide" data-ride="carousel">
+                                    <ol class="carousel-indicators">
+                                        <li data-target="#carouselPenerima" data-slide-to="0"></li>
+                                        <li data-target="#carouselPenerima" data-slide-to="1"></li>
+                                        <li data-target="#carouselPenerima" data-slide-to="2"></li>
+                                        <li data-target="#carouselPenerima" data-slide-to="3"></li>
+                                    </ol>
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active">
+                                            <img class="d-block w-50 h-50 ft-Penerima" id="ft-penerima" src="" alt="Foto Penerima" onerror="this.onerror=null;this.src='{{asset('admin/vendors/images/img404.gif')}}';" >
+                                            {{-- <img class="d-block w-50 h-50 gambar-penerima" src="" alt="Foto Penerima" onerror="this.onerror=null;this.src='{{asset('admin/vendors/images/img404.gif')}}';"> --}}
+                                            <div class="carousel-caption d-none d-md-block">
+                                                <h5 class="color-black">Foto Penerima</h5>
+                                                {{-- <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p> --}}
+                                            </div>
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img class="d-block w-50 h-50 gambar-ktp" src="" alt="Foto KTP" onerror="this.onerror=null;this.src='{{asset('admin/vendors/images/img404.gif')}}';">
+                                            <div class="carousel-caption d-none d-md-block">
+                                                <h5 class="color-black">Foto KTP</h5>
+                                                {{-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> --}}
+                                            </div>
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img class="d-block w-50 h-50 gambar-kk" src="" alt="Foto KK" onerror="this.onerror=null;this.src='{{asset('admin/vendors/images/img404.gif')}}';">
+                                            <div class="carousel-caption d-none d-md-block">
+                                                <h5 class="color-black">Foto Kartu Keluarga</h5>
+                                                {{-- <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p> --}}
+                                            </div>
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img class="d-block w-50 h-50 gambar-rumah" src="" alt="Foto Rumah" onerror="this.onerror=null;this.src='{{asset('admin/vendors/images/img404.gif')}}';">
+                                            <div class="carousel-caption d-none d-md-block">
+                                                <h5 class="color-black">Foto Rumah</h5>
+                                                {{-- <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p> --}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a class="carousel-control-prev" href="#carouselPenerima" role="button" data-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#carouselPenerima" role="button" data-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <table class="table table-striped table-responsive table-bordered tableView">
+                                    <tbody>
+                                    <tr>
+                                        <td><strong>Nama</strong></td>
+                                        <td style="text-align: center;" valign="middle" id="nama"></td>
+                                        <td><strong>Penyakit</strong></td>
+                                        <td style="text-align: center;" valign="middle" id="penyakit"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Nomor Induk Kependudukan</strong></td>
+                                        <td style="text-align: center;" valign="middle" id="nik"></td>
+                                        <td><strong>Status Kepemilikan Rumah</strong></td>
+                                        <td style="text-align: center;" valign="middle" id="status"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Tangal Lahir (Umur</strong>)</td>
+                                        <td style="text-align: center;" valign="middle" id="tgl"></td>
+                                        <td><strong>Pekerjaan</strong></td>
+                                        <td style="text-align: center;" valign="middle" id="pekerjaan"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Jenis Kelamin</strong></td>
+                                        <td style="text-align: center;" valign="middle" id="jk"></td>
+                                        <td><strong>Alamat</strong></td>
+                                        <td style="text-align: center;" valign="middle" id="alamat"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Lokasi</strong></td>
+                                        <td style="text-align: center;" valign="middle"><a target=”_blank” id="lokasi" href=""><u></u></a> </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Tutup
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- akhir modal view --}}
+
+    {{-- modal edit --}}
+        {{-- <div class="modal fade bs-example-modal-lg" id="edit-penerima" tabindex="-1"
+            role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" > --}}
+        {{-- <div class=" bs-example-modal-lg" id="edit-penerima"  >
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myLargeModalLabel">
+                            Edit Data Penerima Bantuan
+                        </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            ×
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label for="nama">Nama</label>
+                                    <input type="text" class="form-control" name="nama">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label for="nama">Penyakit</label>
+                                    <input type="text" class="form-control" name="penyakit">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label for="nama">Nomor Induk Kependudukan</label>
+                                    <input type="text" class="form-control" name="nik">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label for="nama">Status Kepemilikan Rumah</label>
+                                    <input type="Radio" class="form-control" name="status_rumah">Milik Sendiri
+                                </div>
+                            </div>
+                        </div>
+
+
 
                     </div>
                     <div class="modal-footer">
@@ -310,8 +418,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-    {{-- akhir modal view --}}
+        </div> --}}
+    {{-- akhir modal edit --}}
 @endsection
 
 @section('custom-scripts')
@@ -332,7 +440,7 @@
         <script>
             $(document).ready(function() {
                 $("#alert").hide();
-                $("#create-box").hide();
+                $("#form-box").hide();
                 $("#myWish").click(function showAlert() {
                     $("#alert").fadeTo(10000, 500).slideUp(500, function() {
                     $("#alert").slideUp(500);
@@ -350,23 +458,43 @@
                             $('.tableView #penyakit').text(data.penyakit);
                             $('.tableView #nik').text(data.nik);
                             $('.tableView #status').text(data.status_rumah);
-                            var ageDifMs = Date.now() - data.bd;
-                            var ageDate = new Date(ageDifMs); // miliseconds from epoch
-                            var umur =  Math.abs(ageDate.getUTCFullYear() - 1970);
-                            $('.tableView #tgl').text(data.bd +' ('+ ageDifMs+')'+' Tahun');
+
+                            var dob = new Date(data.bd);
+
+                            //calculate month difference from current date in time
+                            var month_diff = Date.now() - dob.getTime();
+
+                            //convert the calculated difference in date format
+                            var age_dt = new Date(month_diff);
+
+                            //extract year from date
+                            var year = age_dt.getUTCFullYear();
+
+                            //now calculate the age of the user
+                            var umur = Math.abs(year - 1970);
+
+                            $('.tableView #tgl').text(data.bd +' ('+ umur+' Tahun)');
                             $('.tableView #ktp').text(data.foto_ktp);
                             $('.tableView #pekerjaan').text(data.pekerjaan);
                             $('.tableView #ft_kk').text(data.foto_kk);
                             $('.tableView #jk').text(data.jenkel);
                             $('.tableView #ft_rmh').text(data.foto_rumah);
-                            $('.tableView #alamat').text(data.alamat);
+                            $('.tableView #alamat').text(data.alamat+" RT "+data.rts.nama_rt+", Kelurahan "+data.rts.kelurahans.nama_kel+", "+"Kecamatan "+data.rts.kelurahans.kecamatans.nama_kec+".");
                             $('.tableView #lokasi').attr("href", 'https://www.google.com/maps/search/?api=1&query='+data.lat+','+data.long );
-                            $('.tableView #lokasi').text('Tautan Lokasi Google Map' );
+                            $('.tableView #lokasi').children('u').text('Tautan Lokasi Google Map' );
+                            var linkAsset = "{{asset('storage')}}";
+                            $('#carouselPenerima #ft-penerima').attr("src", data.foto_penerima != null ? linkAsset+"/foto_penerima/"+ data.foto_penerima : '');
+                            $('#carouselPenerima #gambar-ktp').attr("src", data.foto_ktp != null ? linkAsset+"/foto_penerima/"+ data.foto_ktp : '');
+                            $('#carouselPenerima #gambar-kk').attr("src", data.foto_kk != null ? linkAsset+"/foto_penerima/"+ data.foto_kk : '');
+                            $('#carouselPenerima #gambar-rumah').attr("src", data.foto_rumah != null ? linkAsset+"/foto_penerima/"+ data.foto_rumah : '');
                     })
                 });
             });
             $("#tambah-button").click(function(){
-                $("#create-box").show();
+                $(".text-blue,.judul-form").text('Input Data Penerima');
+                $(".ket-form").text('Mengajukan penerima Rantang Kasih');
+                $("#input-penerima").attr("action","{{route('receptions.store')}}");
+                $("#form-box").show();
                 $("#data-box").hide();
             });
 

@@ -92,7 +92,7 @@ class ReceptionController extends Controller
      */
     public function show(Reception $reception)
     {
-        $data['penerima'] = Reception::where('slug', $reception->slug)->first();
+        $data['penerima'] = Reception::where('slug', $reception->slug)->with('Rts.Kelurahans.Kecamatans')->first();
         return response()->json($data);
     }
 
@@ -104,7 +104,7 @@ class ReceptionController extends Controller
      */
     public function edit(Reception $reception)
     {
-        //
+        return 'nice';
     }
 
     /**
