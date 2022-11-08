@@ -1,6 +1,6 @@
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
     <script>
-        $(document).ready(function () {
+
 
             /*------------------------------------------
             --------------------------------------------
@@ -37,6 +37,8 @@
             $('#kel').on('change', function () {
                 var idKel = this.value;
                 $("#rt").html('');
+                console.log('dada'+idKel);
+
                 $.ajax({
                     url: "{{url('api/fetch-rt')}}",
                     type: "POST",
@@ -55,5 +57,5 @@
                 });
             });
 
-        });
+
     </script>

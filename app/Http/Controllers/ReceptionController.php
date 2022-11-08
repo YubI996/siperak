@@ -50,27 +50,33 @@ class ReceptionController extends Controller
     // public function store(StoreReceptionRequest $request)
     public function store(Request $request)
     {
+        // dd($request);
         $this->validate($request, [
-            'foto_penerima' => 'image|nullable|max:10000'
+            'foto_penerima' => 'image|nullable|max:10000',
+            'foto_ktp' => 'image|nullable|max:10000',
+            'foto_kk' => 'image|nullable|max:10000',
+            'foto_rumah' => 'image|nullable|max:10000'
         ]);
 
-        $slug = ['slug' => $this->random_slug()];
         $input = $request->all();
-        if ($request->hasFile('foto_penerima')) {
-            $filenameWithExt = $request->file('foto_penerima')->getClientOriginalName();
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension = $request->file('foto_penerima')->getClientOriginalExtension();
-            $filenameSimpan = $filename.'_'.$slug['slug'].'.'.$extension;
-            $path = $request->file('foto_penerima')->storeAs('public/foto_penerima', $filenameSimpan);
-            $input['foto_penerima'] = $filenameSimpan;
-        }
-        else{
-
-        }
-
         $input = array_merge($input, $slug);
+        $files = $request->file();
+        if (count($files) > 0){
+            foreach ($files as $fileField => $val) {
+                $filenameWithExt = $val->getClientOriginalName();
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $extension = $val->getClientOriginalExtension();
+                $filenameSimpan = $filename.'_'.$slug['slug'].'.'.$extension;
+                $path = $val->storeAs('public/'.$fileField, $filenameSimpan);
+                // array_fill($fileField,1,$path);
+                $input[$fileField] = $filenameSimpan;
+                // dd($input);
+            }
+        }
+
         // dd($input);
         $reception = Reception::create($input);
+        $reception->slug = $this->random_slug();
 
         // Storage::disk('local')->put('foto_'.$request->id, $request->foto_penerima);
 
@@ -90,9 +96,9 @@ class ReceptionController extends Controller
      * @param  \App\Models\Reception  $Reception
      * @return \Illuminate\Http\Response
      */
-    public function show(Reception $reception)
+    public function show($slug)
     {
-        $data['penerima'] = Reception::where('slug', $reception->slug)->with('Rts.Kelurahans.Kecamatans')->first();
+        $data['penerima'] = Reception::where('slug', $slug)->with('Histories','Rts.Kelurahans.Kecamatans')->first();
         return response()->json($data);
     }
 
@@ -102,9 +108,10 @@ class ReceptionController extends Controller
      * @param  \App\Models\Reception  $reception
      * @return \Illuminate\Http\Response
      */
-    public function edit(Reception $reception)
+    public function edit($slug)
     {
-        return 'nice';
+        $data['penerima'] = Reception::where('slug', $slug)->with('Histories','Rts.Kelurahans.Kecamatans')->first();
+        return response()->json($data);
     }
 
     /**
