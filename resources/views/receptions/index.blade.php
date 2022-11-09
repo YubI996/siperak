@@ -151,7 +151,7 @@
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Kecamatan</label>
                     <div class="col-sm-12 col-md-10">
-                        <select class="custom-select" name="kec" id="kec">
+                        <select class="custom-select" name="kec" id="kec" onchange="popKel(this.options[this.selectedIndex].value)">
                             <option selected="0">Pilih Kecamatan...</option>
                             @forelse ($kecs as $dc)
                             <option value="{{$dc->id}}">Kecamatan {{$dc->nama_kec}}</option>
@@ -164,7 +164,7 @@
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Kelurahan</label>
                     <div class="col-sm-12 col-md-10">
-                        <select class="custom-select col-12" name="kel" id="kel">
+                        <select class="custom-select col-12" name="kel" id="kel" onchange="popRt(this.options[this.selectedIndex].value)">
 
                         </select>
                     </div>
@@ -506,6 +506,11 @@
                 $(".text-blue,.judul-form").text('Input Data Penerima');
                 $(".ket-form").text('Mengajukan penerima Rantang Kasih');
                 $("#input-penerima").attr("action","{{route('receptions.store')}}");
+                var patcher = $(".patcher");
+                if (jQuery.contains(document, patcher[0])) {
+                    // $("#input-penerima").remove($(".patcher"));
+                    patcher.remove();
+                }
                 $("#form-box").show();
                 $("#data-box").hide();
                 $("#tambah-button").hide();
@@ -517,6 +522,7 @@
                 $(".ket-form").text('Mengubah Data penerima Rantang Kasih');
                 var url_edit = $(this).attr('aksi');
                 $("#input-penerima").attr("action", url_edit);
+                $("#input-penerima").append('<input class="patcher" type="hidden" name="_method" value="patch">');
                 $("#form-box").show();
                 $("#data-box").hide();
                 $("#tambah-button").hide();
@@ -560,16 +566,15 @@
                 // $("#tmpt3").attr("checked", true);
                 $("#kec").val(data.rts.kelurahans.kecamatan_id);
                 $("#kec option[value='"+data.rts.kelurahans.kecamatan_id+"']").attr("selected",true);
-                $("#kec").trigger('change');
+                popKel(data.rts.kelurahans.kecamatan_id, data.rts.kelurahan_id);
                 $("#kel").val(data.rts.kelurahan_id);
-                $("#kel option[value='7']").attr("selected",true);
-                // $("#kel option[value='"+data.rts.kelurahan_id+"']").attr("selected",true);
-                $("#kel").trigger('change');
-                console.log(data.rts.kelurahan_id);
+                $("#kel option[value='"+data.rts.kelurahan_id+"']").attr("selected",true);
+                popRt(data.rts.kelurahan_id, data.rts.id);
                 // console.log($("#kel").value);
                 $("#rt").val(data.rts.id);
-                klong = data.long;
-                klat = data.lat;
+                $("#rt option[value='"+data.rts.id+"']").attr("selected",true);
+                console.log(data.long);
+                markerPenerima(data.lat, data.long)
                 $("#alasan").val(data.histories[0].alasan);
                 })
                 // EO populating fields

@@ -121,9 +121,69 @@ class ReceptionController extends Controller
      * @param  \App\Models\Reception  $reception
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateReceptionRequest $request, Reception $reception)
+    // public function update(UpdateReceptionRequest $request, $slug)
+    public function update(Request $request, $slug)
     {
-        //
+         //validate form
+        $validator = $this->validate($request, [
+            'nama' => 'required|min:3|max:100|string',
+            'bd' => 'required|date|before:01/01/1996',
+            'nik' => 'numeric|digits:16',
+            'foto_penerima' => 'mimes:jpg,bmp,png,jpeg,svg,tiff,tif|image',
+            'no_hp' => 'numeric',
+            'jenkel' => 'required',
+            'alamat' => 'required',
+            'pekerjaan' => 'required',
+            'penyakit' => '',
+            'rt' => 'numeric',
+            'foto_ktp' => 'mimes:jpg,bmp,png,jpeg,svg,tiff,tif|image',
+            'foto_kk' => 'mimes:jpg,bmp,png,jpeg,svg,tiff,tif|image',
+            'foto_rumah' => 'mimes:jpg,bmp,png,jpeg,svg,tiff,tif|image',
+            'status_rumah' => '',
+            'long' => '',
+            'lat' => ''
+        ]);
+
+        //check if validator fails
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $receptor = Reception::find("slug", $slug);
+        //check if image is uploaded
+        if ($request->hasFile()) {
+
+            //upload new files
+            $files = $request->file();
+            foreach ($files as $fileField => $val) {
+            $filenameWithExt = $val->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $val->getClientOriginalExtension();
+            $filenameSimpan = $filename.'_'.$slug['slug'].'.'.$extension;
+            $path = $val->storeAs('public/'.$fileField, $filenameSimpan);
+
+            //delete old image
+            Storage::delete('public/'.$fileField.'/'.$receptor->$fileField);
+            }
+
+            //update post with new image
+            // $post->update([
+            //     'image'     => $image->hashName(),
+            //     'title'     => $request->title,
+            //     'content'   => $request->content
+            // ]);
+            $receptor->update(Input::all());
+
+        } else {
+
+            //update post without file
+            $receptor->update(Input::all());
+
+        }
+
+        //redirect to index
+        return redirect()->route('receptions.index')->with(['success' => 'Data Berhasil Diubah!']);
     }
 
     /**

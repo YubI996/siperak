@@ -7,8 +7,9 @@
             Country Dropdown Change Event
             --------------------------------------------
             --------------------------------------------*/
-            $('#kec').on('change', function () {
-                var idKec = this.value;
+            function popKel(idKec, selected = null) {
+            // $('#kec').on('change', function () {
+                // var idKec = this.value;
                 $("#kel").html('');
                 $.ajax({
                     url: "{{url('api/fetch-kelurahan')}}",
@@ -21,23 +22,35 @@
                     success: function (result) {
                         $('#kel').html('<option value="">-- Pilih Kelurahan --</option>');
                         $.each(result.kels, function (key, value) {
-                            $("#kel").append('<option value="' + value
+                            if(selected !== null){
+                                if (value.id === selected) {
+                                    $("#kel").append('<option value="' + value
+                                    .id + '" Selected>' +'Kelurahan '+ value.nama_kel + '</option>');
+                                }
+                                $("#kel").append('<option value="' + value
                                 .id + '">' +'Kelurahan '+ value.nama_kel + '</option>');
+                            }
+                            else{
+                                $("#kel").append('<option value="' + value
+                                .id + '">' +'Kelurahan '+ value.nama_kel + '</option>');
+                            }
                         });
                         $('#rt').html('<option value="">-- Pilih Rukun Tetangga --</option>');
                     }
                 });
-            });
+            }
 
             /*------------------------------------------
             --------------------------------------------
             State Dropdown Change Event
             --------------------------------------------
             --------------------------------------------*/
-            $('#kel').on('change', function () {
-                var idKel = this.value;
+            function popRt(idKel, selected = null) {
+
+            // }
+            // $('#kel').on('change', function () {
+                // var idKel = this.value;
                 $("#rt").html('');
-                console.log('dada'+idKel);
 
                 $.ajax({
                     url: "{{url('api/fetch-rt')}}",
@@ -50,12 +63,22 @@
                     success: function (res) {
                         $('#rt').html('<option value="">-- Pilih Rukun Tetangga --</option>');
                         $.each(res.rts, function (key, value) {
-                            $("#rt").append('<option value="' + value
+                            if (selected !== null) {
+                            if (value.id === selected){
+                                $("#rt").append('<option value="' + value
+                                .id + '" Selected>'  +'RT '+ value.nama_rt + '</option>');
+                            }
+                                $("#rt").append('<option value="' + value
                                 .id + '">'  +'RT '+ value.nama_rt + '</option>');
+                            }
+                            else{
+                                $("#rt").append('<option value="' + value
+                                .id + '">'  +'RT '+ value.nama_rt + '</option>');
+                            }
                         });
                     }
                 });
-            });
+            }
 
 
     </script>
