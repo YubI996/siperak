@@ -1,6 +1,7 @@
 <div class="pre-loader">
     <div class="pre-loader-box">
-        <div class="loader-logo"><img src="{{asset('admin/vendors/images/deskapp-logo.svg')}}" alt=""></div>
+        <div class="loader-logo"><img src="{{asset('storage/logo/logo-bontang.png')}}" alt="" style="width:10vw"></div>
+        {{-- {{asset('admin/vendors/images/deskapp-logo.svg')}} --}}
         <div class='loader-progress' id="progress_div">
             <div class='bar' id='bar1'></div>
         </div>

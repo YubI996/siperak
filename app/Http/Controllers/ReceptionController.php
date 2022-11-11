@@ -59,14 +59,16 @@ class ReceptionController extends Controller
         ]);
 
         $input = $request->all();
-        $input = array_merge($input, $slug);
+        // $slug = ["slug" => $this->random_slug()];
+        // $input = array_merge($input, $slug);
+        $input["slug"] = $this->random_slug();
         $files = $request->file();
         if (count($files) > 0){
             foreach ($files as $fileField => $val) {
                 $filenameWithExt = $val->getClientOriginalName();
                 $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                 $extension = $val->getClientOriginalExtension();
-                $filenameSimpan = $filename.'_'.$slug['slug'].'.'.$extension;
+                $filenameSimpan = $filename.'_'.$input["slug"].'.'.$extension;
                 $path = $val->storeAs('public/'.$fileField, $filenameSimpan);
                 // array_fill($fileField,1,$path);
                 $input[$fileField] = $filenameSimpan;
@@ -76,8 +78,9 @@ class ReceptionController extends Controller
 
         // dd($input);
         $reception = Reception::create($input);
-        $reception->slug = $this->random_slug();
-
+        $reception->slug = $input["slug"];
+        $reception->save();
+        // dd($reception);
         // Storage::disk('local')->put('foto_'.$request->id, $request->foto_penerima);
 
         $history = History::create([
@@ -124,44 +127,47 @@ class ReceptionController extends Controller
     // public function update(UpdateReceptionRequest $request, $slug)
     public function update(Request $request, $slug)
     {
+        // dd($request);
          //validate form
-        $validator = $this->validate($request, [
-            'nama' => 'required|min:3|max:100|string',
-            'bd' => 'required|date|before:01/01/1996',
-            'nik' => 'numeric|digits:16',
-            'foto_penerima' => 'mimes:jpg,bmp,png,jpeg,svg,tiff,tif|image',
-            'no_hp' => 'numeric',
-            'jenkel' => 'required',
-            'alamat' => 'required',
-            'pekerjaan' => 'required',
-            'penyakit' => '',
-            'rt' => 'numeric',
-            'foto_ktp' => 'mimes:jpg,bmp,png,jpeg,svg,tiff,tif|image',
-            'foto_kk' => 'mimes:jpg,bmp,png,jpeg,svg,tiff,tif|image',
-            'foto_rumah' => 'mimes:jpg,bmp,png,jpeg,svg,tiff,tif|image',
-            'status_rumah' => '',
-            'long' => '',
-            'lat' => ''
-        ]);
+        // $validator = $this->validate($request, [
+        //     'nama' => 'required|min:3|max:100|string',
+        //     'bd' => 'required|date|before:01/01/1996',
+        //     'nik' => 'numeric|digits:16',
+        //     'foto_penerima' => 'mimes:jpg,bmp,png,jpeg,svg,tiff,tif|image',
+        //     'no_hp' => 'numeric',
+        //     'jenkel' => 'required',
+        //     'alamat' => 'required',
+        //     'pekerjaan' => 'required',
+        //     'penyakit' => '',
+        //     'rt' => 'numeric',
+        //     'foto_ktp' => 'mimes:jpg,bmp,png,jpeg,svg,tiff,tif|image',
+        //     'foto_kk' => 'mimes:jpg,bmp,png,jpeg,svg,tiff,tif|image',
+        //     'foto_rumah' => 'mimes:jpg,bmp,png,jpeg,svg,tiff,tif|image',
+        //     'status_rumah' => '',
+        //     'long' => '',
+        //     'lat' => ''
+        // ]);
 
-        //check if validator fails
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-        $receptor = Reception::find("slug", $slug);
+        // //check if validator fails
+        // if ($validator->fails()) {
+        //     return back()
+        //         ->withErrors($validator)
+        //         ->withInput();
+        // }
+        $input = $request->all();
+        $receptor = Reception::where("slug", $slug)->first();
         //check if image is uploaded
-        if ($request->hasFile()) {
+        $files = $request->file();
+        if (count($files) > 0) {
 
             //upload new files
-            $files = $request->file();
             foreach ($files as $fileField => $val) {
             $filenameWithExt = $val->getClientOriginalName();
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $val->getClientOriginalExtension();
             $filenameSimpan = $filename.'_'.$slug['slug'].'.'.$extension;
             $path = $val->storeAs('public/'.$fileField, $filenameSimpan);
+            $input[$fileField] = $filenameSimpan;
 
             //delete old image
             Storage::delete('public/'.$fileField.'/'.$receptor->$fileField);
@@ -173,29 +179,41 @@ class ReceptionController extends Controller
             //     'title'     => $request->title,
             //     'content'   => $request->content
             // ]);
-            $receptor->update(Input::all());
-
+            $receptor->fill($input);
+            $changes = $receptor->getDirty();
+            $receptor->save();
+            // $receptor->update(Input::all());
         } else {
-
             //update post without file
-            $receptor->update(Input::all());
-
+            $receptor->fill($input);
+            $changes = $receptor->getDirty();
+            $receptor->save();
         }
 
         //redirect to index
-        return redirect()->route('receptions.index')->with(['success' => 'Data Berhasil Diubah!']);
+        return back()->with(['success' => 'Data Berhasil Diubah!']);
     }
 
     /**
      * Remove the specified resource from storage.
-     *
+     * menggunakan slug sebagai id
      * @param  \App\Models\Reception  $reception
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Reception $reception)
+    public function destroy($idx)
     {
-        //
+        $rec = Reception::where("slug", $idx)->first();
+        $his = History::where("reception", $rec->id)->get();
+        foreach ($his as $hi) {
+            $hi->delete();
+        }
+        $rec->delete();
+        return response()->json([
+            'success' => 'Record deleted successfully!'
+        ]);
     }
+
+
 
     public function random_slug(int $length = 15,
         string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'): string

@@ -48,8 +48,7 @@
                         @forelse ($penerima as $data)
                             <tr>
                             <td class="table-plus">
-                                <img class="border-radius-100 shadow" style="max-height: 118pt; max-width:99pt" src="{{asset('storage/foto_penerima/'.$data->foto_penerima)}}" alt="">
-                                {{-- {{file_exist(asset('storage/'.$data->foto_penerima))?'default.png':$data->foto_penerima}} --}}
+                                <img class="border-radius-100 shadow" style="max-height: 12vh; max-width:7vw" src="{{asset('storage/foto_penerima/'.$data->foto_penerima)}}" alt="" onerror="this.onerror=null;this.src='{{asset('storage/foto_penerima/default.png')}}';">
                             </td>
                             <td>{{$data->nama}}</td>
                             <td>{{Carbon::parse($data->bd)->age}} Tahun</td>
@@ -65,7 +64,7 @@
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                                         <a class="dropdown-item view-data" id="{{$data->slug}}" url="{{ url('receptions', $data->slug) }}" href="#"  data-toggle="modal" data-target="#view-penerima"><i class="dw dw-eye"></i> View</a>
                                         <a class="dropdown-item edit-data" id="edit-{{$data->slug}}" url="{{ route('receptions.edit', $data->slug) }}" aksi="{{ route('receptions.update', $data->slug) }}" href="#"><i class="dw dw-edit2"></i> Edit</a>
-                                        <a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i>
+                                        <a class="dropdown-item delete-data" href="#" data-toggle="modal" url="{{ route('receptions.destroy', $data->slug) }}" idx="{{$data->slug}}" data-target="#confirm-hapus"><i class="dw dw-delete-3"></i>
                                             Delete</a>
                                     </div>
                                 </div>
@@ -231,7 +230,7 @@
                         <div id="map"></div>
                         <input class="form-control" type="hidden" id="long" name="long"/>
                         <input class="form-control" type="hidden" id="lat" name="lat" />
-                        <input class="form-control" type="hidden" id="lat" name="actor"  value="{{Auth::user()->id}}"/>
+                        <input class="form-control" type="hidden" id="actor" name="actor"  value="{{Auth::user()->id}}"/>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -277,7 +276,7 @@
                                     </ol>
                                     <div class="carousel-inner">
                                         <div class="carousel-item active">
-                                            <img class="d-block w-50 h-50 ft-Penerima" id="ft-penerima" src="" alt="Foto Penerima" onerror="this.onerror=null;this.src='{{asset('admin/vendors/images/img404.gif')}}';" >
+                                            <img class="d-block w-50 h-50 ft-Penerima" id="ft-penerima" src="" alt="Foto Penerima" >
                                             {{-- <img class="d-block w-50 h-50 gambar-penerima" src="" alt="Foto Penerima" onerror="this.onerror=null;this.src='{{asset('admin/vendors/images/img404.gif')}}';"> --}}
                                             <div class="carousel-caption d-none d-md-block">
                                                 <h5 class="">Foto Penerima</h5>
@@ -285,21 +284,21 @@
                                             </div>
                                         </div>
                                         <div class="carousel-item">
-                                            <img class="d-block w-50 h-50 gambar-ktp" src="" alt="Foto KTP" onerror="this.onerror=null;this.src='{{asset('admin/vendors/images/img404.gif')}}';">
+                                            <img class="d-block w-50 h-50 gambar-ktp" src="" alt="Foto KTP">
                                             <div class="carousel-caption d-none d-md-block">
                                                 <h5 class="">Foto KTP</h5>
                                                 {{-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> --}}
                                             </div>
                                         </div>
                                         <div class="carousel-item">
-                                            <img class="d-block w-50 h-50 gambar-kk" src="" alt="Foto KK" onerror="this.onerror=null;this.src='{{asset('admin/vendors/images/img404.gif')}}';">
+                                            <img class="d-block w-50 h-50 gambar-kk" src="" alt="Foto KK">
                                             <div class="carousel-caption d-none d-md-block">
                                                 <h5 class="">Foto Kartu Keluarga</h5>
                                                 {{-- <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p> --}}
                                             </div>
                                         </div>
                                         <div class="carousel-item">
-                                            <img class="d-block w-50 h-50 gambar-rumah" src="" alt="Foto Rumah" onerror="this.onerror=null;this.src='{{asset('admin/vendors/images/img404.gif')}}';">
+                                            <img class="d-block w-50 h-50 gambar-rumah" src="" alt="Foto Rumah">
                                             <div class="carousel-caption d-none d-md-block">
                                                 <h5 class="">Foto Rumah</h5>
                                                 {{-- <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p> --}}
@@ -350,6 +349,8 @@
                                     <tr>
                                         <td><strong>Lokasi</strong></td>
                                         <td style="text-align: center;" valign="middle"><a target=”_blank” id="lokasi" href=""><u></u></a> </td>
+                                        <td><strong>Nomor HP</strong></td>
+                                        <td style="text-align: center;" valign="middle"><a target=”_blank” id="hp" href=""></a> </td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -366,65 +367,41 @@
         </div>
     {{-- akhir modal view --}}
 
-    {{-- modal edit --}}
-        {{-- <div class="modal fade bs-example-modal-lg" id="edit-penerima" tabindex="-1"
-            role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" > --}}
-        {{-- <div class=" bs-example-modal-lg" id="edit-penerima"  >
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="myLargeModalLabel">
-                            Edit Data Penerima Bantuan
-                        </h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                            ×
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-6 col-sm-12">
-                                <div class="form-group">
-                                    <label for="nama">Nama</label>
-                                    <input type="text" class="form-control" name="nama">
-                                </div>
+    {{-- modal hapus --}}
+        <div class="modal fade" id="confirm-hapus" tabindex="-1" role="dialog"
+            aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-dialog-centered">
+                <div class="modal-content bg-danger text-white">
+                    <div class="modal-body text-center">
+                        <h3 class="text-white mb-15">
+                            <i class="fa fa-exclamation-triangle"></i> KONFIRMASI
+                        </h3>
+                        <p>
+                            Anda akan menghapus data <strong></strong>.
+                        </p>
+                        <div class="padding-bottom-30 row" style="max-width: 170px; margin: 0 auto">
+                            <div class="col-6">
+                                <button type="button"
+                                    class="btn btn-secondary border-radius-100 btn-block confirmation-btn"
+                                    data-dismiss="modal">
+                                    <i class="fa fa-times"></i>
+                                </button>
+
                             </div>
-                            <div class="col-md-6 col-sm-12">
-                                <div class="form-group">
-                                    <label for="nama">Penyakit</label>
-                                    <input type="text" class="form-control" name="penyakit">
-                                </div>
+                            <div class="col-6">
+                                <button type="button"
+                                    class="btn btn-primary border-radius-100 btn-block confirmation-btn confirm-hapus"
+                                    data-dismiss="modal">
+                                    <i class="fa fa-check"></i>
+                                </button>
+
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 col-sm-12">
-                                <div class="form-group">
-                                    <label for="nama">Nomor Induk Kependudukan</label>
-                                    <input type="text" class="form-control" name="nik">
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-12">
-                                <div class="form-group">
-                                    <label for="nama">Status Kepemilikan Rumah</label>
-                                    <input type="Radio" class="form-control" name="status_rumah">Milik Sendiri
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                            Close
-                        </button>
-                        <button type="button" class="btn btn-primary">
-                            Save changes
-                        </button>
                     </div>
                 </div>
             </div>
-        </div> --}}
-    {{-- akhir modal edit --}}
+        </div>
+    {{-- akhir modal hapus --}}
 @endsection
 
 @section('custom-scripts')
@@ -456,12 +433,28 @@
 
 
             });
+            $(".confirm-hapus").click(function(){
+                var url_hapus = $(".delete-data").attr("url");
+                var idx =  $(".delete-data").attr("idx");
+                $.ajax({
+                    type: "DELETE",
+                    url: url_hapus,
+                    data: {
+                        idx: idx,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        location.reload();
+                    }
+                });
+            });
             $(".view-data").click(function(){
                     // $('body').on('click', '#view-data', function (){
                     var userURL = $(this).attr('url');
                     $.get(userURL, function (data) {
                         data = data.penerima
-                        // console.log(data);
+                        console.log(data);
                             // $('#userShowModal').modal('show');
                             $('.tableView #nama').text(data.nama);
                             $('.tableView #penyakit').text(data.penyakit);
@@ -485,24 +478,27 @@
                             $('.tableView #tgl').text(data.bd +' ('+ umur+' Tahun)');
                             $('.tableView #ktp').text(data.foto_ktp);
                             $('.tableView #pekerjaan').text(data.pekerjaan);
+                            $('.tableView #hp').text(data.no_hp);
                             $('.tableView #ft_kk').text(data.foto_kk);
                             $('.tableView #jk').text(data.jenkel);
                             $('.tableView #ft_rmh').text(data.foto_rumah);
                             $('.tableView #alamat').text(data.alamat+" RT "+data.rts.nama_rt+", Kelurahan "+data.rts.kelurahans.nama_kel+", "+"Kecamatan "+data.rts.kelurahans.kecamatans.nama_kec+".");
-                            $('.tableView #lokasi').attr("href", 'https://www.google.com/maps/search/?api=1&query='+data.lat+','+data.long );
+                            $('.tableView #lokasi').attr("href", 'https://www.google.com/maps/place/'+data.lat+','+data.long+'/@'+data.lat+','+data.long+'/data=!3m1!1e3');
+                            // $('.tableView #lokasi').attr("href", 'https://www.google.com/maps/search/?api=1&query='+data.lat+','+data.long );
                             $('.tableView #lokasi').children('u').text('Tautan Lokasi Google Map' );
                             var linkAsset = "{{asset('storage')}}";
                             $('#carouselPenerima #ft-penerima').attr("src",  '');
-                            $('#carouselPenerima #ft-penerima').attr("src", data.foto_penerima != null ? linkAsset+"/foto_penerima/"+ data.foto_penerima : '');
+                            $('#carouselPenerima #ft-penerima').attr("src", data.foto_penerima != null ? linkAsset+"/foto_penerima/"+ data.foto_penerima : "{{asset('admin/vendors/images/img404.gif')}}");
                             $('#carouselPenerima .gambar-ktp').attr("src",  '');
-                            $('#carouselPenerima .gambar-ktp').attr("src", data.foto_ktp != null ? linkAsset+"/foto_ktp/"+ data.foto_ktp : '');
+                            $('#carouselPenerima .gambar-ktp').attr("src", data.foto_ktp != null ? linkAsset+"/foto_ktp/"+ data.foto_ktp : "{{asset('admin/vendors/images/img404.gif')}}");
                             $('#carouselPenerima .gambar-kk').attr("src",  '');
-                            $('#carouselPenerima .gambar-kk').attr("src", data.foto_kk != null ? linkAsset+"/foto_kk/"+ data.foto_kk : '');
+                            $('#carouselPenerima .gambar-kk').attr("src", data.foto_kk != null ? linkAsset+"/foto_kk/"+ data.foto_kk : "{{asset('admin/vendors/images/img404.gif')}}");
                             $('#carouselPenerima .gambar-rumah').attr("src",  '');
-                            $('#carouselPenerima .gambar-rumah').attr("src", data.foto_rumah != null ? linkAsset+"/foto_rumah/"+ data.foto_rumah : '');
+                            $('#carouselPenerima .gambar-rumah').attr("src", data.foto_rumah != null ? linkAsset+"/foto_rumah/"+ data.foto_rumah : "{{asset('admin/vendors/images/img404.gif')}}");
                     })
                 });
             $("#tambah-button").click(function(){
+
                 $(".text-blue,.judul-form").text('Input Data Penerima');
                 $(".ket-form").text('Mengajukan penerima Rantang Kasih');
                 $("#input-penerima").attr("action","{{route('receptions.store')}}");
@@ -533,6 +529,7 @@
                 var userURL = $(this).attr('url');
                 $.get(userURL, function (data) {
                     data = data.penerima
+                    // console.log(data);
                 $("#nama").val(data.nama);
                 $("#bd").val(data.bd);
                 if (data.jenkel == 'Laki-laki') {
@@ -573,9 +570,11 @@
                 // console.log($("#kel").value);
                 $("#rt").val(data.rts.id);
                 $("#rt option[value='"+data.rts.id+"']").attr("selected",true);
-                console.log(data.long);
-                markerPenerima(data.lat, data.long)
+                // console.log(data.long);
                 $("#alasan").val(data.histories[0].alasan);
+                $("#long").val(data.long);
+                $("#lat").val(data.lat);
+                markerPenerima(data.lat, data.long)
                 })
                 // EO populating fields
             });
@@ -585,7 +584,10 @@
                 $("#data-box").show();
                 $("#tambah-button").show();
                 $("#kembali-button").hide();
-
+                $('input').each(function() {
+                    $(this).val("");
+                    console.log($(this));
+                });
             });
 
         </script>

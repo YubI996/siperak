@@ -1,6 +1,6 @@
 <div class="left-side-bar">
 		<div class="brand-logo">
-			<a href="index.html">
+			<a href="#{{--index.html--}}">
 				<img src="{{asset('admin/vendors/images/deskapp-logo.svg')}}" alt="" class="dark-logo">
 				<img src="{{asset('admin/vendors/images/deskapp-logo-white.svg')}}" alt="" class="light-logo">
 			</a>
@@ -16,7 +16,7 @@
 							<span class="micon dw dw-house-1"></span><span class="mtext">Home</span>
 						</a>
 						<ul class="submenu">
-							<li><a href="index.html">Dashboard style 1</a></li>
+							<li><a href="#{{--index.html--}}">Dashboard style 1</a></li>
 							<li><a href="index2.html">Dashboard style 2</a></li>
 							<li><a href="index3.html">Dashboard style 3</a></li>
 						</ul>
