@@ -19,7 +19,8 @@ use App\Models\User;
 */
 
 Route::get('/', function () {
-    return redirect()->route('receptions.index');
+    return redirect()->route('home2');
+    // return redirect()->route('receptions.index');
     // return view('welcome');
 });
 

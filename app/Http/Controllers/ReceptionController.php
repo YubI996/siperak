@@ -202,12 +202,17 @@ class ReceptionController extends Controller
      */
     public function destroy($idx)
     {
+
         $rec = Reception::where("slug", $idx)->first();
         $his = History::where("reception", $rec->id)->get();
         foreach ($his as $hi) {
             $hi->delete();
         }
         $rec->delete();
+            // dd("deleting ".$rec->nama." and its histories");
+            // dd($rec);
+        // return back()->with(['success' => 'Data Berhasil Dihapus!']);
+
         return response()->json([
             'success' => 'Record deleted successfully!'
         ]);

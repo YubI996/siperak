@@ -37,6 +37,14 @@
 					</li>
 					<li class="dropdown">
 						<a href="javascript:;" class="dropdown-toggle">
+							<span class="micon dw dw-user-2"></span><span class="mtext">Penerima</span>
+						</a>
+						<ul class="submenu">
+							<li><a href="/receptions">Data Penerima</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="javascript:;" class="dropdown-toggle">
 							<span class="micon dw dw-library"></span><span class="mtext">Tables</span>
 						</a>
 						<ul class="submenu">

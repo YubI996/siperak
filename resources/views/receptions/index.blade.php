@@ -48,7 +48,7 @@
                         @forelse ($penerima as $data)
                             <tr>
                             <td class="table-plus">
-                                <img class="border-radius-100 shadow" style="max-height: 12vh; max-width:7vw" src="{{asset('storage/foto_penerima/'.$data->foto_penerima)}}" alt="" onerror="this.onerror=null;this.src='{{asset('storage/foto_penerima/default.png')}}';">
+                                <img class="border-radius-100 shadow" style="max-height: 12vh; max-width:7vw" src="{{$data->foto_penerima != null ? asset('storage/foto_penerima/'.$data->foto_penerima) : asset('admin/vendors/images/img404.gif')}}" alt="">
                             </td>
                             <td>{{$data->nama}}</td>
                             <td>{{Carbon::parse($data->bd)->age}} Tahun</td>
@@ -348,9 +348,9 @@
                                     </tr>
                                     <tr>
                                         <td><strong>Lokasi</strong></td>
-                                        <td style="text-align: center;" valign="middle"><a target=”_blank” id="lokasi" href=""><u></u></a> </td>
+                                        <td style="text-align: center;" valign="middle"><a target="_blank" id="lokasi" href=""><u></u></a> </td>
                                         <td><strong>Nomor HP</strong></td>
-                                        <td style="text-align: center;" valign="middle"><a target=”_blank” id="hp" href=""></a> </td>
+                                        <td style="text-align: center;" valign="middle" id="hp"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -391,7 +391,7 @@
                             <div class="col-6">
                                 <button type="button"
                                     class="btn btn-primary border-radius-100 btn-block confirmation-btn confirm-hapus"
-                                    data-dismiss="modal">
+                                    data-dismiss="modal" url="" idx="">
                                     <i class="fa fa-check"></i>
                                 </button>
 
@@ -420,7 +420,6 @@
         <!-- Datatable Setting js -->
         <script src="{{asset('admin/vendors/scripts/datatable-setting.js')}}"></script>
         <script>
-            var klong=null;var klat = null;
             $(document).ready(function() {
                 $("#alert").hide();
                 $("#form-box").hide();
@@ -433,19 +432,32 @@
 
 
             });
+            $(".delete-data").click(function(){
+                $(".confirm-hapus").attr("url", $(this).attr('url'));
+                $(".confirm-hapus").attr("idx", $(this).attr('idx'));
+            });
             $(".confirm-hapus").click(function(){
-                var url_hapus = $(".delete-data").attr("url");
-                var idx =  $(".delete-data").attr("idx");
+                var url_hapus = $(this).attr("url");
+                var idx =  $(this).attr("idx");
+                console.log(url_hapus);
                 $.ajax({
-                    type: "DELETE",
+                    type: "delete",
+                    // headers: {
+                    //     'X-CSRF-TOKEN': '{{csrf_token()}}'
+                    // },
                     url: url_hapus,
+                    dataType: "json",
                     data: {
+                        // _method: 'delete',
                         idx: idx,
                         _token: '{{csrf_token()}}'
                     },
-                    dataType: "json",
                     success: function (response) {
+                        console.log(response);
                         location.reload();
+                    },
+                    error: function(response) {
+
                     }
                 });
             });
@@ -454,7 +466,7 @@
                     var userURL = $(this).attr('url');
                     $.get(userURL, function (data) {
                         data = data.penerima
-                        console.log(data);
+                        // console.log(data);
                             // $('#userShowModal').modal('show');
                             $('.tableView #nama').text(data.nama);
                             $('.tableView #penyakit').text(data.penyakit);
