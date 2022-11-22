@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Reception extends Model
+class Recipient extends Model
 {
     use HasFactory;
     /**
@@ -49,6 +49,6 @@ class Reception extends Model
 
     public function Histories()
     {
-        return $this->HasMany(History::class, 'reception');
+        return $this->HasMany(History::class, 'recipient');
     }
 }

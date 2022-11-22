@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QrGenerator;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ReceptionController;
+use App\Http\Controllers\RecipientController;
 use App\Http\Controllers\PilihRTController;
 use App\Models\User;
 
@@ -20,7 +20,7 @@ use App\Models\User;
 
 Route::get('/', function () {
     return redirect()->route('home2');
-    // return redirect()->route('receptions.index');
+    // return redirect()->route('recipients.index');
     // return view('welcome');
 });
 
@@ -68,5 +68,5 @@ Route::get('/form2', function () {
 Route::post('api/fetch-kelurahan', [PilihRTController::class, 'fetchKel']);
 Route::post('api/fetch-rt', [PilihRTController::class, 'fetchRt']);
 
-Route::resource('receptions', ReceptionController::class)->middleware(['auth']);
+Route::resource('recipients', RecipientController::class)->middleware(['auth']);
 

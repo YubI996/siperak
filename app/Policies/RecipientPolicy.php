@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Reception;
+use App\Models\Recipient;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ReceptionPolicy
+class RecipientPolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class ReceptionPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Reception  $Reception
+     * @param  \App\Models\Recipient  $Recipient
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Reception $reception)
+    public function view(User $user, Recipient $recipient)
     {
         //
     }
@@ -48,10 +48,10 @@ class ReceptionPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Reception  $reception
+     * @param  \App\Models\Recipient  $recipient
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Reception $reception)
+    public function update(User $user, Recipient $recipient)
     {
         //
     }
@@ -60,10 +60,10 @@ class ReceptionPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Reception  $reception
+     * @param  \App\Models\Recipient  $recipient
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Reception $reception)
+    public function delete(User $user, Recipient $recipient)
     {
         //
     }
@@ -72,10 +72,10 @@ class ReceptionPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Reception  $reception
+     * @param  \App\Models\Recipient  $recipient
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Reception $reception)
+    public function restore(User $user, Recipient $recipient)
     {
         //
     }
@@ -84,10 +84,10 @@ class ReceptionPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Reception  $reception
+     * @param  \App\Models\Recipient  $recipient
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Reception $reception)
+    public function forceDelete(User $user, Recipient $recipient)
     {
         //
     }

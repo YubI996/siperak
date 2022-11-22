@@ -25,8 +25,8 @@ class Rt extends Model
         return $this->HasMany(Pokmas::class);
     }
 
-    public function Receptions()
+    public function Recipients()
     {
-        return $this->HasMany(Reception::class);
+        return $this->HasMany(Recipient::class);
     }
 }

@@ -26,6 +26,6 @@ class Delivery extends Model
 
     public function Penerima()
     {
-        return $this->BelongsTo(Reception::class, 'penerima');
+        return $this->BelongsTo(Recipient::class, 'penerima');
     }
 }

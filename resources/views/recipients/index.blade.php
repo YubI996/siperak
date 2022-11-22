@@ -62,9 +62,9 @@
                                         <i class="dw dw-more"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                                        <a class="dropdown-item view-data" id="{{$data->slug}}" url="{{ url('receptions', $data->slug) }}" href="#"  data-toggle="modal" data-target="#view-penerima"><i class="dw dw-eye"></i> View</a>
-                                        <a class="dropdown-item edit-data" id="edit-{{$data->slug}}" url="{{ route('receptions.edit', $data->slug) }}" aksi="{{ route('receptions.update', $data->slug) }}" href="#"><i class="dw dw-edit2"></i> Edit</a>
-                                        <a class="dropdown-item delete-data" href="#" data-toggle="modal" url="{{ route('receptions.destroy', $data->slug) }}" idx="{{$data->slug}}" data-target="#confirm-hapus"><i class="dw dw-delete-3"></i>
+                                        <a class="dropdown-item view-data" id="{{$data->slug}}" url="{{ url('recipients', $data->slug) }}" href="#"  data-toggle="modal" data-target="#view-penerima"><i class="dw dw-eye"></i> View</a>
+                                        <a class="dropdown-item edit-data" id="edit-{{$data->slug}}" url="{{ route('recipients.edit', $data->slug) }}" aksi="{{ route('recipients.update', $data->slug) }}" href="#"><i class="dw dw-edit2"></i> Edit</a>
+                                        <a class="dropdown-item delete-data" href="#" data-toggle="modal" url="{{ route('recipients.destroy', $data->slug) }}" idx="{{$data->slug}}" data-target="#confirm-hapus"><i class="dw dw-delete-3"></i>
                                             Delete</a>
                                     </div>
                                 </div>
@@ -513,7 +513,7 @@
 
                 $(".text-blue,.judul-form").text('Input Data Penerima');
                 $(".ket-form").text('Mengajukan penerima Rantang Kasih');
-                $("#input-penerima").attr("action","{{route('receptions.store')}}");
+                $("#input-penerima").attr("action","{{route('recipients.store')}}");
                 var patcher = $(".patcher");
                 if (jQuery.contains(document, patcher[0])) {
                     // $("#input-penerima").remove($(".patcher"));

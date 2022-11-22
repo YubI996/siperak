@@ -24,7 +24,7 @@
 						</div>
 
 					</div>
-					<form name="input-penerima" method="POST" action="{{url('receptions')}}">
+					<form name="input-penerima" method="POST" action="{{url('recipients')}}">
                         @csrf
 						<div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Nama Lengkap</label>

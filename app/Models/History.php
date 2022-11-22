@@ -15,8 +15,8 @@ class History extends Model
         return $this->BelongsTo(User::class, 'actor');
     }
 
-    public function Receptions()
+    public function Recipients()
     {
-        return $this->BelongsTo(Reception::class, 'reception');
+        return $this->BelongsTo(Recipient::class, 'recipient');
     }
 }

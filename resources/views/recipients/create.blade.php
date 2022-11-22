@@ -24,7 +24,7 @@
 						</div>
 
 					</div>
-					<form name="input-penerima" id="input-penerima" method="POST" action="{{route('receptions.store')}}">
+					<form name="input-penerima" id="input-penerima" method="POST" action="{{route('recipients.store')}}">
                         @csrf
 						<div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Nama Lengkap</label>

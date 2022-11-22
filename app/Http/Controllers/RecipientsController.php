@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Reception;
+use App\Models\Recipient;
 use App\Models\History;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Rt;
 
-use App\Http\Requests\StoreReceptionRequest;
-use App\Http\Requests\UpdateReceptionRequest;
+use App\Http\Requests\StoreRecipientRequest;
+use App\Http\Requests\UpdateRecipientRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class ReceptionController extends Controller
+class RecipientController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,9 +23,9 @@ class ReceptionController extends Controller
      */
     public function index()
     {
-        $penerima = Reception::with('Histories')->get();
+        $penerima = Recipient::with('Histories')->get();
         $kecs = Kecamatan::all();
-        return view('receptions.index', compact('penerima', 'kecs'));
+        return view('recipients.index', compact('penerima', 'kecs'));
     }
 
     /**
@@ -38,16 +38,16 @@ class ReceptionController extends Controller
         $kecs = Kecamatan::all();
         $kels = Kelurahan::all();
         $rts = Rt::all();
-        return view('receptions.create', compact('kecs', 'kels', 'rts'));
+        return view('recipients.create', compact('kecs', 'kels', 'rts'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreReceptionRequest  $request
+     * @param  \App\Http\Requests\StoreRecipientRequest  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(StoreReceptionRequest $request)
+    // public function store(StoreRecipientRequest $request)
     public function store(Request $request)
     {
         // dd($request);
@@ -77,14 +77,14 @@ class ReceptionController extends Controller
         }
 
         // dd($input);
-        $reception = Reception::create($input);
-        $reception->slug = $input["slug"];
-        $reception->save();
-        // dd($reception);
+        $recipient = Recipient::create($input);
+        $recipient->slug = $input["slug"];
+        $recipient->save();
+        // dd($recipient);
         // Storage::disk('local')->put('foto_'.$request->id, $request->foto_penerima);
 
         $history = History::create([
-            'reception' => $reception->id,
+            'recipient' => $recipient->id,
             'status_trima' => 'Diajukan',
             'alasan' => $input['alasan'],
             'actor' => $input['actor']
@@ -96,35 +96,35 @@ class ReceptionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Reception  $Reception
+     * @param  \App\Models\Recipient  $Recipient
      * @return \Illuminate\Http\Response
      */
     public function show($slug)
     {
-        $data['penerima'] = Reception::where('slug', $slug)->with('Histories','Rts.Kelurahans.Kecamatans')->first();
+        $data['penerima'] = Recipient::where('slug', $slug)->with('Histories','Rts.Kelurahans.Kecamatans')->first();
         return response()->json($data);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Reception  $reception
+     * @param  \App\Models\Recipient  $recipient
      * @return \Illuminate\Http\Response
      */
     public function edit($slug)
     {
-        $data['penerima'] = Reception::where('slug', $slug)->with('Histories','Rts.Kelurahans.Kecamatans')->first();
+        $data['penerima'] = Recipient::where('slug', $slug)->with('Histories','Rts.Kelurahans.Kecamatans')->first();
         return response()->json($data);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateReceptionRequest  $request
-     * @param  \App\Models\Reception  $reception
+     * @param  \App\Http\Requests\UpdateRecipientRequest  $request
+     * @param  \App\Models\Recipient  $recipient
      * @return \Illuminate\Http\Response
      */
-    // public function update(UpdateReceptionRequest $request, $slug)
+    // public function update(UpdateRecipientRequest $request, $slug)
     public function update(Request $request, $slug)
     {
         // dd($request);
@@ -155,7 +155,7 @@ class ReceptionController extends Controller
         //         ->withInput();
         // }
         $input = $request->all();
-        $receptor = Reception::where("slug", $slug)->first();
+        $receptor = Recipient::where("slug", $slug)->first();
         //check if image is uploaded
         $files = $request->file();
         if (count($files) > 0) {
@@ -197,14 +197,14 @@ class ReceptionController extends Controller
     /**
      * Remove the specified resource from storage.
      * menggunakan slug sebagai id
-     * @param  \App\Models\Reception  $reception
+     * @param  \App\Models\Recipient  $recipient
      * @return \Illuminate\Http\Response
      */
     public function destroy($idx)
     {
 
-        $rec = Reception::where("slug", $idx)->first();
-        $his = History::where("reception", $rec->id)->get();
+        $rec = Recipient::where("slug", $idx)->first();
+        $his = History::where("recipient", $rec->id)->get();
         foreach ($his as $hi) {
             $hi->delete();
         }
