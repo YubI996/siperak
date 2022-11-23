@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Recipient extends Model
 {
@@ -26,6 +27,10 @@ class Recipient extends Model
     'foto_rumah', 'status_rumah', 'long', 'lat'];
 
     protected $guarded = ['id', 'slug'];
+
+    protected $casts = [
+        'bd' => 'date',
+    ];
 
     /**
      * Get the route key for the model.
@@ -50,5 +55,15 @@ class Recipient extends Model
     public function Histories()
     {
         return $this->HasMany(History::class, 'recipient');
+    }
+
+    public function getPenerima()
+    {
+        return $this->hasOne(History::class, 'recipient')->where('status_trima', 'Menerima')->orderBy('created_at', 'desc');
+    }
+
+    public function getAge()
+    {
+        return $this->bd->age;
     }
 }

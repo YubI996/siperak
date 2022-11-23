@@ -59,9 +59,9 @@ class RecipientController extends Controller
         ]);
 
         $input = $request->all();
-        // $slug = ["slug" => $this->random_slug()];
+        // $slug = ["slug" => random_slug()];
         // $input = array_merge($input, $slug);
-        $input["slug"] = $this->random_slug();
+        $input["slug"] = random_slug();
         $files = $request->file();
         if (count($files) > 0){
             foreach ($files as $fileField => $val) {
@@ -220,17 +220,5 @@ class RecipientController extends Controller
 
 
 
-    public function random_slug(int $length = 15,
-        string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'): string
-    {
-        if ($length < 1) {
-            throw new \RangeException("Length must be a positive integer");
-        }
-        $pieces = [];
-        $max = mb_strlen($keyspace, '8bit') - 1;
-        for ($i = 0; $i < $length; ++$i) {
-            $pieces []= $keyspace[random_int(0, $max)];
-        }
-        return implode('', $pieces);
-    }
+
 }

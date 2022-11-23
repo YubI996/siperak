@@ -40,7 +40,7 @@
 							<span class="micon dw dw-user-2"></span><span class="mtext">Penerima</span>
 						</a>
 						<ul class="submenu">
-							<li><a href="{{route('recipients')}}">Data Penerima</a></li>
+							<li><a href="{{route('recipients.index')}}">Data Penerima</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">

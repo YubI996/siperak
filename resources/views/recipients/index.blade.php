@@ -51,10 +51,11 @@
                                 <img class="border-radius-100 shadow" style="max-height: 12vh; max-width:7vw" src="{{$data->foto_penerima != null ? asset('storage/foto_penerima/'.$data->foto_penerima) : asset('admin/vendors/images/img404.gif')}}" alt="">
                             </td>
                             <td>{{$data->nama}}</td>
-                            <td>{{Carbon::parse($data->bd)->age}} Tahun</td>
+                            <td>{{$data->getage()}} Tahun</td>
                             <td>{{$data->alamat}}</td>
                             <td>{{$data->penyakit}}</td>
-                            <td>{{$data->Histories[0]->status_trima ?? 'Data tidak ada.'}}</td>
+                            <td>{{get_status_trima($data->slug) ?? 'Data tidak ada.'}}</td>
+                            {{-- <td>{{$data->Histories[0]->status_trima ?? 'Data tidak ada.'}}</td> --}}
                             <td>
                                 <div class="dropdown">
                                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle"
