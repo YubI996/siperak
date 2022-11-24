@@ -7,7 +7,7 @@
 
 @section('content')
         <div class="title pb-20">
-            <h2 class="h3 mb-0">Hospital Overview</h2>
+            <h2 class="h3 mb-0">SiPeRaK Overview</h2>
         </div>
 
         <div class="row pb-10">
@@ -38,7 +38,7 @@
                             <div class="weight-700 font-24 text-dark">{{avg_age()}} Tahun</div>
                         </div>
                         <div class="widget-icon">
-                            <div class="icon" data-color="#ff5b5b">
+                            <div class="icon" data-color="#f7e02d">
                                 <span class="icon-copy ti-calendar"></span>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                             <div class="weight-700 font-24 text-dark">{{get_pokmas()}}</div>
                         </div>
                         <div class="widget-icon">
-                            <div class="icon">
+                            <div class="icon" data-color="#09cc06">
                                 <i class="icon-copy fa fa-group" aria-hidden="true"></i>
                             </div>
                         </div>
@@ -66,12 +66,12 @@
                 <div class="card-box height-100-p widget-style3">
                     <div class="d-flex flex-wrap">
                         <div class="widget-data">
-                            <div class="weight-700 font-24 text-dark">$50,000</div>
-                            <div class="font-14 text-secondary weight-500">Earning</div>
+                            <div class="font-14 text-secondary weight-500">Sebaran Kelurahan</div>
+                            <div class="weight-700 font-24 text-dark">{{count_kel()}} Kelurahan</div>
                         </div>
                         <div class="widget-icon">
-                            <div class="icon" data-color="#09cc06">
-                                <i class="icon-copy fa fa-money" aria-hidden="true"></i>
+                            <div class="icon" data-color="#2634f0">
+                                <i class="icon-copy fa fa-bandcamp" aria-hidden="true"></i>
                             </div>
                         </div>
                     </div>

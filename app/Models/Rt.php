@@ -10,7 +10,7 @@ class Rt extends Model
 {
     use HasFactory;
 
-    public function Kelurahans()
+    public function Kelurahan()
     {
         return $this->BelongsTo(Kelurahan::class, 'kelurahan_id');
     }

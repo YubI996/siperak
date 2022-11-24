@@ -11,7 +11,7 @@ class Kelurahan extends Model
 {
     use HasFactory;
 
-    public function Kecamatans()
+    public function Kecamatan()
     {
         return $this->BelongsTo(Kecamatan::class, 'kecamatan_id');
     }

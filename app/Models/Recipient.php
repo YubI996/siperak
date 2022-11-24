@@ -47,19 +47,25 @@ class Recipient extends Model
         return $this->BelongsTo(Rt::class, 'rt');
     }
 
-    public function Deliveries()
-    {
-        return $this->HasMany(Delivery::class, 'penerima');
-    }
+    // public function Deliveries()
+    // {
+    //     return $this->HasMany(Delivery::class, 'penerima');
+    // }
 
     public function Histories()
     {
         return $this->HasMany(History::class, 'recipient');
     }
 
-    public function getPenerima()
+    public function Menus()
     {
-        return $this->hasOne(History::class, 'recipient')->where('status_trima', 'Menerima')->orderBy('created_at', 'desc');
+        return $this->belongsToMany(Menu::class, 'deliveries')->withPivot('pengantar', 'status', 'pengaduan', 'dok', 'karbo_consmd', 'l_hwn_consmd', 'l_nbt_consmd', 'sayur_consmd', 'buah_consmd')->withTimestamps();
+    }
+
+    public function get_latest_history()
+    {
+        // return $this->hasOne(History::class, 'recipient')->where('status_trima', 'Menerima')->orderBy('created_at', 'desc');
+        return $this->hasOne(History::class, 'recipient')->latest()->groupBy('status_trima');
     }
 
     public function getAge()

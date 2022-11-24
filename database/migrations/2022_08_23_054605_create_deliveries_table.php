@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('penerima');
             $table->unsignedBigInteger('menu');
-            $table->unsignedBigInteger('pengantar');
-            $table->string('keterangan', 200)->nullable();
-            $table->string('pengaduan',300)->comment('kondisi lansia');
+            $table->unsignedBigInteger('pengantar')->nullable();
+            $table->enum('status', ['Belum diantar', 'Sudah diantar'])->nullable()->comment('status pengiriman')->default('Belum diantar');
+            $table->string('pengaduan',300)->nullable()->comment('kondisi lansia');
             $table->string('dok',100)->comment('foto dokumentasi')->nullable();
             $table->enum('karbo_consmd',['0','0.25','0.50','0.75','1'])->comment('rasio dimakan')->default('1');
             $table->enum('l_hwn_consmd',['0','0.25','0.50','0.75','1'])->comment('rasio dimakan')->default('1');

@@ -15,8 +15,13 @@ class Menu extends Model
         return $this->BelongsTo(Pokmas::class, 'pokmas');
     }
 
-    public function Deliveries()
+    // public function Deliveries()
+    // {
+    //     return $this->HasMany(Delivery::class);
+    // }
+
+    public function Recipients()
     {
-        return $this->HasMany(Delivery::class);
+        return $this->BelongsToMany(Menus::class, 'deliveries')->withPivot('pengantar', 'status', 'pengaduan', 'dok', 'karbo_consmd', 'l_hwn_consmd', 'l_nbt_consmd', 'sayur_consmd', 'buah_consmd')->withTimestamps();
     }
 }

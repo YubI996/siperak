@@ -47,7 +47,7 @@
 
     // rata-rata umur PENERIMA
     function avg_age(){
-        $rs = P::whereHas('getPenerima')->get();
+        $rs = P::whereHas('get_latest_history')->get();
         return $rs->avg(function ($r) {
             return $r->getAge();
         });
@@ -56,5 +56,10 @@
     function get_pokmas():int
     {
         return Po::count();
+    }
+
+    function count_kel():int
+    {
+        return P::get()->groupBy('Rts.Kelurahan')->count();
     }
 ?>

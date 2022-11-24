@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Arr;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Recipient>
@@ -16,24 +17,21 @@ class RecipientFactory extends Factory
      */
     public function definition()
     {
-        $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $pieces = [];
-        $max = mb_strlen($keyspace, '8bit') - 1;
-        for ($i = 0; $i < $length; ++$i) {
-            $pieces []= $keyspace[random_int(0, $max)];
-        }
-        $slug = implode('', $pieces);
         return [
-            'slug' => $slug,
+            'slug' => random_slug(),
             'nama' => fake()->name(),
             'nik' => rand(1110001110101011, 9090909090909099),
             'bd' => fake()->date($format = 'Y-m-d', $max = 'now'),
-            'foto_penerima' => null,
-            'foto' => null,
-            'email' => fake()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'rt' => 405,
+            'jenkel' => implode(Arr::random(['Laki-laki', 'Perempuan'], 1)),
+            'alamat' => fake()->address(),
+            'long' => 117.233178,
+            'lat' => -0.584461,
+            'foto_penerima' => 'default.png',
+            'foto_ktp' => null,
+            'foto_kk' => null,
+            'foto_rumah' => null,
+            'status_rumah' => implode(Arr::random(['Milik Sendiri','Mengontrak/Menyewa','Menumpang'], 1)),
         ];
     }
 }
