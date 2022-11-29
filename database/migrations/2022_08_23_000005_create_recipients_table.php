@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('foto_kk')->nullable();
             $table->string('foto_rumah')->nullable();
             $table->enum('status_rumah',['Milik Sendiri', 'Mengontrak/Menyewa', 'Menumpang'])->nullable();
+            $table->enum('status_trima',['Tidak Menerima', 'Menerima'])->default('Tidak Menerima');
             $table->double('long', 12, 9)->nullable();
             $table->double('lat', 12, 9)->nullable();
             $table->timestamps();

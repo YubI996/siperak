@@ -257,7 +257,7 @@
                         </div>
                     </div>
 
-                    <div id="diseases-chart"></div>
+                    <div id="jenkel"></div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-12 mb-20">
@@ -567,15 +567,21 @@
 	<script src="{{asset("admin/src/plugins/highcharts-6.0.7/code/highcharts-more.js")}}"></script>
 	{{-- <script src="{{asset("admin/vendors/scripts/highchart-setting.js")}}"></script> --}}
     <script>
+        // var data = {"Laki-laki":1};
+        let text = {{count_laki()}}
+        let raw = text.replace("&quot;", """);
+        var data = raw;
+        console.log(data);
         Highcharts.chart('jenkel', {
             chart: {
                 type: 'pie',
                 options3d: {
                     enabled: true,
                     alpha: 45
-                },
-                width: 500,
-                height: 500
+                }
+                // ,
+                // width: 500,
+                // height: 500
             },
             title: {
                 text: 'Penerima Manfaat berdasarkan Jenis Kelamin'
@@ -585,16 +591,13 @@
             // },
             plotOptions: {
                 pie: {
-                    innerSize: 50,
+                    innerSize: 0,
                     depth: 15
                 }
             },
             series: [{
                 name: 'Jumlah penerima',
-                data: [
-                ['Laki-laki', 1],
-                ['Perempuan', 2]
-                ]
+                data: data
             }]
         });
     </script>

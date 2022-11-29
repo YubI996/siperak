@@ -29,25 +29,25 @@
     // jumlah penerima bantuan aktif
     function count_active_recipient():int
     {
-        return P::whereHas('getPenerima')->count();
+        return P::where('status_trima', 'Menerima')->count();
     }
 
     // Jumlah penerima Laki-laki
-    function count_laki():int
+    function count_laki()
     {
-        // return P::all()->groupBy('jenkel')->map->count()->toArray();
-        return P::where('jenkel', 'Laki-laki')->count();
+        return P::where('status_trima', 'Menerima')->get()->groupBy('jenkel')->map->count()->toJson();
+        // return P::where('status_trima', 'Menerima')->where('jenkel', 'Laki-laki')->count();
     }
 
     // Jumlah penerima Perempuan
     function count_bini():int
     {
-        return P::where('jenkel', 'Perempuan')->count();
+        return P::where('status_trima', 'Menerima')->where('jenkel', 'Perempuan')->count();
     }
 
     // rata-rata umur PENERIMA
     function avg_age(){
-        $rs = P::whereHas('get_latest_history')->get();
+        $rs = P::where('status_trima', 'Menerima')->get();
         return $rs->avg(function ($r) {
             return $r->getAge();
         });
@@ -60,6 +60,6 @@
 
     function count_kel():int
     {
-        return P::get()->groupBy('Rts.Kelurahan')->count();
+        return P::where('status_trima', 'Menerima')->get()->groupBy('Rts.Kelurahan')->count();
     }
 ?>

@@ -65,7 +65,7 @@ class Recipient extends Model
     public function get_latest_history()
     {
         // return $this->hasOne(History::class, 'recipient')->where('status_trima', 'Menerima')->orderBy('created_at', 'desc');
-        return $this->hasOne(History::class, 'recipient')->latest()->groupBy('status_trima');
+        return $this->hasMany(History::class, 'recipient')->latest();
     }
 
     public function getAge()
