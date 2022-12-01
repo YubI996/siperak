@@ -101,7 +101,7 @@ class RecipientController extends Controller
      */
     public function show($slug)
     {
-        $data['penerima'] = Recipient::where('slug', $slug)->with('Histories','Rts.Kelurahans.Kecamatans')->first();
+        $data['penerima'] = Recipient::where('slug', $slug)->with('Histories','Rts.Kelurahan.Kecamatan')->first();
         return response()->json($data);
     }
 
@@ -113,7 +113,7 @@ class RecipientController extends Controller
      */
     public function edit($slug)
     {
-        $data['penerima'] = Recipient::where('slug', $slug)->with('Histories','Rts.Kelurahans.Kecamatans')->first();
+        $data['penerima'] = Recipient::where('slug', $slug)->with('Histories','Rts.Kelurahan.Kecamatan')->first();
         return response()->json($data);
     }
 

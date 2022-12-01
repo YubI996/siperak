@@ -495,7 +495,7 @@
                             $('.tableView #ft_kk').text(data.foto_kk);
                             $('.tableView #jk').text(data.jenkel);
                             $('.tableView #ft_rmh').text(data.foto_rumah);
-                            $('.tableView #alamat').text(data.alamat+" RT "+data.rts.nama_rt+", Kelurahan "+data.rts.kelurahans.nama_kel+", "+"Kecamatan "+data.rts.kelurahans.kecamatans.nama_kec+".");
+                            $('.tableView #alamat').text(data.alamat+" RT "+data.rts.nama_rt+", Kelurahan "+data.rts.kelurahan.nama_kel+", "+"Kecamatan "+data.rts.kelurahan.kecamatan.nama_kec+".");
                             $('.tableView #lokasi').attr("href", 'https://www.google.com/maps/place/'+data.lat+','+data.long+'/@'+data.lat+','+data.long+'/data=!3m1!1e3');
                             // $('.tableView #lokasi').attr("href", 'https://www.google.com/maps/search/?api=1&query='+data.lat+','+data.long );
                             $('.tableView #lokasi').children('u').text('Tautan Lokasi Google Map' );
@@ -574,9 +574,9 @@
                 }
                 // $("#tmpt2").attr("checked", true);
                 // $("#tmpt3").attr("checked", true);
-                $("#kec").val(data.rts.kelurahans.kecamatan_id);
-                $("#kec option[value='"+data.rts.kelurahans.kecamatan_id+"']").attr("selected",true);
-                popKel(data.rts.kelurahans.kecamatan_id, data.rts.kelurahan_id);
+                $("#kec").val(data.rts.Kelurahan.kecamatan_id);
+                $("#kec option[value='"+data.rts.Kelurahan.kecamatan_id+"']").attr("selected",true);
+                popKel(data.rts.Kelurahan.kecamatan_id, data.rts.kelurahan_id);
                 $("#kel").val(data.rts.kelurahan_id);
                 $("#kel option[value='"+data.rts.kelurahan_id+"']").attr("selected",true);
                 popRt(data.rts.kelurahan_id, data.rts.id);
