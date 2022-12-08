@@ -49,6 +49,11 @@ class User extends Authenticatable
         return $this->BelongsTo(Role::class, 'role_id');
     }
 
+    public function Pokmas()
+    {
+        return $this->hasOne(User::class, 'id');
+    }
+
     public function Histories()
     {
         return $this->HasMany(History::class);

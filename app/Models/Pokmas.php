@@ -15,11 +15,17 @@ class Pokmas extends Model
      * @var string
      */
     protected $table = 'pokmases';
+    protected $fillable = ['nama', 'alamat', 'rt_id', 'ketua'];
 
 
     public function Rts()
     {
         return $this->BelongsTo(Rt::class, 'rt_id');
+    }
+
+    public function User()
+    {
+        return $this->BelongsTo(User::class, 'ketua');
     }
 
     public function Menus()

@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pokmas;
+use App\Models\Kecamatan;
+use App\Models\Log as l;
 use App\Http\Requests\StorePokmasRequest;
 use App\Http\Requests\UpdatePokmasRequest;
+use Illuminate\Http\Request;
+use Auth;
+
 
 class PokmasController extends Controller
 {
@@ -16,7 +21,8 @@ class PokmasController extends Controller
     public function index()
     {
         $pokmases = Pokmas::all();
-        return view('pokmases.index', compact('pokmases'));
+        $kecs = Kecamatan::all();
+        return view('pokmases.index', compact('pokmases', 'kecs'));
     }
 
     /**
@@ -35,9 +41,26 @@ class PokmasController extends Controller
      * @param  \App\Http\Requests\StorePokmasRequest  $request
      * @return \Illuminate\Http\Response
      */
+    // public function store(StorePokmasRequest $request)
     public function store(StorePokmasRequest $request)
     {
-        //
+        $input = $request->all();
+        // dd($request->all());
+        $save = Pokmas::create($input);
+        if($save->id)
+        {
+            l::create(
+                [
+                    'action' => 'Membuat pokmas : '.$save->id,
+                    'actor' => Auth::id()
+                ]
+            );
+            return back()->with('success', 'Data Pokmas berhasil disimpan.');
+        }
+        else
+        {
+            return back()->with('warning', 'Data Pokmas gagal disimpan.');
+        }
     }
 
     /**
@@ -82,6 +105,6 @@ class PokmasController extends Controller
      */
     public function destroy(Pokmas $pokmas)
     {
-        //
+        dd('destroyy');
     }
 }
