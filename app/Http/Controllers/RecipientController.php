@@ -7,12 +7,14 @@ use App\Models\History;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Rt;
+use App\Models\Log as l;
 
 use App\Http\Requests\StoreRecipientRequest;
 use App\Http\Requests\UpdateRecipientRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Auth;
 
 class RecipientController extends Controller
 {
@@ -79,7 +81,7 @@ class RecipientController extends Controller
         // dd($input);
         $recipient = Recipient::create($input);
         $recipient->slug = $input["slug"];
-        $recipient->save();
+        $penerima = $recipient->save();
         // dd($recipient);
         // Storage::disk('local')->put('foto_'.$request->id, $request->foto_penerima);
 
@@ -89,8 +91,17 @@ class RecipientController extends Controller
             'alasan' => $input['alasan'],
             'actor' => $input['actor']
         ]);
+        if($penerima && $history->id){
+            $logger = l::create([
+                'action' => 'Input data Penerima. Records: |'.$recipient->id.'|'.$history->id.'|',
+                'actor' => Auth::id()
+            ]);
+            return back()->with('success', 'Data penerima berhasil disimpan.');
 
-        return back()->with('success', 'Data penerima berhasil disimpan.');
+        }
+        else{
+            return back()->with('warning', 'Data penerima gagal disimpan.');
+        }
     }
 
     /**

@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QrGenerator;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RecipientController;
+use App\Http\Controllers\PokmasController;
+use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PilihRTController;
 use App\Models\User;
 
@@ -69,4 +72,8 @@ Route::post('api/fetch-kelurahan', [PilihRTController::class, 'fetchKel']);
 Route::post('api/fetch-rt', [PilihRTController::class, 'fetchRt']);
 
 Route::resource('recipients', RecipientController::class)->middleware(['auth']);
+Route::resource('pokmases', PokmasController::class)->middleware(['auth']);
+Route::resource('users', UserController::class)->middleware(['auth']);
+Route::resource('deliveries', DeliveryController::class)->middleware(['auth']);
+Route::resource('menus', MenuController::class)->middleware(['auth']);
 

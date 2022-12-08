@@ -15,7 +15,8 @@ class PokmasController extends Controller
      */
     public function index()
     {
-        //
+        $pokmases = Pokmas::all();
+        return view('pokmases.index', compact('pokmases'));
     }
 
     /**

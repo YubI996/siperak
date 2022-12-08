@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('recipients', function (Blueprint $table) {
             $table->id();
-            $table->string('slug')->unique();
+            $table->string('slug')->unique()->nullable();
             $table->string('nama',100);
             $table->string('nik',16)->nullable();
             $table->date('bd')->nullable();

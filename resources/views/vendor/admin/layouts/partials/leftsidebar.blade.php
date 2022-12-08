@@ -35,13 +35,30 @@
 							<li><a href="image-dropzone.html">Image Dropzone</a></li>
 						</ul>
 					</li>
-					<li class="dropdown">
-						<a href="javascript:;" class="dropdown-toggle">
+					<li>
+						<a href="{{route('recipients.index')}}" class="dropdown-toggle no-arrow">
 							<span class="micon dw dw-user-2"></span><span class="mtext">Penerima</span>
 						</a>
-						<ul class="submenu">
-							<li><a href="{{route('recipients.index')}}">Data Penerima</a></li>
-						</ul>
+					</li>
+					<li>
+						<a href="{{route('pokmases.index')}}" class="dropdown-toggle no-arrow">
+							<span class="micon dw dw-user-11"></span><span class="mtext">Kelompok Masyarakat</span>
+						</a>
+					</li>
+					<li>
+						<a href="{{route('users.index')}}" class="dropdown-toggle no-arrow">
+							<span class="micon dw dw-user-12"></span><span class="mtext">Pemakai</span>
+						</a>
+					</li>
+					<li>
+						<a href="{{route('menus.index')}}" class="dropdown-toggle no-arrow">
+							<span class="micon dw dw-food-cart"></span><span class="mtext">Senarai Pangan</span>
+						</a>
+					</li>
+					<li>
+						<a href="{{route('deliveries.index')}}" class="dropdown-toggle no-arrow">
+							<span class="micon dw dw-user-2"></span><span class="mtext">Pengantaran</span>
+						</a>
 					</li>
 					<li class="dropdown">
 						<a href="javascript:;" class="dropdown-toggle">
