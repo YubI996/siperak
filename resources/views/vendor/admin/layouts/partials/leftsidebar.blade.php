@@ -47,7 +47,7 @@
 					</li>
 					<li>
 						<a href="{{route('users.index')}}" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-user-12"></span><span class="mtext">Pemakai</span>
+							<span class="micon dw dw-user-12"></span><span class="mtext">Pengguna</span>
 						</a>
 					</li>
 					<li>

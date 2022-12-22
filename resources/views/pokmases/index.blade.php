@@ -54,7 +54,7 @@
                         @empty
                             <tr>
                                 <td colspan="7">
-                                    <center><h4>Data penerima tidak ditemukan.</h4></center>
+                                    <center><h4>Data PokMas tidak ditemukan.</h4></center>
                                 </td>
                             </tr>
                         @endforelse
@@ -188,8 +188,8 @@
         <script>
             $(document).ready(function() {
                 // $("#alert").hide();
-                $("#alert").fadeTo(1000, 1000).slideUp(1000, function() {
-                    $("#alert").slideUp(1000);
+                $("#alert").fadeTo(1000, 0.5).slideUp(1000, function() {
+                    $("#alert").slideUp(1500);
                     });
                 $("#form-box").hide();
                 $("#kembali-button").hide();
@@ -225,18 +225,18 @@
                         _token: '{{csrf_token()}}'
                     },
                     success: function (response) {
-                        console.log(response);
                         location.reload();
+                        sessionStorage.setItem("success", "Data berhasil dihapus!");
                     },
                     error: function(response) {
-                        console.log(response);
                         console.log('gigil');
                     }
                 });
+                location.reload();
             });
             $("#tambah-button").click(function(){
 
-                $(".text-blue,.judul-form").text('Input Data Penerima');
+                $(".text-blue,.judul-form").text('Input Data PokMas');
                 $(".ket-form").text('Tambah data Kelompok Masyarakat');
                 $("#input-penerima").attr("action","{{route('pokmases.store')}}");
                 var patcher = $(".patcher");
@@ -251,8 +251,8 @@
             });
             $(".edit-data").click(function(){
                 // conditioning
-                $(".text-blue,.judul-form").text('Edit Data Penerima');
-                $(".ket-form").text('Mengubah Data penerima Rantang Kasih');
+                $(".text-blue,.judul-form").text('Edit Data PokMas');
+                $(".ket-form").text('Mengubah Data Kelompok Masyarakat Rantang Kasih');
                 var url_edit = $(this).attr('aksi');
                 $("#input-penerima").attr("action", url_edit);
                 $("#input-penerima").append('<input class="patcher" type="hidden" name="_method" value="patch">');
@@ -263,55 +263,21 @@
                 // EO conditioning
 
                 // populating fields
-                var userURL = $(this).attr('url');
-                $.get(userURL, function (data) {
-                    data = data.penerima
-                    // console.log(data);
+                var pokmasURL = $(this).attr('url');
+                $.get(pokmasURL, function (data) {
+                    // data = data.pokmas
+                    console.log(data.rts.kelurahan.kecamatan_id);
                 $("#nama").val(data.nama);
-                $("#bd").val(data.bd);
-                if (data.jenkel == 'Laki-laki') {
-                    $("#jk1").attr("checked", true);
-                }else{
-                    $("#jk2").attr("checked", true);
-                }
-                $("#nik").val(data.nik);
                 $("#alamat").val(data.alamat);
-                $("#pekerjaan").val(data.pekerjaan);
-                $("#penyakit").val(data.penyakit);
-                $("#hp").val(data.no_hp);
-                // $("#ft_p").val(data.foto_penerima);
-                // $("#ft_ktp").val(data.foto_ktp);
-                // $("#ft_kk").val(data.foto_kk);
-                // $("#ft_rumah").val(data.foto_rumah);
-                switch (data.status_rumah) {
-                    case 'Milik Sendiri':
-                        $("#tmpt1").attr("checked", true);
-                        break;
-                    case 'Mengontrak/Menyewa':
-                        $("#tmpt2").attr("checked", true);
-                        break;
-                    case 'Menumpang':
-                        $("#tmpt3").attr("checked", true);
-                        break;
-                    default:
-                        break;
-                }
-                // $("#tmpt2").attr("checked", true);
-                // $("#tmpt3").attr("checked", true);
-                $("#kec").val(data.rts.Kelurahan.kecamatan_id);
-                $("#kec option[value='"+data.rts.Kelurahan.kecamatan_id+"']").attr("selected",true);
-                popKel(data.rts.Kelurahan.kecamatan_id, data.rts.kelurahan_id);
-                $("#kel").val(data.rts.kelurahan_id);
-                $("#kel option[value='"+data.rts.kelurahan_id+"']").attr("selected",true);
+                $("#kec").val(data.rts.kelurahan.kecamatan_id);
+                $("#kec option[value='"+data.rts.kelurahan.kecamatan_id+"']").attr("selected",true);
+                popKel(data.rts.kelurahan.kecamatan_id, data.rts.kelurahan_id);
+                // $("#kel").val(data.rts.kelurahan_id);
+                // $("#kel option[value='"+data.rts.kelurahan_id+"']").attr("selected",true);
                 popRt(data.rts.kelurahan_id, data.rts.id);
                 // console.log($("#kel").value);
-                $("#rt").val(data.rts.id);
-                $("#rt option[value='"+data.rts.id+"']").attr("selected",true);
-                // console.log(data.long);
-                $("#alasan").val(data.histories[0].alasan);
-                $("#long").val(data.long);
-                $("#lat").val(data.lat);
-                markerPenerima(data.lat, data.long)
+                // $("#rt").val(data.rts.id);
+                // $("#rt option[value='"+data.rts.id+"']").attr("selected",true);
                 })
                 // EO populating fields
             });
@@ -328,6 +294,5 @@
             });
 
         </script>
-        @include('peta.index')
         @include('aplikasi.dropdown')
 @endsection

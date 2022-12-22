@@ -35,26 +35,23 @@
                 <table class="data-table table stripe hover nowrap">
                     <thead>
                         <tr>
-                            <th class="table-plus datatable-nosort">Penerima</th>
                             <th>Nama</th>
-                            <th>Umur</th>
-                            <th>Alamat</th>
-                            <th>Penyakit</th>
-                            <th>Status</th>
+                            <th>E-mail</th>
+                            <th>RT</th>
+                            <th>Role</th>
                             <th class="datatable-nosort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($penerima as $data)
+                        @php
+                            $penerima="";
+                        @endphp
+                        @forelse ($users as $data)
                             <tr>
-                            <td class="table-plus">
-                                <img class="border-radius-100 shadow" style="max-height: 12vh; max-width:7vw" src="{{$data->foto_penerima != null ? asset('storage/foto_penerima/'.$data->foto_penerima) : asset('admin/vendors/images/img404.gif')}}" alt="">
-                            </td>
-                            <td>{{$data->nama}}</td>
-                            <td>{{$data->getage()}} Tahun</td>
-                            <td>{{$data->alamat}}</td>
-                            <td>{{$data->penyakit}}</td>
-                            <td>{{get_status_trima($data->slug) ?? 'Data tidak ada.'}}</td>
+                            <td>{{$data->name??"-"}}</td>
+                            <td>{{$data->email??"-"}}</td>
+                            <td>RT {{$data->Rts->nama_rt??"-"}}, Kelurahan {{$data->Rts->kelurahan->nama_kel??"-"}}, Kecamatan {{$data->Rts->kelurahan->kecamatan->nama_kec??"-"}}</td>
+                            <td>{{$data->Role->nama}}</td>
                             {{-- <td>{{$data->Histories[0]->status_trima ?? 'Data tidak ada.'}}</td> --}}
                             <td>
                                 <div class="dropdown">
@@ -63,9 +60,9 @@
                                         <i class="dw dw-more"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                                        <a class="dropdown-item view-data" id="{{$data->slug}}" url="{{ url('recipients', $data->slug) }}" href="#"  data-toggle="modal" data-target="#view-penerima"><i class="dw dw-eye"></i> View</a>
-                                        <a class="dropdown-item edit-data" id="edit-{{$data->slug}}" url="{{ route('recipients.edit', $data->slug) }}" aksi="{{ route('recipients.update', $data->slug) }}" href="#"><i class="dw dw-edit2"></i> Edit</a>
-                                        <a class="dropdown-item delete-data" href="#" data-toggle="modal" url="{{ route('recipients.destroy', $data->slug) }}" idx="{{$data->slug}}" data-target="#confirm-hapus"><i class="dw dw-delete-3"></i>
+                                        <a class="dropdown-item view-data" id="{{$data->id}}" url="{{ url('users', $data->id) }}" href="#"  data-toggle="modal" data-target="#view-penerima"><i class="dw dw-eye"></i> View</a>
+                                        <a class="dropdown-item edit-data" id="edit-{{$data->id}}" url="{{ route('users.edit', $data->id) }}" aksi="{{ route('users.update', $data->id) }}" href="#"><i class="dw dw-edit2"></i> Edit</a>
+                                        <a class="dropdown-item delete-data" href="#" data-toggle="modal" url="{{ route('users.destroy', $data->id) }}" idx="{{$data->id}}" data-target="#confirm-hapus"><i class="dw dw-delete-3"></i>
                                             Delete</a>
                                     </div>
                                 </div>
@@ -106,47 +103,48 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Tanggal Lahir</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">E-mail</label>
                     <div class="col-sm-12 col-md-10">
                         <input class="form-control " placeholder="Pilih tanggal lahir" type="date" name="bd" id="bd"/>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Jenis Kelamin</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Role</label>
                             <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="jk1" name="jenkel"
+                                <input type="radio" id="jk1" name="role"
                                     class="custom-control-input" value="Laki-laki" />
-                                <label class="custom-control-label" for="jk1">Laki-laki</label>
+                                <label class="custom-control-label" for="jk1">Walikota</label>
                             </div>
                             <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="jk2" name="jenkel"
+                                <input type="radio" id="jk2" name="role"
                                     class="custom-control-input" value="Perempuan" />
-                                <label class="custom-control-label" for="jk2">Perempuan</label>
+                                <label class="custom-control-label" for="jk2">Admin Satu</label>
                             </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Nomor Induk Kependudukan (NIK)</label>
-                    <div class="col-sm-12 col-md-10">
-                        <input class="form-control" type="number" placeholder="Nomor Induk Kependudukan(NIK)" id="nik" name="nik"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Alamat</label>
-                    <div class="col-sm-12 col-md-10">
-                        <input class="form-control" type="text" placeholder="Alamat" id="alamat" name="alamat"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Pekerjaan</label>
-                    <div class="col-sm-12 col-md-10">
-                        <input class="form-control" type="text" placeholder="Pekerjaan" id="pekerjaan" name="pekerjaan"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Penyakit</label>
-                    <div class="col-sm-12 col-md-10">
-                        <input class="form-control" type="text" placeholder="Penyakit" id="penyakit" name="penyakit"/>
-                    </div>
+                            <div class="custom-control custom-radio mb-5">
+                                <input type="radio" id="jk2" name="role"
+                                    class="custom-control-input" value="Perempuan" />
+                                <label class="custom-control-label" for="jk2">Admin Dua</label>
+                            </div>
+                            <div class="custom-control custom-radio mb-5">
+                                <input type="radio" id="jk2" name="role"
+                                    class="custom-control-input" value="Perempuan" />
+                                <label class="custom-control-label" for="jk2">Admin Kecamatan</label>
+                            </div>
+                            <div class="custom-control custom-radio mb-5">
+                                <input type="radio" id="jk2" name="role"
+                                    class="custom-control-input" value="Perempuan" />
+                                <label class="custom-control-label" for="jk2">Admin Kelurahan</label>
+                            </div>
+                            <div class="custom-control custom-radio mb-5">
+                                <input type="radio" id="jk2" name="role"
+                                    class="custom-control-input" value="Perempuan" />
+                                <label class="custom-control-label" for="jk2">Admin Pokmas</label>
+                            </div>
+                            <div class="custom-control custom-radio mb-5">
+                                <input type="radio" id="jk2" name="role"
+                                    class="custom-control-input" value="Perempuan" />
+                                <label class="custom-control-label" for="jk2">Admin Juru Antar</label>
+                            </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Kecamatan</label>
@@ -177,69 +175,6 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Nomor Handphone</label>
-                    <div class="col-sm-12 col-md-10">
-                        <input class="form-control" type="number" placeholder="Nomor handphone" id="hp" name="no_hp"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Foto Penerima</label>
-                    <div class="custom-file col-sm-12 col-md-10">
-                        <input type="file" class="form-control-file form-control height-auto" name="foto_penerima" id="ft_p"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Foto Kartu Tanda Penduduk</label>
-                    <div class="custom-file col-sm-12 col-md-10">
-                        <input type="file" class="form-control-file form-control height-auto" name="foto_ktp" id="ft_ktp"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Foto Kartu Keluarga</label>
-                    <div class="custom-file col-sm-12 col-md-10">
-                        <input type="file" class="form-control-file form-control height-auto" name="foto_kk" id="ft_kk"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Foto Rumah/Tempat Tinggal</label>
-                    <div class="custom-file col-sm-12 col-md-10">
-                        <input type="file" class="form-control-file form-control height-auto" name="foto_rumah" id="ft_rumah"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Status Kepemilikan Tempat Tinggal</label>
-                            <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="tmpt1" name="status_rumah"
-                                    class="custom-control-input" value="Milik Sendiri" />
-                                <label class="custom-control-label" for="tmpt1">Milik Sendiri</label>
-                            </div>
-                            <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="tmpt2" name="status_rumah"
-                                    class="custom-control-input" value="Mengontrak/Menyewa" />
-                                <label class="custom-control-label" for="tmpt2">Mengontrak/Menyewa</label>
-                            </div>
-                            <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="tmpt3" name="status_rumah"
-                                    class="custom-control-input" value="Menumpang" />
-                                <label class="custom-control-label" for="tmpt3">Menumpang</label>
-                            </div>
-                </div>
-                <div class="form-group row ">
-                    <label class="col-sm-12 col-md-2 col-form-label">Koordinat Rumah Penerima</label>
-                    <div class="col-sm-12 col-md-10 ">
-                        <div id="map"></div>
-                        <input class="form-control" type="hidden" id="long" name="long"/>
-                        <input class="form-control" type="hidden" id="lat" name="lat" />
-                        <input class="form-control" type="hidden" id="actor" name="actor"  value="{{Auth::user()->id}}"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Alasan Pengajuan</label>
-                    <div class="col-sm-12 col-md-10">
-                        <input class="form-control" type="text" placeholder="Isi alasan pengajuan" id="alasan" name="alasan"/>
-                    </div>
-                </div>
 
                 <div class="form-group row">
                     <div class="col-md-10 col-sm-12"></div>
@@ -251,122 +186,6 @@
 
         </div>
     <!-- akhir form input penerima -->
-
-    {{-- modal view --}}
-        <div class="modal fade bs-example-modal-lg" id="view-penerima" tabindex="-1"
-            role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" >
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="myLargeModalLabel">
-                            Biodata Penerima Bantuan
-                        </h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                            ×
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div id="carouselPenerima" class="carousel slide" data-ride="carousel">
-                                    <ol class="carousel-indicators">
-                                        <li data-target="#carouselPenerima" data-slide-to="0"></li>
-                                        <li data-target="#carouselPenerima" data-slide-to="1"></li>
-                                        <li data-target="#carouselPenerima" data-slide-to="2"></li>
-                                        <li data-target="#carouselPenerima" data-slide-to="3"></li>
-                                    </ol>
-                                    <div class="carousel-inner">
-                                        <div class="carousel-item active">
-                                            <img class="d-block w-50 h-50 ft-Penerima" id="ft-penerima" src="" alt="Foto Penerima" >
-                                            {{-- <img class="d-block w-50 h-50 gambar-penerima" src="" alt="Foto Penerima" onerror="this.onerror=null;this.src='{{asset('admin/vendors/images/img404.gif')}}';"> --}}
-                                            <div class="carousel-caption d-none d-md-block">
-                                                <h5 class="">Foto Penerima</h5>
-                                                {{-- <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p> --}}
-                                            </div>
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img class="d-block w-50 h-50 gambar-ktp" src="" alt="Foto KTP">
-                                            <div class="carousel-caption d-none d-md-block">
-                                                <h5 class="">Foto KTP</h5>
-                                                {{-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> --}}
-                                            </div>
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img class="d-block w-50 h-50 gambar-kk" src="" alt="Foto KK">
-                                            <div class="carousel-caption d-none d-md-block">
-                                                <h5 class="">Foto Kartu Keluarga</h5>
-                                                {{-- <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p> --}}
-                                            </div>
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img class="d-block w-50 h-50 gambar-rumah" src="" alt="Foto Rumah">
-                                            <div class="carousel-caption d-none d-md-block">
-                                                <h5 class="">Foto Rumah</h5>
-                                                {{-- <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p> --}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a class="carousel-control-prev" href="#carouselPenerima" role="button" data-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                    <a class="carousel-control-next" href="#carouselPenerima" role="button" data-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <table class="table table-striped table-responsive table-bordered tableView">
-                                    <tbody>
-                                    <tr>
-                                        <td><strong>Nama</strong></td>
-                                        <td style="text-align: center;" valign="middle" id="nama"></td>
-                                        <td><strong>Penyakit</strong></td>
-                                        <td style="text-align: center;" valign="middle" id="penyakit"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Nomor Induk Kependudukan</strong></td>
-                                        <td style="text-align: center;" valign="middle" id="nik"></td>
-                                        <td><strong>Status Kepemilikan Rumah</strong></td>
-                                        <td style="text-align: center;" valign="middle" id="status"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Tangal Lahir (Umur</strong>)</td>
-                                        <td style="text-align: center;" valign="middle" id="tgl"></td>
-                                        <td><strong>Pekerjaan</strong></td>
-                                        <td style="text-align: center;" valign="middle" id="pekerjaan"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Jenis Kelamin</strong></td>
-                                        <td style="text-align: center;" valign="middle" id="jk"></td>
-                                        <td><strong>Alamat</strong></td>
-                                        <td style="text-align: center;" valign="middle" id="alamat"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Lokasi</strong></td>
-                                        <td style="text-align: center;" valign="middle"><a target="_blank" id="lokasi" href=""><u></u></a> </td>
-                                        <td><strong>Nomor HP</strong></td>
-                                        <td style="text-align: center;" valign="middle" id="hp"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                            Tutup
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {{-- akhir modal view --}}
 
     {{-- modal hapus --}}
         <div class="modal fade" id="confirm-hapus" tabindex="-1" role="dialog"
@@ -493,7 +312,7 @@
                             $('.tableView #pekerjaan').text(data.pekerjaan);
                             $('.tableView #hp').text(data.no_hp);
                             $('.tableView #ft_kk').text(data.foto_kk);
-                            $('.tableView #jk').text(data.jenkel);
+                            $('.tableView #jk').text(data.role);
                             $('.tableView #ft_rmh').text(data.foto_rumah);
                             $('.tableView #alamat').text(data.alamat+" RT "+data.rts.nama_rt+", Kelurahan "+data.rts.kelurahan.nama_kel+", "+"Kecamatan "+data.rts.kelurahan.kecamatan.nama_kec+".");
                             $('.tableView #lokasi').attr("href", 'https://www.google.com/maps/place/'+data.lat+','+data.long+'/@'+data.lat+','+data.long+'/data=!3m1!1e3');
@@ -514,7 +333,7 @@
 
                 $(".text-blue,.judul-form").text('Input Data Penerima');
                 $(".ket-form").text('Mengajukan penerima Rantang Kasih');
-                $("#input-penerima").attr("action","{{route('recipients.store')}}");
+                $("#input-penerima").attr("action","{{route('users.store')}}");
                 var patcher = $(".patcher");
                 if (jQuery.contains(document, patcher[0])) {
                     // $("#input-penerima").remove($(".patcher"));

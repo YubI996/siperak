@@ -27,8 +27,9 @@
                                     $("#kel").append('<option value="' + value
                                     .id + '" Selected>' +'Kelurahan '+ value.nama_kel + '</option>');
                                 }
+                                else{
                                 $("#kel").append('<option value="' + value
-                                .id + '">' +'Kelurahan '+ value.nama_kel + '</option>');
+                                .id + '">' +'Kelurahan '+ value.nama_kel + '</option>');}
                             }
                             else{
                                 $("#kel").append('<option value="' + value
@@ -64,12 +65,12 @@
                         $('#rt').html('<option value="">-- Pilih Rukun Tetangga --</option>');
                         $.each(res.rts, function (key, value) {
                             if (selected !== null) {
-                            if (value.id === selected){
-                                $("#rt").append('<option value="' + value
-                                .id + '" Selected>'  +'RT '+ value.nama_rt + '</option>');
-                            }
-                                $("#rt").append('<option value="' + value
-                                .id + '">'  +'RT '+ value.nama_rt + '</option>');
+                                if (value.id === selected){
+                                    $("#rt").append('<option value="' + value
+                                    .id + '" Selected>'  +'RT '+ value.nama_rt + '</option>');
+                                }else {
+                                    $("#rt").append('<option value="' + value
+                                    .id + '">'  +'RT '+ value.nama_rt + '</option>');}
                             }
                             else{
                                 $("#rt").append('<option value="' + value

@@ -92,10 +92,7 @@ class RecipientController extends Controller
             'actor' => $input['actor']
         ]);
         if($penerima && $history->id){
-            $logger = l::create([
-                'action' => 'Input data Penerima. Records: |'.$recipient->id.'|'.$history->id.'|',
-                'actor' => Auth::id()
-            ]);
+            logit('Input data Penerima. Records: |'.$recipient->id.'|'.$history->id.'|');//fungsi ada di Helpers
             return back()->with('success', 'Data penerima berhasil disimpan.');
 
         }
@@ -192,17 +189,22 @@ class RecipientController extends Controller
             // ]);
             $receptor->fill($input);
             $changes = $receptor->getDirty();
-            $receptor->save();
+            $hasil = $receptor->save();
             // $receptor->update(Input::all());
         } else {
             //update post without file
             $receptor->fill($input);
             $changes = $receptor->getDirty();
-            $receptor->save();
+            $hasil = $receptor->save();
+        }
+        if($hasil){
+            return back()->with(['success' => 'Data Berhasil Diubah!']);
+        }
+        else{
+            return back()->with(['warning' => 'Data Gagal Diubah!']);
         }
 
         //redirect to index
-        return back()->with(['success' => 'Data Berhasil Diubah!']);
     }
 
     /**

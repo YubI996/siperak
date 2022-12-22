@@ -9,6 +9,7 @@ use App\Http\Requests\StorePokmasRequest;
 use App\Http\Requests\UpdatePokmasRequest;
 use Illuminate\Http\Request;
 use Auth;
+use Session;
 
 
 class PokmasController extends Controller
@@ -80,9 +81,10 @@ class PokmasController extends Controller
      * @param  \App\Models\Pokmas  $pokmas
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pokmas $pokmas)
+    public function edit($pokmas)
     {
-        //
+        $data = Pokmas::find($pokmas)->with('Rts.Kelurahan.Kecamatan', 'Roles')->first();
+        return response()->json($data);
     }
 
     /**
@@ -92,9 +94,21 @@ class PokmasController extends Controller
      * @param  \App\Models\Pokmas  $pokmas
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePokmasRequest $request, Pokmas $pokmas)
+    // public function update(UpdatePokmasRequest $request, Pokmas $pokmas)
+    public function update(Request $request, $pokmas)
     {
-        //
+        // dd($request);
+        $input = $request->all();
+        $pkm = Pokmas::find($pokmas);
+        $pkm->fill($input);
+        $save = $pkm->save();
+        if($save){
+        return back()->with(['success' => 'Data Berhasil Diperbarui!']);
+        }
+        else{
+        return back()->with(['warning' => 'Data Gagal Diperbarui!']);
+        }
+
     }
 
     /**
@@ -103,8 +117,26 @@ class PokmasController extends Controller
      * @param  \App\Models\Pokmas  $pokmas
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pokmas $pokmas)
+    public function destroy($idx)
     {
-        dd('destroyy');
+        $pokmas = Pokmas::find($idx);
+        $del = $pokmas->delete();
+            // dd("deleting ".$pok->nama." and its histories");
+            // dd($pok);
+        // return back()->with(['success' => 'Data Berhasil Dihapus!']);
+        // dd($del);
+        if ($del) {
+            return back()->with(['success' => 'Data Berhasil Dihapus!']);
+            // $request->session()->put('success', 'Data PokMas berhasil dihapus');
+        //     return response()->json([
+        //     'success' => 'Data PokMas berhasil dihapus!'
+        // ]);
+        }
+        else
+        {
+            return response()->json([
+            'warning' => 'Data PokMas gagal dihapus!'
+        ]);
+        }
     }
 }

@@ -1,11 +1,17 @@
 <?php
     use App\Models\Recipient as P;
     use App\Models\Pokmas as Po;
+    use App\Models\Log as l;
     use Carbon\Carbon;
 
 
 
-
+    function logit($ket){
+        $logger = l::create([
+                'action' => $ket,
+                'actor' => Auth::id()
+                ]);
+    }
     function random_slug(int $length = 15,
         string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'): string
     {
@@ -48,6 +54,10 @@
     // rata-rata umur PENERIMA
     function avg_age(){
         $rs = P::where('status_trima', 'Menerima')->get();
+        if($rs->count()<1)
+        {
+            return 0;
+        }
         return $rs->avg(function ($r) {
             return $r->getAge();
         });
