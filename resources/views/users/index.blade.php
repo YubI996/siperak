@@ -3,8 +3,6 @@
 @section('custom-css')
     <link rel="stylesheet" type="text/css" href="{{asset('admin/src/plugins/datatables/css/dataTables.bootstrap4.min.css')}}" />
 	<link rel="stylesheet" type="text/css" href="{{asset('admin/src/plugins/datatables/css/responsive.bootstrap4.min.css')}}" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
     <style>
         .leaflet-container{
             height: 73.5vh;
@@ -16,13 +14,13 @@
         }
     </style>
 @endsection
-@section('title', 'Penerima')
+@section('title', 'Pengguna')
 @section('item')
     <a href="{{route('home2')}}">Home</a>
 @endsection
 
 @section('papan-kanan')
-    <button id="tambah-button" type="button" class="btn btn-outline-primary pull-right">Tambah Penerima</button>
+    <button id="tambah-button" type="button" class="btn btn-outline-primary pull-right">Tambah Pengguna</button>
     <button id="kembali-button" type="button" class="btn btn-outline-secondary pull-right">Batal</button>
 @endsection
 
@@ -43,9 +41,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php
-                            $penerima="";
-                        @endphp
                         @forelse ($users as $data)
                             <tr>
                             <td>{{$data->name??"-"}}</td>
@@ -94,57 +89,72 @@
                 </div>
 
             </div>
-            <form name="input-penerima" id="input-penerima" method="POST" action="" enctype="multipart/form-data">
+            <form name="input-pengguna" id="input-pengguna" method="POST" action="">
                 @csrf
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Nama Lengkap</label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" type="text" placeholder="Nama Lengkap" id="nama" name="nama"/>
+                        <input class="form-control" type="text" placeholder="Nama Lengkap" id="nama" name="name"/>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">E-mail</label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control " placeholder="Pilih tanggal lahir" type="date" name="bd" id="bd"/>
+                        <input class="form-control " placeholder="Alamat e-mail" type="email" name="email" id="email"/>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Role</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Password</label>
+                    <div class="col-sm-12 col-md-10">
+                        <input class="form-control" type="password" placeholder="Password baru" id="password" name="password"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col col-sm-12 col-md-2 col-form-label">Role</label>
+                    <div class="col">
+                            @if (Auth()->user()->role_id === 1)
                             <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="jk1" name="role"
-                                    class="custom-control-input" value="Laki-laki" />
-                                <label class="custom-control-label" for="jk1">Walikota</label>
+                                <input type="radio" id="admin_super" name="role_id"
+                                class="custom-control-input" value="1" />
+                                <label class="custom-control-label" for="admin_super">Super Admin</label>
+                            </div>
+                            @endif
+                            <div class="custom-control custom-radio mb-5">
+                                <input type="radio" id="walikota" name="role_id"
+                                    class="custom-control-input" value="2" />
+                                <label class="custom-control-label" for="walikota">Walikota</label>
                             </div>
                             <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="jk2" name="role"
-                                    class="custom-control-input" value="Perempuan" />
-                                <label class="custom-control-label" for="jk2">Admin Satu</label>
+                                <input type="radio" id="admin1" name="role_id"
+                                    class="custom-control-input" value="3" />
+                                <label class="custom-control-label" for="admin1">Admin Satu</label>
                             </div>
                             <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="jk2" name="role"
-                                    class="custom-control-input" value="Perempuan" />
-                                <label class="custom-control-label" for="jk2">Admin Dua</label>
+                                <input type="radio" id="admin2" name="role_id"
+                                    class="custom-control-input" value="4" />
+                                <label class="custom-control-label" for="admin2">Admin Dua</label>
                             </div>
                             <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="jk2" name="role"
-                                    class="custom-control-input" value="Perempuan" />
-                                <label class="custom-control-label" for="jk2">Admin Kecamatan</label>
+                                <input type="radio" id="kecamatan" name="role_id"
+                                    class="custom-control-input" value="5" />
+                                <label class="custom-control-label" for="kecamatan">Admin Kecamatan</label>
                             </div>
                             <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="jk2" name="role"
-                                    class="custom-control-input" value="Perempuan" />
-                                <label class="custom-control-label" for="jk2">Admin Kelurahan</label>
+                                <input type="radio" id="kelurahan" name="role_id"
+                                    class="custom-control-input" value="6" />
+                                <label class="custom-control-label" for="kelurahan">Admin Kelurahan</label>
                             </div>
                             <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="jk2" name="role"
-                                    class="custom-control-input" value="Perempuan" />
-                                <label class="custom-control-label" for="jk2">Admin Pokmas</label>
+                                <input type="radio" id="pokmas" name="role_id"
+                                    class="custom-control-input" value="7" />
+                                <label class="custom-control-label" for="pokmas">Admin Pokmas</label>
                             </div>
                             <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="jk2" name="role"
-                                    class="custom-control-input" value="Perempuan" />
-                                <label class="custom-control-label" for="jk2">Admin Juru Antar</label>
+                                <input type="radio" id="juru_antar" name="role_id"
+                                    class="custom-control-input" value="8" />
+                                <label class="custom-control-label" for="juru_antar">Admin Juru Antar</label>
                             </div>
+                    </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Kecamatan</label>
@@ -170,7 +180,7 @@
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Rukun Tetangga (RT)</label>
                     <div class="col-sm-12 col-md-10">
-                        <select class="custom-select col-12" name="rt" id="rt">
+                        <select class="custom-select col-12" name="rt_id" id="rt">
 
                         </select>
                     </div>
@@ -331,9 +341,9 @@
                 });
             $("#tambah-button").click(function(){
 
-                $(".text-blue,.judul-form").text('Input Data Penerima');
-                $(".ket-form").text('Mengajukan penerima Rantang Kasih');
-                $("#input-penerima").attr("action","{{route('users.store')}}");
+                $(".text-blue,.judul-form").text('Input Data Pengguna');
+                $(".ket-form").text('Mengajukan Pengguna Siperak');
+                $("#input-pengguna").attr("action","{{route('users.store')}}");
                 var patcher = $(".patcher");
                 if (jQuery.contains(document, patcher[0])) {
                     // $("#input-penerima").remove($(".patcher"));
@@ -346,11 +356,11 @@
             });
             $(".edit-data").click(function(){
                 // conditioning
-                $(".text-blue,.judul-form").text('Edit Data Penerima');
-                $(".ket-form").text('Mengubah Data penerima Rantang Kasih');
+                $(".text-blue,.judul-form").text('Edit Data pengguna');
+                $(".ket-form").text('Mengubah Data pengguna Siperak');
                 var url_edit = $(this).attr('aksi');
-                $("#input-penerima").attr("action", url_edit);
-                $("#input-penerima").append('<input class="patcher" type="hidden" name="_method" value="patch">');
+                $("#input-pengguna").attr("action", url_edit);
+                $("#input-pengguna").append('<input class="patcher" type="hidden" name="_method" value="patch">');
                 $("#form-box").show();
                 $("#data-box").hide();
                 $("#tambah-button").hide();
@@ -360,53 +370,44 @@
                 // populating fields
                 var userURL = $(this).attr('url');
                 $.get(userURL, function (data) {
-                    data = data.penerima
-                    // console.log(data);
-                $("#nama").val(data.nama);
-                $("#bd").val(data.bd);
-                if (data.jenkel == 'Laki-laki') {
-                    $("#jk1").attr("checked", true);
-                }else{
-                    $("#jk2").attr("checked", true);
+                    // data = data.penerima
+                    // console.log(data );
+                $("#nama").val(data.name);
+                $("#email").val(data.email);
+                if (document.getElementById("admin_super")&&data.role_id == 1) {
+                    $("#admin_super").attr("checked", true);
+                    }
+                    if (data.role_id == 2) {
+                        $("#walikota").attr("checked", true);
+                    }
+                    if (data.role_id == 3) {
+                        $("#admin1").attr("checked", true);
+                    }
+                    if (data.role_id == 4) {
+                        $("#admin2").attr("checked", true);
+                    }
+                    if (data.role_id == 5) {
+                        $("#kecamatan").attr("checked", true);
+                    }
+                    if (data.role_id == 6) {
+                        $("#kelurahan").attr("checked", true);
+                    }
+                    if (data.role_id == 7) {
+                        $("#pokmas").attr("checked", true);
+                    }
+                    if (data.role_id == 8) {
+                        $("#juru_antar").attr("checked", true);
                 }
-                $("#nik").val(data.nik);
-                $("#alamat").val(data.alamat);
-                $("#pekerjaan").val(data.pekerjaan);
-                $("#penyakit").val(data.penyakit);
-                $("#hp").val(data.no_hp);
-                // $("#ft_p").val(data.foto_penerima);
-                // $("#ft_ktp").val(data.foto_ktp);
-                // $("#ft_kk").val(data.foto_kk);
-                // $("#ft_rumah").val(data.foto_rumah);
-                switch (data.status_rumah) {
-                    case 'Milik Sendiri':
-                        $("#tmpt1").attr("checked", true);
-                        break;
-                    case 'Mengontrak/Menyewa':
-                        $("#tmpt2").attr("checked", true);
-                        break;
-                    case 'Menumpang':
-                        $("#tmpt3").attr("checked", true);
-                        break;
-                    default:
-                        break;
-                }
-                // $("#tmpt2").attr("checked", true);
-                // $("#tmpt3").attr("checked", true);
-                $("#kec").val(data.rts.Kelurahan.kecamatan_id);
-                $("#kec option[value='"+data.rts.Kelurahan.kecamatan_id+"']").attr("selected",true);
-                popKel(data.rts.Kelurahan.kecamatan_id, data.rts.kelurahan_id);
+                // console.log(data.rts.kelurahan.kecamatan_id);
+                $("#kec").val(data.rts.kelurahan.kecamatan_id);
+                $("#kec option[value='"+data.rts.kelurahan.kecamatan_id+"']").attr("selected",true);
+                popKel(data.rts.kelurahan.kecamatan_id, data.rts.kelurahan_id);
                 $("#kel").val(data.rts.kelurahan_id);
                 $("#kel option[value='"+data.rts.kelurahan_id+"']").attr("selected",true);
                 popRt(data.rts.kelurahan_id, data.rts.id);
-                // console.log($("#kel").value);
+                // console.log(data.rts.kelurahan.kecamatan_id);
                 $("#rt").val(data.rts.id);
                 $("#rt option[value='"+data.rts.id+"']").attr("selected",true);
-                // console.log(data.long);
-                $("#alasan").val(data.histories[0].alasan);
-                $("#long").val(data.long);
-                $("#lat").val(data.lat);
-                markerPenerima(data.lat, data.long)
                 })
                 // EO populating fields
             });
@@ -423,6 +424,5 @@
             });
 
         </script>
-        @include('peta.index')
         @include('aplikasi.dropdown')
 @endsection
