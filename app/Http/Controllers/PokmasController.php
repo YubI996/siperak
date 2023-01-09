@@ -21,8 +21,9 @@ class PokmasController extends Controller
      */
     public function index()
     {
-        $pokmases = Pokmas::all();
+        $pokmases = Pokmas::with('Rts.Kelurahan.Kecamatan')->get();
         $kecs = Kecamatan::all();
+
         return view('pokmases.index', compact('pokmases', 'kecs'));
     }
 
@@ -83,7 +84,8 @@ class PokmasController extends Controller
      */
     public function edit($pokmas)
     {
-        $data = Pokmas::find($pokmas)->with('Rts.Kelurahan.Kecamatan', 'Roles')->first();
+        $data = Pokmas::with('Rts.Kelurahan.Kecamatan')->find($pokmas);
+
         return response()->json($data);
     }
 
