@@ -33,7 +33,7 @@
                         @forelse ($pokmases as $data)
                             <tr>
                             <td>{{$data->nama}}</td>
-                            <td>{{$data->alamat}}</td>
+                            <td>{{$data->alamat}} RT {{$data->Rts-></td>
                             <td>{{$data->user()->first()->name}}</td>
                             {{-- <td>{{$data->Histories[0]->status_trima ?? 'Data tidak ada.'}}</td> --}}
                             <td>
@@ -266,7 +266,8 @@
                 var pokmasURL = $(this).attr('url');
                 $.get(pokmasURL, function (data) {
                     // data = data.pokmas
-                    console.log(data.rts.kelurahan.kecamatan_id);
+                    console.log(data);
+                    // console.log(data.rts.kelurahan.kecamatan_id);
                 $("#nama").val(data.nama);
                 $("#alamat").val(data.alamat);
                 $("#kec").val(data.rts.kelurahan.kecamatan_id);
