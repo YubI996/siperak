@@ -24,7 +24,7 @@
     <button id="kembali-button" type="button" class="btn btn-outline-secondary pull-right">Batal</button>
 @endsection
 
-@section('item-active', 'Penerima')
+@section('item-active', 'Pengguna')
 
 @section('content')
     <!-- Simple Datatable start -->
@@ -35,7 +35,7 @@
                         <tr>
                             <th>Nama</th>
                             <th>E-mail</th>
-                            <th>RT</th>
+                            <th>Alamat</th>
                             <th>Role</th>
                             <th class="datatable-nosort">Action</th>
                         </tr>

@@ -141,4 +141,10 @@ class PokmasController extends Controller
         ]);
         }
     }
+
+    public function fetchPokmas()
+    {
+        $pokmas = Pokmas::all()->pluck(['nama','id']);
+        return response()->json($pokmas);
+    }
 }

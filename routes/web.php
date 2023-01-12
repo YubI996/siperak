@@ -68,6 +68,8 @@ Route::get('/form2', function () {
     return view('aplikasi.create');
 })->name('form2');
 
+Route::get('api/pokmas', [PokmasController::class, 'fetchPokmas'])->name('api.pokmas');
+
 Route::post('api/fetch-kelurahan', [PilihRTController::class, 'fetchKel']);
 Route::post('api/fetch-rt', [PilihRTController::class, 'fetchRt']);
 

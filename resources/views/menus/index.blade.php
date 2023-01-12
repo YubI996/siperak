@@ -16,17 +16,17 @@
         }
     </style>
 @endsection
-@section('title', 'Penerima')
+@section('title', 'Menu')
 @section('item')
     <a href="{{route('home2')}}">Home</a>
 @endsection
 
 @section('papan-kanan')
-    <button id="tambah-button" type="button" class="btn btn-outline-primary pull-right">Tambah Penerima</button>
+    <button id="tambah-button" type="button" class="btn btn-outline-primary pull-right">Tambah Menu</button>
     <button id="kembali-button" type="button" class="btn btn-outline-secondary pull-right">Batal</button>
 @endsection
 
-@section('item-active', 'Penerima')
+@section('item-active', 'Menu')
 
 @section('content')
     <!-- Simple Datatable start -->
@@ -35,26 +35,26 @@
                 <table class="data-table table stripe hover nowrap">
                     <thead>
                         <tr>
-                            <th class="table-plus datatable-nosort">Penerima</th>
-                            <th>Nama</th>
-                            <th>Umur</th>
-                            <th>Alamat</th>
-                            <th>Penyakit</th>
-                            <th>Status</th>
+                            <th>Pokmas</th>
+                            <th>Unsur Karbohidrat</th>
+                            <th>Unsur Protein Hewani</th>
+                            <th>Unsur Protein Nabati</th>
+                            <th>Unsur Sayuran</th>
+                            <th>Waktu</th>
+                            <th>Gambar</th>
                             <th class="datatable-nosort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($penerima as $data)
+                        @forelse ($menu as $data)
                             <tr>
-                            <td class="table-plus">
-                                <img class="border-radius-100 shadow" style="max-height: 12vh; max-width:7vw" src="{{$data->foto_penerima != null ? asset('storage/foto_penerima/'.$data->foto_penerima) : asset('admin/vendors/images/img404.gif')}}" alt="">
-                            </td>
-                            <td>{{$data->nama}}</td>
-                            <td>{{$data->getage()}} Tahun</td>
-                            <td>{{$data->alamat}}</td>
-                            <td>{{$data->penyakit}}</td>
-                            <td>{{get_status_trima($data->slug) ?? 'Data tidak ada.'}}</td>
+                            <td>{{$data->pokmas->nama}}</td>
+                            <td>{{$data->karbo}} Tahun</td>
+                            <td>{{$data->l_hewani}}</td>
+                            <td>{{$data->l_nabati}}</td>
+                            <td>{{$data->sayur}}</td>
+                            <td>{{$data->waktu}}</td>
+                            <td><img class="border-radius-100 shadow" style="max-height: 12vh; max-width:7vw" src="{{$data->foto}}" alt="Foto Makanan"></td>
                             {{-- <td>{{$data->Histories[0]->status_trima ?? 'Data tidak ada.'}}</td> --}}
                             <td>
                                 <div class="dropdown">
@@ -63,9 +63,9 @@
                                         <i class="dw dw-more"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                                        <a class="dropdown-item view-data" id="{{$data->slug}}" url="{{ url('recipients', $data->slug) }}" href="#"  data-toggle="modal" data-target="#view-penerima"><i class="dw dw-eye"></i> View</a>
-                                        <a class="dropdown-item edit-data" id="edit-{{$data->slug}}" url="{{ route('recipients.edit', $data->slug) }}" aksi="{{ route('recipients.update', $data->slug) }}" href="#"><i class="dw dw-edit2"></i> Edit</a>
-                                        <a class="dropdown-item delete-data" href="#" data-toggle="modal" url="{{ route('recipients.destroy', $data->slug) }}" idx="{{$data->slug}}" data-target="#confirm-hapus"><i class="dw dw-delete-3"></i>
+                                        <a class="dropdown-item view-data" id="{{$data->id}}" url="{{ url('recipients', $data->id) }}" href="#"  data-toggle="modal" data-target="#view-penerima"><i class="dw dw-eye"></i> View</a>
+                                        <a class="dropdown-item edit-data" id="edit-{{$data->id}}" url="{{ route('recipients.edit', $data->id) }}" aksi="{{ route('recipients.update', $data->id) }}" href="#"><i class="dw dw-edit2"></i> Edit</a>
+                                        <a class="dropdown-item delete-data" href="#" data-toggle="modal" url="{{ route('recipients.destroy', $data->id) }}" idx="{{$data->id}}" data-target="#confirm-hapus"><i class="dw dw-delete-3"></i>
                                             Delete</a>
                                     </div>
                                 </div>
@@ -73,8 +73,8 @@
                         </tr>
                         @empty
                             <tr>
-                                <td colspan="7">
-                                    <center><h4>Data penerima tidak ditemukan.</h4></center>
+                                <td colspan="8">
+                                    <center><h4>Tidak ada data menu.</h4></center>
                                 </td>
                             </tr>
                         @endforelse
@@ -97,12 +97,14 @@
                 </div>
 
             </div>
-            <form name="input-penerima" id="input-penerima" method="POST" action="" enctype="multipart/form-data">
+            <form name="input-menu" id="input-menu" method="POST" action="" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Nama Lengkap</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Pokmas</label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" type="text" placeholder="Nama Lengkap" id="nama" name="nama"/>
+                        <select class="custom-select" name="pokmas" id="pokmas">
+                            <option selected="0">-=Pilih Pokmas...</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -153,11 +155,11 @@
                     <div class="col-sm-12 col-md-10">
                         <select class="custom-select" name="kec" id="kec" onchange="popKel(this.options[this.selectedIndex].value)">
                             <option selected="0">Pilih Kecamatan...</option>
-                            @forelse ($kecs as $dc)
-                            <option value="{{$dc->id}}">Kecamatan {{$dc->nama_kec}}</option>
-                            @empty
+                            {{-- @forelse ($kecs as $dc) --}}
+                            {{-- <option value="{{$dc->id}}">Kecamatan {{$dc->nama_kec}}</option> --}}
+                            {{-- @empty --}}
                             <option value="">Data Kecamatan tidak ditemukan</option>
-                            @endforelse
+                            {{-- @endforelse --}}
                         </select>
                     </div>
                 </div>
@@ -512,9 +514,9 @@
                 });
             $("#tambah-button").click(function(){
 
-                $(".text-blue,.judul-form").text('Input Data Penerima');
-                $(".ket-form").text('Mengajukan penerima Rantang Kasih');
-                $("#input-penerima").attr("action","{{route('recipients.store')}}");
+                $(".text-blue,.judul-form").text('Input Data Menu');
+                $(".ket-form").text('Mengajukan Menu Rantang Kasih');
+                $("#input-menu").attr("action","{{route('recipients.store')}}");
                 var patcher = $(".patcher");
                 if (jQuery.contains(document, patcher[0])) {
                     // $("#input-penerima").remove($(".patcher"));
@@ -524,14 +526,29 @@
                 $("#data-box").hide();
                 $("#tambah-button").hide();
                 $("#kembali-button").show();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                    $.ajax({
+                        url: '{{route("api.pokmas")}}',
+                        success: function(response) {
+                            $('#pokmas').empty();
+                            console.log(response);
+                            $.each(response, function(id, name) {
+                                $('#pokmas').append(new Option(name, id))
+                            })
+                        }
+                    })
             });
             $(".edit-data").click(function(){
                 // conditioning
-                $(".text-blue,.judul-form").text('Edit Data Penerima');
-                $(".ket-form").text('Mengubah Data penerima Rantang Kasih');
+                $(".text-blue,.judul-form").text('Edit Data Menu');
+                $(".ket-form").text('Mengubah Data Menu Rantang Kasih');
                 var url_edit = $(this).attr('aksi');
-                $("#input-penerima").attr("action", url_edit);
-                $("#input-penerima").append('<input class="patcher" type="hidden" name="_method" value="patch">');
+                $("#input-menu").attr("action", url_edit);
+                $("#input-menu").append('<input class="patcher" type="hidden" name="_method" value="patch">');
                 $("#form-box").show();
                 $("#data-box").hide();
                 $("#tambah-button").hide();

@@ -74,7 +74,7 @@
                         @empty
                             <tr>
                                 <td colspan="7">
-                                    <center><h4>Data penerima tidak ditemukan.</h4></center>
+                                    <center><h4>Tidak ada data Pengiriman.</h4></center>
                                 </td>
                             </tr>
                         @endforelse

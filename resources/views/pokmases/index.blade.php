@@ -33,7 +33,7 @@
                         @forelse ($pokmases as $data)
                             <tr>
                             <td>{{$data->nama}}</td>
-                            <td>{{$data->alamat}} RT {{$data->Rts-></td>
+                            <td>{{$data->alamat.', RT '.$data->Rts->nama_rt.', Kelurahan '.$data->Rts->Kelurahan->nama_kel.', Kecamatan '.$data->Rts->Kelurahan->Kecamatan->nama_kec}}</td>
                             <td>{{$data->user()->first()->name}}</td>
                             {{-- <td>{{$data->Histories[0]->status_trima ?? 'Data tidak ada.'}}</td> --}}
                             <td>
@@ -54,7 +54,7 @@
                         @empty
                             <tr>
                                 <td colspan="7">
-                                    <center><h4>Data PokMas tidak ditemukan.</h4></center>
+                                    <center><h4>Tidak ada data Pokmas.</h4></center>
                                 </td>
                             </tr>
                         @endforelse

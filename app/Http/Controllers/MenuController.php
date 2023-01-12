@@ -15,7 +15,8 @@ class MenuController extends Controller
      */
     public function index()
     {
-        //
+        $menu = Menu::with('pokmas')->get();
+        return view('menus.index', compact('menu'));
     }
 
     /**
