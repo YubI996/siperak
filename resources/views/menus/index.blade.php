@@ -36,25 +36,17 @@
                     <thead>
                         <tr>
                             <th>Pokmas</th>
-                            <th>Unsur Karbohidrat</th>
-                            <th>Unsur Protein Hewani</th>
-                            <th>Unsur Protein Nabati</th>
-                            <th>Unsur Sayuran</th>
                             <th>Waktu</th>
-                            <th>Gambar</th>
+                            <th>Tanggal</th>
                             <th class="datatable-nosort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($menu as $data)
                             <tr>
-                            <td>{{$data->pokmas->nama}}</td>
-                            <td>{{$data->karbo}} Tahun</td>
-                            <td>{{$data->l_hewani}}</td>
-                            <td>{{$data->l_nabati}}</td>
-                            <td>{{$data->sayur}}</td>
-                            <td>{{$data->waktu}}</td>
-                            <td><img class="border-radius-100 shadow" style="max-height: 12vh; max-width:7vw" src="{{$data->foto}}" alt="Foto Makanan"></td>
+                            <td>{{$data->Pokmas->nama}}</td>
+                            <td>{{"Makan ".$data->waktu}}</td>
+                            <td>{{__(date_format($data->created_at,"l, d F Y H:i:s"))}}</td>
                             {{-- <td>{{$data->Histories[0]->status_trima ?? 'Data tidak ada.'}}</td> --}}
                             <td>
                                 <div class="dropdown">
@@ -63,9 +55,9 @@
                                         <i class="dw dw-more"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                                        <a class="dropdown-item view-data" id="{{$data->id}}" url="{{ url('recipients', $data->id) }}" href="#"  data-toggle="modal" data-target="#view-penerima"><i class="dw dw-eye"></i> View</a>
-                                        <a class="dropdown-item edit-data" id="edit-{{$data->id}}" url="{{ route('recipients.edit', $data->id) }}" aksi="{{ route('recipients.update', $data->id) }}" href="#"><i class="dw dw-edit2"></i> Edit</a>
-                                        <a class="dropdown-item delete-data" href="#" data-toggle="modal" url="{{ route('recipients.destroy', $data->id) }}" idx="{{$data->id}}" data-target="#confirm-hapus"><i class="dw dw-delete-3"></i>
+                                        <a class="dropdown-item view-data" id="{{$data->id}}" url="{{ url('menus', $data->id) }}" href="#"  data-toggle="modal" data-target="#view-menu"><i class="dw dw-eye"></i> View</a>
+                                        <a class="dropdown-item edit-data" id="edit-{{$data->id}}" url="{{ route('menus.edit', $data->id) }}" aksi="{{ route('menus.update', $data->id) }}" href="#"><i class="dw dw-edit2"></i> Edit</a>
+                                        <a class="dropdown-item delete-data" href="#" data-toggle="modal" url="{{ route('menus.destroy', $data->id) }}" idx="{{$data->id}}" data-target="#confirm-hapus"><i class="dw dw-delete-3"></i>
                                             Delete</a>
                                     </div>
                                 </div>
@@ -103,146 +95,56 @@
                     <label class="col-sm-12 col-md-2 col-form-label">Pokmas</label>
                     <div class="col-sm-12 col-md-10">
                         <select class="custom-select" name="pokmas" id="pokmas">
-                            <option selected="0">-=Pilih Pokmas...</option>
+                            <option value="0">-=Pilih Pokmas...</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Tanggal Lahir</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Unsur Karbohidrat</label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control " placeholder="Pilih tanggal lahir" type="date" name="bd" id="bd"/>
+                        <input class="form-control" type="text" placeholder="Unsur Karbohidrat" id="karbo" name="karbo"/>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Jenis Kelamin</label>
-                            <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="jk1" name="jenkel"
-                                    class="custom-control-input" value="Laki-laki" />
-                                <label class="custom-control-label" for="jk1">Laki-laki</label>
-                            </div>
-                            <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="jk2" name="jenkel"
-                                    class="custom-control-input" value="Perempuan" />
-                                <label class="custom-control-label" for="jk2">Perempuan</label>
-                            </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Nomor Induk Kependudukan (NIK)</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Unsur Protein Hewani</label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" type="number" placeholder="Nomor Induk Kependudukan(NIK)" id="nik" name="nik"/>
+                        <input class="form-control" type="text" placeholder="Unsur Protein Hewani" id="l_hewani" name="l_hewani"/>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Alamat</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Unsur Protein Nabati</label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" type="text" placeholder="Alamat" id="alamat" name="alamat"/>
+                        <input class="form-control" type="text" placeholder="Unsur Protein Nabati" id="l_nabati" name="l_nabati"/>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Pekerjaan</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Unsur Sayur</label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" type="text" placeholder="Pekerjaan" id="pekerjaan" name="pekerjaan"/>
+                        <input class="form-control" type="text" placeholder="Unsur Sayur" id="sayur" name="sayur"/>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Penyakit</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Unsur Buah</label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" type="text" placeholder="Penyakit" id="penyakit" name="penyakit"/>
+                        <input class="form-control" type="text" placeholder="Unsur Buah" id="buah" name="buah"/>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Kecamatan</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Waktu</label>
                     <div class="col-sm-12 col-md-10">
-                        <select class="custom-select" name="kec" id="kec" onchange="popKel(this.options[this.selectedIndex].value)">
-                            <option selected="0">Pilih Kecamatan...</option>
+                        <select class="custom-select" name="waktu" id="waktu">
+                            <option value="Siang">Makan Siang</option>
+                            <option value="Malam">Makan Malam</option>
                             {{-- @forelse ($kecs as $dc) --}}
-                            {{-- <option value="{{$dc->id}}">Kecamatan {{$dc->nama_kec}}</option> --}}
-                            {{-- @empty --}}
-                            <option value="">Data Kecamatan tidak ditemukan</option>
-                            {{-- @endforelse --}}
                         </select>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Kelurahan</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Foto</label>
                     <div class="col-sm-12 col-md-10">
-                        <select class="custom-select col-12" name="kel" id="kel" onchange="popRt(this.options[this.selectedIndex].value)">
-
-                        </select>
+                        <input type="file" accept="image/*" capture="environment" name="foto" required/>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Rukun Tetangga (RT)</label>
-                    <div class="col-sm-12 col-md-10">
-                        <select class="custom-select col-12" name="rt" id="rt">
-
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Nomor Handphone</label>
-                    <div class="col-sm-12 col-md-10">
-                        <input class="form-control" type="number" placeholder="Nomor handphone" id="hp" name="no_hp"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Foto Penerima</label>
-                    <div class="custom-file col-sm-12 col-md-10">
-                        <input type="file" class="form-control-file form-control height-auto" name="foto_penerima" id="ft_p"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Foto Kartu Tanda Penduduk</label>
-                    <div class="custom-file col-sm-12 col-md-10">
-                        <input type="file" class="form-control-file form-control height-auto" name="foto_ktp" id="ft_ktp"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Foto Kartu Keluarga</label>
-                    <div class="custom-file col-sm-12 col-md-10">
-                        <input type="file" class="form-control-file form-control height-auto" name="foto_kk" id="ft_kk"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Foto Rumah/Tempat Tinggal</label>
-                    <div class="custom-file col-sm-12 col-md-10">
-                        <input type="file" class="form-control-file form-control height-auto" name="foto_rumah" id="ft_rumah"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Status Kepemilikan Tempat Tinggal</label>
-                            <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="tmpt1" name="status_rumah"
-                                    class="custom-control-input" value="Milik Sendiri" />
-                                <label class="custom-control-label" for="tmpt1">Milik Sendiri</label>
-                            </div>
-                            <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="tmpt2" name="status_rumah"
-                                    class="custom-control-input" value="Mengontrak/Menyewa" />
-                                <label class="custom-control-label" for="tmpt2">Mengontrak/Menyewa</label>
-                            </div>
-                            <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="tmpt3" name="status_rumah"
-                                    class="custom-control-input" value="Menumpang" />
-                                <label class="custom-control-label" for="tmpt3">Menumpang</label>
-                            </div>
-                </div>
-                <div class="form-group row ">
-                    <label class="col-sm-12 col-md-2 col-form-label">Koordinat Rumah Penerima</label>
-                    <div class="col-sm-12 col-md-10 ">
-                        <div id="map"></div>
-                        <input class="form-control" type="hidden" id="long" name="long"/>
-                        <input class="form-control" type="hidden" id="lat" name="lat" />
-                        <input class="form-control" type="hidden" id="actor" name="actor"  value="{{Auth::user()->id}}"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Alasan Pengajuan</label>
-                    <div class="col-sm-12 col-md-10">
-                        <input class="form-control" type="text" placeholder="Isi alasan pengajuan" id="alasan" name="alasan"/>
-                    </div>
-                </div>
-
                 <div class="form-group row">
                     <div class="col-md-10 col-sm-12"></div>
                     <div class="col-md-2 col-sm-12">
@@ -255,7 +157,7 @@
     <!-- akhir form input penerima -->
 
     {{-- modal view --}}
-        <div class="modal fade bs-example-modal-lg" id="view-penerima" tabindex="-1"
+        <div class="modal fade bs-example-modal-lg" id="view-menu" tabindex="-1"
             role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" >
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
@@ -269,91 +171,36 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div id="carouselPenerima" class="carousel slide" data-ride="carousel">
-                                    <ol class="carousel-indicators">
-                                        <li data-target="#carouselPenerima" data-slide-to="0"></li>
-                                        <li data-target="#carouselPenerima" data-slide-to="1"></li>
-                                        <li data-target="#carouselPenerima" data-slide-to="2"></li>
-                                        <li data-target="#carouselPenerima" data-slide-to="3"></li>
-                                    </ol>
-                                    <div class="carousel-inner">
-                                        <div class="carousel-item active">
-                                            <img class="d-block w-50 h-50 ft-Penerima" id="ft-penerima" src="" alt="Foto Penerima" >
-                                            {{-- <img class="d-block w-50 h-50 gambar-penerima" src="" alt="Foto Penerima" onerror="this.onerror=null;this.src='{{asset('admin/vendors/images/img404.gif')}}';"> --}}
-                                            <div class="carousel-caption d-none d-md-block">
-                                                <h5 class="">Foto Penerima</h5>
-                                                {{-- <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p> --}}
-                                            </div>
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img class="d-block w-50 h-50 gambar-ktp" src="" alt="Foto KTP">
-                                            <div class="carousel-caption d-none d-md-block">
-                                                <h5 class="">Foto KTP</h5>
-                                                {{-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> --}}
-                                            </div>
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img class="d-block w-50 h-50 gambar-kk" src="" alt="Foto KK">
-                                            <div class="carousel-caption d-none d-md-block">
-                                                <h5 class="">Foto Kartu Keluarga</h5>
-                                                {{-- <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p> --}}
-                                            </div>
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img class="d-block w-50 h-50 gambar-rumah" src="" alt="Foto Rumah">
-                                            <div class="carousel-caption d-none d-md-block">
-                                                <h5 class="">Foto Rumah</h5>
-                                                {{-- <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p> --}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a class="carousel-control-prev" href="#carouselPenerima" role="button" data-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                    <a class="carousel-control-next" href="#carouselPenerima" role="button" data-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </div>
-
+                            <div style="display: flex;justify-content: center;" class="col-lg-12 col-md-12 col-sm-12">
+                                <img class="d-block w-50 h-50 ft-menu" id="ft-menu" src="" alt="Foto Menu" >
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row" style="display: flex;justify-content: center;">
                             <div class="col-lg-12 col-md-12 col-sm-12">
-                                <table class="table table-striped table-responsive table-bordered tableView">
+                                <table class="table table-striped table-bordered tableView">
                                     <tbody>
                                     <tr>
-                                        <td><strong>Nama</strong></td>
-                                        <td style="text-align: center;" valign="middle" id="nama"></td>
-                                        <td><strong>Penyakit</strong></td>
-                                        <td style="text-align: center;" valign="middle" id="penyakit"></td>
+                                        <td><strong>Pokmas</strong></td>
+                                        <td style="text-align: center;" valign="middle" id="Pokmas"></td>
+                                        <td><strong>Waktu</strong></td>
+                                        <td style="text-align: center;" valign="middle" id="waktu"></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Nomor Induk Kependudukan</strong></td>
-                                        <td style="text-align: center;" valign="middle" id="nik"></td>
-                                        <td><strong>Status Kepemilikan Rumah</strong></td>
-                                        <td style="text-align: center;" valign="middle" id="status"></td>
+                                        <td><strong>Unsur Karbohidrat</strong></td>
+                                        <td style="text-align: center;" valign="middle" id="karbo"></td>
+                                        <td><strong>Sayur</strong></td>
+                                        <td style="text-align: center;" valign="middle" id="sayur"></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Tangal Lahir (Umur</strong>)</td>
-                                        <td style="text-align: center;" valign="middle" id="tgl"></td>
-                                        <td><strong>Pekerjaan</strong></td>
-                                        <td style="text-align: center;" valign="middle" id="pekerjaan"></td>
+                                        <td><strong>Unsur Protein Hewani</td>
+                                        <td style="text-align: center;" valign="middle" id="l_hewani"></td>
+                                        <td><strong>Unsur Protein Nabati</strong></td>
+                                        <td style="text-align: center;" valign="middle" id="l_nabati"></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Jenis Kelamin</strong></td>
-                                        <td style="text-align: center;" valign="middle" id="jk"></td>
-                                        <td><strong>Alamat</strong></td>
-                                        <td style="text-align: center;" valign="middle" id="alamat"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Lokasi</strong></td>
-                                        <td style="text-align: center;" valign="middle"><a target="_blank" id="lokasi" href=""><u></u></a> </td>
-                                        <td><strong>Nomor HP</strong></td>
-                                        <td style="text-align: center;" valign="middle" id="hp"></td>
+                                        <td><strong>Buah</strong></td>
+                                        <td style="text-align: center;" valign="middle" id="buah"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -466,57 +313,28 @@
             });
             $(".view-data").click(function(){
                     // $('body').on('click', '#view-data', function (){
-                    var userURL = $(this).attr('url');
-                    $.get(userURL, function (data) {
-                        data = data.penerima
-                        // console.log(data);
+                    var menuURL = $(this).attr('url');
+                    $.get(menuURL, function (data) {
+                        // console.log();
                             // $('#userShowModal').modal('show');
-                            $('.tableView #nama').text(data.nama);
-                            $('.tableView #penyakit').text(data.penyakit);
-                            $('.tableView #nik').text(data.nik);
-                            $('.tableView #status').text(data.status_rumah);
-
-                            var dob = new Date(data.bd);
-
-                            //calculate month difference from current date in time
-                            var month_diff = Date.now() - dob.getTime();
-
-                            //convert the calculated difference in date format
-                            var age_dt = new Date(month_diff);
-
-                            //extract year from date
-                            var year = age_dt.getUTCFullYear();
-
-                            //now calculate the age of the user
-                            var umur = Math.abs(year - 1970);
-
-                            $('.tableView #tgl').text(data.bd +' ('+ umur+' Tahun)');
-                            $('.tableView #ktp').text(data.foto_ktp);
-                            $('.tableView #pekerjaan').text(data.pekerjaan);
-                            $('.tableView #hp').text(data.no_hp);
-                            $('.tableView #ft_kk').text(data.foto_kk);
-                            $('.tableView #jk').text(data.jenkel);
-                            $('.tableView #ft_rmh').text(data.foto_rumah);
-                            $('.tableView #alamat').text(data.alamat+" RT "+data.rts.nama_rt+", Kelurahan "+data.rts.kelurahan.nama_kel+", "+"Kecamatan "+data.rts.kelurahan.kecamatan.nama_kec+".");
-                            $('.tableView #lokasi').attr("href", 'https://www.google.com/maps/place/'+data.lat+','+data.long+'/@'+data.lat+','+data.long+'/data=!3m1!1e3');
-                            // $('.tableView #lokasi').attr("href", 'https://www.google.com/maps/search/?api=1&query='+data.lat+','+data.long );
-                            $('.tableView #lokasi').children('u').text('Tautan Lokasi Google Map' );
-                            var linkAsset = "{{asset('storage')}}";
-                            $('#carouselPenerima #ft-penerima').attr("src",  '');
-                            $('#carouselPenerima #ft-penerima').attr("src", data.foto_penerima != null ? linkAsset+"/foto_penerima/"+ data.foto_penerima : "{{asset('admin/vendors/images/img404.gif')}}");
-                            $('#carouselPenerima .gambar-ktp').attr("src",  '');
-                            $('#carouselPenerima .gambar-ktp').attr("src", data.foto_ktp != null ? linkAsset+"/foto_ktp/"+ data.foto_ktp : "{{asset('admin/vendors/images/img404.gif')}}");
-                            $('#carouselPenerima .gambar-kk').attr("src",  '');
-                            $('#carouselPenerima .gambar-kk').attr("src", data.foto_kk != null ? linkAsset+"/foto_kk/"+ data.foto_kk : "{{asset('admin/vendors/images/img404.gif')}}");
-                            $('#carouselPenerima .gambar-rumah').attr("src",  '');
-                            $('#carouselPenerima .gambar-rumah').attr("src", data.foto_rumah != null ? linkAsset+"/foto_rumah/"+ data.foto_rumah : "{{asset('admin/vendors/images/img404.gif')}}");
+                            $('.tableView #karbo').text(data.karbo);
+                            $('.tableView #l_hewani').text(data.l_hewani);
+                            $('.tableView #l_nabati').text(data.l_nabati);
+                            $('.tableView #sayur').text(data.sayur);
+                            $('.tableView #buah').text(data.buah);
+                            $('.tableView #Pokmas').text(data.pokmas.nama);
+                            $('.tableView #waktu').text('Makan '+data.waktu);
+                            var linkAsset = "{{asset('storage/menu')}}";
+                            $('#ft-menu').attr("src",  '');
+                            $('#ft-menu').attr("src", data.foto != null ? linkAsset+"/"+ data.foto : "{{asset('admin/vendors/images/img404.gif')}}");
+                            console.log(linkAsset+"/menu/"+ data.foto);
                     })
                 });
             $("#tambah-button").click(function(){
 
                 $(".text-blue,.judul-form").text('Input Data Menu');
                 $(".ket-form").text('Mengajukan Menu Rantang Kasih');
-                $("#input-menu").attr("action","{{route('recipients.store')}}");
+                $("#input-menu").attr("action","{{route('menus.store')}}");
                 var patcher = $(".patcher");
                 if (jQuery.contains(document, patcher[0])) {
                     // $("#input-penerima").remove($(".patcher"));

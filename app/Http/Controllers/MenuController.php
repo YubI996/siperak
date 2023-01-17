@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Menu;
 use App\Http\Requests\StoreMenuRequest;
 use App\Http\Requests\UpdateMenuRequest;
-
+use Illuminate\Http\Request;
 class MenuController extends Controller
 {
     /**
@@ -37,7 +37,27 @@ class MenuController extends Controller
      */
     public function store(StoreMenuRequest $request)
     {
-        //
+        $input = $request->all();
+        // dd($request->all());
+        $foto = $request->foto;
+        $filenameWithExt = $foto->getClientOriginalName();
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $extension = $foto->getClientOriginalExtension();
+                $filenameSimpan = $filename.'_'.$input["pokmas"].'.'.$extension;
+                $path = $foto->storeAs('public/menu', $filenameSimpan);
+                // array_fill($fileField,1,$path);
+                $input['foto'] = $filenameSimpan;
+                // dd($input);
+        $save = Menu::create($input);
+        if($save->id)
+        {
+            logit('Membuat menu : '.$save->id);
+            return back()->with('success', 'Data Pokmas berhasil disimpan.');
+        }
+        else
+        {
+            return back()->with('warning', 'Data Pokmas gagal disimpan.');
+        }
     }
 
     /**
@@ -48,7 +68,8 @@ class MenuController extends Controller
      */
     public function show(Menu $menu)
     {
-        //
+        $menu = Menu::find($menu->id)->with('Pokmas')->first();
+        return response()->json($menu);
     }
 
     /**

@@ -9,8 +9,19 @@ class Menu extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'pokmas',
+        'karbo',
+        'l_hewani',
+        'l_nabati',
+        'sayur',
+        'buah',
+        'waktu',
+        'foto'
+    ];
 
-    public function Pokmases()
+
+    public function Pokmas()
     {
         return $this->BelongsTo(Pokmas::class, 'pokmas');
     }
