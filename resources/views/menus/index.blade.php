@@ -3,8 +3,6 @@
 @section('custom-css')
     <link rel="stylesheet" type="text/css" href="{{asset('admin/src/plugins/datatables/css/dataTables.bootstrap4.min.css')}}" />
 	<link rel="stylesheet" type="text/css" href="{{asset('admin/src/plugins/datatables/css/responsive.bootstrap4.min.css')}}" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
     <style>
         .leaflet-container{
             height: 73.5vh;
@@ -32,7 +30,7 @@
     <!-- Simple Datatable start -->
         <div class="card-box mb-30" id="data-box">
             <div class="pb-20">
-                <table class="data-table table stripe hover nowrap">
+                <table class="data-table table stripe hover nowrap" id="table-menu">
                     <thead>
                         <tr>
                             <th>Pokmas</th>
@@ -141,8 +139,11 @@
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Foto</label>
-                    <div class="col-sm-12 col-md-10">
-                        <input type="file" accept="image/*" capture="environment" name="foto" required/>
+                    <div class="col-md-5">
+                        <img class="d-block w-50 h-50 ft-menu" id="ft-menu-lama" src="" alt="Foto Menu" >
+                    </div>
+                    <div class="col-sm-12 col-md-5">
+                        <input type="file" accept="image/*" capture="environment" name="foto"/>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -289,21 +290,17 @@
             $(".confirm-hapus").click(function(){
                 var url_hapus = $(this).attr("url");
                 var idx =  $(this).attr("idx");
-                console.log(url_hapus);
+                // console.log(url_hapus);
                 $.ajax({
                     type: "delete",
-                    // headers: {
-                    //     'X-CSRF-TOKEN': '{{csrf_token()}}'
-                    // },
                     url: url_hapus,
                     dataType: "json",
                     data: {
-                        // _method: 'delete',
                         idx: idx,
                         _token: '{{csrf_token()}}'
                     },
                     success: function (response) {
-                        console.log(response);
+                        // console.log(response);
                         location.reload();
                     },
                     error: function(response) {
@@ -327,7 +324,7 @@
                             var linkAsset = "{{asset('storage/menu')}}";
                             $('#ft-menu').attr("src",  '');
                             $('#ft-menu').attr("src", data.foto != null ? linkAsset+"/"+ data.foto : "{{asset('admin/vendors/images/img404.gif')}}");
-                            console.log(linkAsset+"/menu/"+ data.foto);
+                            // console.log(linkAsset+"/menu/"+ data.foto);
                     })
                 });
             $("#tambah-button").click(function(){
@@ -340,28 +337,15 @@
                     // $("#input-penerima").remove($(".patcher"));
                     patcher.remove();
                 }
+                populatePokmas();
                 $("#form-box").show();
                 $("#data-box").hide();
                 $("#tambah-button").hide();
                 $("#kembali-button").show();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                    $.ajax({
-                        url: '{{route("api.pokmas")}}',
-                        success: function(response) {
-                            $('#pokmas').empty();
-                            console.log(response);
-                            $.each(response, function(id, name) {
-                                $('#pokmas').append(new Option(name, id))
-                            })
-                        }
-                    })
             });
             $(".edit-data").click(function(){
                 // conditioning
+                populatePokmas();
                 $(".text-blue,.judul-form").text('Edit Data Menu');
                 $(".ket-form").text('Mengubah Data Menu Rantang Kasih');
                 var url_edit = $(this).attr('aksi');
@@ -376,55 +360,19 @@
                 // populating fields
                 var userURL = $(this).attr('url');
                 $.get(userURL, function (data) {
-                    data = data.penerima
-                    // console.log(data);
-                $("#nama").val(data.nama);
-                $("#bd").val(data.bd);
-                if (data.jenkel == 'Laki-laki') {
-                    $("#jk1").attr("checked", true);
-                }else{
-                    $("#jk2").attr("checked", true);
-                }
-                $("#nik").val(data.nik);
-                $("#alamat").val(data.alamat);
-                $("#pekerjaan").val(data.pekerjaan);
-                $("#penyakit").val(data.penyakit);
-                $("#hp").val(data.no_hp);
-                // $("#ft_p").val(data.foto_penerima);
-                // $("#ft_ktp").val(data.foto_ktp);
-                // $("#ft_kk").val(data.foto_kk);
-                // $("#ft_rumah").val(data.foto_rumah);
-                switch (data.status_rumah) {
-                    case 'Milik Sendiri':
-                        $("#tmpt1").attr("checked", true);
-                        break;
-                    case 'Mengontrak/Menyewa':
-                        $("#tmpt2").attr("checked", true);
-                        break;
-                    case 'Menumpang':
-                        $("#tmpt3").attr("checked", true);
-                        break;
-                    default:
-                        break;
-                }
-                // $("#tmpt2").attr("checked", true);
-                // $("#tmpt3").attr("checked", true);
-                $("#kec").val(data.rts.Kelurahan.kecamatan_id);
-                $("#kec option[value='"+data.rts.Kelurahan.kecamatan_id+"']").attr("selected",true);
-                popKel(data.rts.Kelurahan.kecamatan_id, data.rts.kelurahan_id);
-                $("#kel").val(data.rts.kelurahan_id);
-                $("#kel option[value='"+data.rts.kelurahan_id+"']").attr("selected",true);
-                popRt(data.rts.kelurahan_id, data.rts.id);
-                // console.log($("#kel").value);
-                $("#rt").val(data.rts.id);
-                $("#rt option[value='"+data.rts.id+"']").attr("selected",true);
-                // console.log(data.long);
-                $("#alasan").val(data.histories[0].alasan);
-                $("#long").val(data.long);
-                $("#lat").val(data.lat);
-                markerPenerima(data.lat, data.long)
-                })
-                // EO populating fields
+                    console.log(data.pokmas.id);
+                // $("#Pokmas").val(data.Pokmas.nama);
+                $("#pokmas option[value='"+data.pokmas.id+"']").attr("selected",true);
+                $("#buah").val(data.buah);
+                $("#sayur").val(data.sayur);
+                $("#l_hewani").val(data.l_hewani);
+                $("#l_nabati").val(data.l_nabati);
+                $("#karbo").val(data.karbo);
+                $("#waktu").val(data.waktu);
+                var linkAsset = "{{asset('storage/menu')}}";
+                $('#ft-menu-lama').attr("src",  '');
+                $('#ft-menu-lama').attr("src", data.foto != null ? linkAsset+"/"+ data.foto : "{{asset('admin/vendors/images/img404.gif')}}");
+            });
             });
 
             $("#kembali-button").click(function(){
@@ -437,8 +385,22 @@
                     console.log($(this));
                 });
             });
-
+            function populatePokmas() {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                    $.ajax({
+                        url: '{{route("api.pokmas")}}',
+                        success: function(response) {
+                            $('#pokmas').empty();
+                            // console.log(response);
+                            $.each(response, function(id, name) {
+                                $('#pokmas').append(new Option(name, id))
+                            })
+                        }
+                    });
+            }
         </script>
-        @include('peta.index')
-        @include('aplikasi.dropdown')
 @endsection
