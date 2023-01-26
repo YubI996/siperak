@@ -22,7 +22,8 @@
                             ->eyeColor(2, 22, 84, 193, 56, 163, 7)
                             ->errorCorrection('H')
                             // ->merge($img, .2)
-                            ->generate('http://arasih.test/dashboard');}}
+                            ->generate(url('/qrcode'));}}
+                            {{-- ->generate('http://arasih.test/dashboard');}} --}}
                 </div>
             </div>
         </div>

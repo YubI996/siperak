@@ -16,17 +16,17 @@
         }
     </style>
 @endsection
-@section('title', 'Penerima')
+@section('title', 'Pengantaran')
 @section('item')
     <a href="{{route('home2')}}">Home</a>
 @endsection
 
 @section('papan-kanan')
-    <button id="tambah-button" type="button" class="btn btn-outline-primary pull-right">Tambah Penerima</button>
+    <button id="tambah-button" type="button" class="btn btn-outline-primary pull-right">Tambah Pengantaran</button>
     <button id="kembali-button" type="button" class="btn btn-outline-secondary pull-right">Batal</button>
 @endsection
 
-@section('item-active', 'Penerima')
+@section('item-active', 'Pengantaran')
 
 @section('content')
     <!-- Simple Datatable start -->
@@ -35,7 +35,7 @@
                 <table class="data-table table stripe hover nowrap">
                     <thead>
                         <tr>
-                            <th class="table-plus datatable-nosort">Penerima</th>
+                            <th class="table-plus datatable-nosort">Pengantaran</th>
                             <th>Nama</th>
                             <th>Umur</th>
                             <th>Alamat</th>
@@ -45,17 +45,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($penerima as $data)
+                        @forelse ($Dvs as $data)
                             <tr>
                             <td class="table-plus">
-                                <img class="border-radius-100 shadow" style="max-height: 12vh; max-width:7vw" src="{{$data->foto_penerima != null ? asset('storage/foto_penerima/'.$data->foto_penerima) : asset('admin/vendors/images/img404.gif')}}" alt="">
+                                <img class="border-radius-100 shadow" style="max-height: 12vh; max-width:7vw" src="{{$data->foto_Pengantaran != null ? asset('storage/foto_Pengantaran/'.$data->foto_Pengantaran) : asset('admin/vendors/images/img404.gif')}}" alt="">
                             </td>
-                            <td>{{$data->nama}}</td>
-                            <td>{{$data->getage()}} Tahun</td>
-                            <td>{{$data->alamat}}</td>
-                            <td>{{$data->penyakit}}</td>
-                            <td>{{get_status_trima($data->slug) ?? 'Data tidak ada.'}}</td>
-                            {{-- <td>{{$data->Histories[0]->status_trima ?? 'Data tidak ada.'}}</td> --}}
+                            <td>{{$data->Pengantaran}}</td>
+                            <td>{{$data->menu}} Tahun</td>
+                            <td>{{$data->pengantar}}</td>
+                            <td>{{$data->status}}</td>
+                            <td>{{$data->pengaduan}}</td>
                             <td>
                                 <div class="dropdown">
                                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle"
@@ -63,9 +62,9 @@
                                         <i class="dw dw-more"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                                        <a class="dropdown-item view-data" id="{{$data->slug}}" url="{{ url('recipients', $data->slug) }}" href="#"  data-toggle="modal" data-target="#view-penerima"><i class="dw dw-eye"></i> View</a>
-                                        <a class="dropdown-item edit-data" id="edit-{{$data->slug}}" url="{{ route('recipients.edit', $data->slug) }}" aksi="{{ route('recipients.update', $data->slug) }}" href="#"><i class="dw dw-edit2"></i> Edit</a>
-                                        <a class="dropdown-item delete-data" href="#" data-toggle="modal" url="{{ route('recipients.destroy', $data->slug) }}" idx="{{$data->slug}}" data-target="#confirm-hapus"><i class="dw dw-delete-3"></i>
+                                        <a class="dropdown-item view-data" id="{{$data->id}}" url="{{ url('recipients', $data->id) }}" href="#"  data-toggle="modal" data-target="#view-Pengantaran"><i class="dw dw-eye"></i> View</a>
+                                        <a class="dropdown-item edit-data" id="edit-{{$data->id}}" url="{{ route('recipients.edit', $data->id) }}" aksi="{{ route('recipients.update', $data->id) }}" href="#"><i class="dw dw-edit2"></i> Edit</a>
+                                        <a class="dropdown-item delete-data" href="#" data-toggle="modal" url="{{ route('recipients.destroy', $data->id) }}" idx="{{$data->id}}" data-target="#confirm-hapus"><i class="dw dw-delete-3"></i>
                                             Delete</a>
                                     </div>
                                 </div>
@@ -74,7 +73,7 @@
                         @empty
                             <tr>
                                 <td colspan="7">
-                                    <center><h4>Tidak ada data Pengiriman.</h4></center>
+                                    <center><h4>Tidak ada data Pengantaran.</h4></center>
                                 </td>
                             </tr>
                         @endforelse
@@ -85,19 +84,19 @@
         </div>
     <!-- Simple Datatable End -->
 
-    <!-- form input penerima-->
+    <!-- form input Pengantaran-->
     {{-- ubah form input ini menjadi form input dan edit, keterangan input atau edit diset lewat jquery.
-        pemanggilan input lewat button tambah penerima, menyiapkan form untuk input dengan ngeset action form ke insert, dan keterangan form input.
+        pemanggilan input lewat button tambah Pengantaran, menyiapkan form untuk input dengan ngeset action form ke insert, dan keterangan form input.
         trigger edit lewat menu edit di data row. Menyiapkan form untuk edit dengan mengeset action form ke update, populating old values, dan keterangan form edit.--}}
         <div class="pd-20 card-box mb-30" id="form-box">
             <div class="clearfix">
                 <div class="pull-left">
                     <h4 class="text-blue h4 judul-form"></h4>{{--set judul form--}}
-                    <p class="mb-30 ket-form"></p>{{--set keterangan form, +edit data {{nama_penerima}} --}}
+                    <p class="mb-30 ket-form"></p>{{--set keterangan form, +edit data {{nama_Pengantaran}} --}}
                 </div>
 
             </div>
-            <form name="input-penerima" id="input-penerima" method="POST" action="" enctype="multipart/form-data">
+            <form name="input-Pengantaran" id="input-Pengantaran" method="POST" action="" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Nama Lengkap</label>
@@ -153,11 +152,11 @@
                     <div class="col-sm-12 col-md-10">
                         <select class="custom-select" name="kec" id="kec" onchange="popKel(this.options[this.selectedIndex].value)">
                             <option selected="0">Pilih Kecamatan...</option>
-                            @forelse ($kecs as $dc)
-                            <option value="{{$dc->id}}">Kecamatan {{$dc->nama_kec}}</option>
-                            @empty
+                            {{-- @forelse ($kecs as $dc) --}}
+                            {{-- <option value="{{$dc->id}}">Kecamatan {{$dc->nama_kec}}</option> --}}
+                            {{-- @empty --}}
                             <option value="">Data Kecamatan tidak ditemukan</option>
-                            @endforelse
+                            {{-- @endforelse --}}
                         </select>
                     </div>
                 </div>
@@ -184,9 +183,9 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Foto Penerima</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Foto Pengantaran</label>
                     <div class="custom-file col-sm-12 col-md-10">
-                        <input type="file" class="form-control-file form-control height-auto" name="foto_penerima" id="ft_p"/>
+                        <input type="file" class="form-control-file form-control height-auto" name="foto_Pengantaran" id="ft_p"/>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -226,7 +225,7 @@
                             </div>
                 </div>
                 <div class="form-group row ">
-                    <label class="col-sm-12 col-md-2 col-form-label">Koordinat Rumah Penerima</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Koordinat Rumah Pengantaran</label>
                     <div class="col-sm-12 col-md-10 ">
                         <div id="map"></div>
                         <input class="form-control" type="hidden" id="long" name="long"/>
@@ -250,16 +249,16 @@
             </form>
 
         </div>
-    <!-- akhir form input penerima -->
+    <!-- akhir form input Pengantaran -->
 
     {{-- modal view --}}
-        <div class="modal fade bs-example-modal-lg" id="view-penerima" tabindex="-1"
+        <div class="modal fade bs-example-modal-lg" id="view-Pengantaran" tabindex="-1"
             role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" >
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="myLargeModalLabel">
-                            Biodata Penerima Bantuan
+                            Biodata Pengantaran Bantuan
                         </h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                             ×
@@ -268,19 +267,19 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div id="carouselPenerima" class="carousel slide" data-ride="carousel">
+                                <div id="carouselPengantaran" class="carousel slide" data-ride="carousel">
                                     <ol class="carousel-indicators">
-                                        <li data-target="#carouselPenerima" data-slide-to="0"></li>
-                                        <li data-target="#carouselPenerima" data-slide-to="1"></li>
-                                        <li data-target="#carouselPenerima" data-slide-to="2"></li>
-                                        <li data-target="#carouselPenerima" data-slide-to="3"></li>
+                                        <li data-target="#carouselPengantaran" data-slide-to="0"></li>
+                                        <li data-target="#carouselPengantaran" data-slide-to="1"></li>
+                                        <li data-target="#carouselPengantaran" data-slide-to="2"></li>
+                                        <li data-target="#carouselPengantaran" data-slide-to="3"></li>
                                     </ol>
                                     <div class="carousel-inner">
                                         <div class="carousel-item active">
-                                            <img class="d-block w-50 h-50 ft-Penerima" id="ft-penerima" src="" alt="Foto Penerima" >
-                                            {{-- <img class="d-block w-50 h-50 gambar-penerima" src="" alt="Foto Penerima" onerror="this.onerror=null;this.src='{{asset('admin/vendors/images/img404.gif')}}';"> --}}
+                                            <img class="d-block w-50 h-50 ft-Pengantaran" id="ft-Pengantaran" src="" alt="Foto Pengantaran" >
+                                            {{-- <img class="d-block w-50 h-50 gambar-Pengantaran" src="" alt="Foto Pengantaran" onerror="this.onerror=null;this.src='{{asset('admin/vendors/images/img404.gif')}}';"> --}}
                                             <div class="carousel-caption d-none d-md-block">
-                                                <h5 class="">Foto Penerima</h5>
+                                                <h5 class="">Foto Pengantaran</h5>
                                                 {{-- <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p> --}}
                                             </div>
                                         </div>
@@ -306,11 +305,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a class="carousel-control-prev" href="#carouselPenerima" role="button" data-slide="prev">
+                                    <a class="carousel-control-prev" href="#carouselPengantaran" role="button" data-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                         <span class="sr-only">Previous</span>
                                     </a>
-                                    <a class="carousel-control-next" href="#carouselPenerima" role="button" data-slide="next">
+                                    <a class="carousel-control-next" href="#carouselPengantaran" role="button" data-slide="next">
                                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                         <span class="sr-only">Next</span>
                                     </a>
@@ -466,7 +465,7 @@
                     // $('body').on('click', '#view-data', function (){
                     var userURL = $(this).attr('url');
                     $.get(userURL, function (data) {
-                        data = data.penerima
+                        data = data.Pengantaran
                         // console.log(data);
                             // $('#userShowModal').modal('show');
                             $('.tableView #nama').text(data.nama);
@@ -500,24 +499,24 @@
                             // $('.tableView #lokasi').attr("href", 'https://www.google.com/maps/search/?api=1&query='+data.lat+','+data.long );
                             $('.tableView #lokasi').children('u').text('Tautan Lokasi Google Map' );
                             var linkAsset = "{{asset('storage')}}";
-                            $('#carouselPenerima #ft-penerima').attr("src",  '');
-                            $('#carouselPenerima #ft-penerima').attr("src", data.foto_penerima != null ? linkAsset+"/foto_penerima/"+ data.foto_penerima : "{{asset('admin/vendors/images/img404.gif')}}");
-                            $('#carouselPenerima .gambar-ktp').attr("src",  '');
-                            $('#carouselPenerima .gambar-ktp').attr("src", data.foto_ktp != null ? linkAsset+"/foto_ktp/"+ data.foto_ktp : "{{asset('admin/vendors/images/img404.gif')}}");
-                            $('#carouselPenerima .gambar-kk').attr("src",  '');
-                            $('#carouselPenerima .gambar-kk').attr("src", data.foto_kk != null ? linkAsset+"/foto_kk/"+ data.foto_kk : "{{asset('admin/vendors/images/img404.gif')}}");
-                            $('#carouselPenerima .gambar-rumah').attr("src",  '');
-                            $('#carouselPenerima .gambar-rumah').attr("src", data.foto_rumah != null ? linkAsset+"/foto_rumah/"+ data.foto_rumah : "{{asset('admin/vendors/images/img404.gif')}}");
+                            $('#carouselPengantaran #ft-Pengantaran').attr("src",  '');
+                            $('#carouselPengantaran #ft-Pengantaran').attr("src", data.foto_Pengantaran != null ? linkAsset+"/foto_Pengantaran/"+ data.foto_Pengantaran : "{{asset('admin/vendors/images/img404.gif')}}");
+                            $('#carouselPengantaran .gambar-ktp').attr("src",  '');
+                            $('#carouselPengantaran .gambar-ktp').attr("src", data.foto_ktp != null ? linkAsset+"/foto_ktp/"+ data.foto_ktp : "{{asset('admin/vendors/images/img404.gif')}}");
+                            $('#carouselPengantaran .gambar-kk').attr("src",  '');
+                            $('#carouselPengantaran .gambar-kk').attr("src", data.foto_kk != null ? linkAsset+"/foto_kk/"+ data.foto_kk : "{{asset('admin/vendors/images/img404.gif')}}");
+                            $('#carouselPengantaran .gambar-rumah').attr("src",  '');
+                            $('#carouselPengantaran .gambar-rumah').attr("src", data.foto_rumah != null ? linkAsset+"/foto_rumah/"+ data.foto_rumah : "{{asset('admin/vendors/images/img404.gif')}}");
                     })
                 });
             $("#tambah-button").click(function(){
 
-                $(".text-blue,.judul-form").text('Input Data Penerima');
-                $(".ket-form").text('Mengajukan penerima Rantang Kasih');
-                $("#input-penerima").attr("action","{{route('recipients.store')}}");
+                $(".text-blue,.judul-form").text('Input Data Pengantaran');
+                $(".ket-form").text('Mendaftarkan Pengantaran Rantang Kasih');
+                $("#input-Pengantaran").attr("action","{{route('recipients.store')}}");
                 var patcher = $(".patcher");
                 if (jQuery.contains(document, patcher[0])) {
-                    // $("#input-penerima").remove($(".patcher"));
+                    // $("#input-Pengantaran").remove($(".patcher"));
                     patcher.remove();
                 }
                 $("#form-box").show();
@@ -527,11 +526,11 @@
             });
             $(".edit-data").click(function(){
                 // conditioning
-                $(".text-blue,.judul-form").text('Edit Data Penerima');
-                $(".ket-form").text('Mengubah Data penerima Rantang Kasih');
+                $(".text-blue,.judul-form").text('Edit Data Pengantaran');
+                $(".ket-form").text('Mengubah Data Pengantaran Rantang Kasih');
                 var url_edit = $(this).attr('aksi');
-                $("#input-penerima").attr("action", url_edit);
-                $("#input-penerima").append('<input class="patcher" type="hidden" name="_method" value="patch">');
+                $("#input-Pengantaran").attr("action", url_edit);
+                $("#input-Pengantaran").append('<input class="patcher" type="hidden" name="_method" value="patch">');
                 $("#form-box").show();
                 $("#data-box").hide();
                 $("#tambah-button").hide();
@@ -541,7 +540,7 @@
                 // populating fields
                 var userURL = $(this).attr('url');
                 $.get(userURL, function (data) {
-                    data = data.penerima
+                    data = data.Pengantaran
                     // console.log(data);
                 $("#nama").val(data.nama);
                 $("#bd").val(data.bd);
@@ -555,7 +554,7 @@
                 $("#pekerjaan").val(data.pekerjaan);
                 $("#penyakit").val(data.penyakit);
                 $("#hp").val(data.no_hp);
-                // $("#ft_p").val(data.foto_penerima);
+                // $("#ft_p").val(data.foto_Pengantaran);
                 // $("#ft_ktp").val(data.foto_ktp);
                 // $("#ft_kk").val(data.foto_kk);
                 // $("#ft_rumah").val(data.foto_rumah);
@@ -587,7 +586,7 @@
                 $("#alasan").val(data.histories[0].alasan);
                 $("#long").val(data.long);
                 $("#lat").val(data.lat);
-                markerPenerima(data.lat, data.long)
+                markerPengantaran(data.lat, data.long)
                 })
                 // EO populating fields
             });

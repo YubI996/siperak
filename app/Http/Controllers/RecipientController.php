@@ -231,7 +231,10 @@ class RecipientController extends Controller
         ]);
     }
 
-
+    public function qr($slug)
+    {
+        return view();
+    }
 
 
 }

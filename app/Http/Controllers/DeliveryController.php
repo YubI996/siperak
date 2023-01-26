@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Delivery;
+use App\Models\Delivery as D;
 use App\Http\Requests\StoreDeliveryRequest;
 use App\Http\Requests\UpdateDeliveryRequest;
 
@@ -15,7 +15,8 @@ class DeliveryController extends Controller
      */
     public function index()
     {
-        //
+        $Dvs = D::with('Penerima', 'Pengantar', 'Menus')->get();
+        return view('deliveries.index', compact(['Dvs']));
     }
 
     /**
@@ -25,7 +26,7 @@ class DeliveryController extends Controller
      */
     public function create()
     {
-        //
+        return "delivery controller";
     }
 
     /**

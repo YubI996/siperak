@@ -54,6 +54,7 @@ class User extends Authenticatable
         return $this->BelongsTo(Role::class, 'role_id');
     }
 
+
     public function Pokmas()
     {
         return $this->hasOne(User::class, 'id');

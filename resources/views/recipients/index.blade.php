@@ -65,8 +65,9 @@
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                                         <a class="dropdown-item view-data" id="{{$data->slug}}" url="{{ url('recipients', $data->slug) }}" href="#"  data-toggle="modal" data-target="#view-penerima"><i class="dw dw-eye"></i> View</a>
                                         <a class="dropdown-item edit-data" id="edit-{{$data->slug}}" url="{{ route('recipients.edit', $data->slug) }}" aksi="{{ route('recipients.update', $data->slug) }}" href="#"><i class="dw dw-edit2"></i> Edit</a>
-                                        <a class="dropdown-item delete-data" href="#" data-toggle="modal" url="{{ route('recipients.destroy', $data->slug) }}" idx="{{$data->slug}}" data-target="#confirm-hapus"><i class="dw dw-delete-3"></i>
-                                            Delete</a>
+                                        <a class="dropdown-item delete-data" href="#" data-toggle="modal" url="{{ route('recipients.destroy', $data->slug) }}" idx="{{$data->slug}}" data-target="#confirm-hapus"><i class="dw dw-delete-3"></i>Delete</a>
+                                        <a class="dropdown-item qr-data" href="#" data-toggle="modal" url="{{ route('recipients.qr', $data->slug) }}" idx="{{$data->slug}}" data-target="#qr-penerima"><i class="dw dw-compass"></i>Kode QR</a>
+
                                     </div>
                                 </div>
                             </td>
@@ -368,6 +369,39 @@
         </div>
     {{-- akhir modal view --}}
 
+    {{-- modal qr --}}
+        <div class="modal fade bs-example-modal-lg" id="qr-penerima" tabindex="-1"
+            role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" >
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myLargeModalLabel">
+                            Kode QR penerima bantuan
+                        </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            ×
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                                    <div class="p-6 bg-white border-b border-gray-200 mx-auto" id="qr-penerima">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Tutup
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- akhir modal qr --}}
+
     {{-- modal hapus --}}
         <div class="modal fade" id="confirm-hapus" tabindex="-1" role="dialog"
             aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -440,7 +474,7 @@
             $(".confirm-hapus").click(function(){
                 var url_hapus = $(this).attr("url");
                 var idx =  $(this).attr("idx");
-                console.log(url_hapus);
+                // console.log(url_hapus);
                 $.ajax({
                     type: "delete",
                     // headers: {
@@ -462,9 +496,21 @@
                     }
                 });
             });
+            $(".qr-data").click(function(){
+                var idx =  $(this).attr("idx");
+                // $("#qr-penerima").text("adasd"+idx+"asas");
+                $("#qr-penerima").text("{{ QrCode::color(22, 84, 193)"+
+                    "->size(300)"+
+                    "->style('round')"+
+                    "->eye('circle')"+
+                    "->eyeColor(0, 22, 84, 193, 56, 163, 7)"+
+                    "->eyeColor(1, 22, 84, 193, 56, 163, 7)"+
+                    "->eyeColor(2, 22, 84, 193, 56, 163, 7)"+
+                    "->errorCorrection('H')"+
+                    "->generate(url('/penerima/qr/"+idx+"'))}}");
+            });
             $(".view-data").click(function(){
-                    // $('body').on('click', '#view-data', function (){
-                    var userURL = $(this).attr('url');
+                    var userURL = $(this).attr("url");
                     $.get(userURL, function (data) {
                         data = data.penerima
                         // console.log(data);
@@ -508,7 +554,7 @@
                             $('#carouselPenerima .gambar-kk').attr("src", data.foto_kk != null ? linkAsset+"/foto_kk/"+ data.foto_kk : "{{asset('admin/vendors/images/img404.gif')}}");
                             $('#carouselPenerima .gambar-rumah').attr("src",  '');
                             $('#carouselPenerima .gambar-rumah').attr("src", data.foto_rumah != null ? linkAsset+"/foto_rumah/"+ data.foto_rumah : "{{asset('admin/vendors/images/img404.gif')}}");
-                    })
+                    });
                 });
             $("#tambah-button").click(function(){
 
