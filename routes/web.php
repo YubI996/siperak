@@ -81,4 +81,4 @@ Route::resource('deliveries', DeliveryController::class)->middleware(['auth']);
 Route::resource('menus', MenuController::class)->middleware(['auth']);
 
 Route::get('penerima/{slug}', [DeliveryController::class, 'create'])->middleware('role');
-Route::get('recipients/qr/{slug}', [RecipientController::class, 'qr'])->middleware('recipients.qr');
+Route::get('recipients/qr/{slug}', [RecipientController::class, 'qr'])->name('recipients.qr');

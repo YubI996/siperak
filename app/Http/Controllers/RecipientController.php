@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Auth;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class RecipientController extends Controller
 {
@@ -233,7 +234,10 @@ class RecipientController extends Controller
 
     public function qr($slug)
     {
-        return view();
+        $qrCode = QrCode::color(22, 84, 193)->size(500)->style('round')->eye('circle')->eyeColor(0, 22, 84, 193, 56, 163, 7)->eyeColor(1, 22, 84, 193, 56, 163, 7)->eyeColor(2, 22, 84, 193, 56, 163, 7)->errorCorrection('H')->generate(url('/penerima/qr/'.$slug.''));
+        $image = svg($qrCode);
+        // return response($image)->header('Content-Type', 'image/png')->header('Content-Disposition', 'inline; filename=qr-code.png');
+        // return $qrcode;
     }
 
 
