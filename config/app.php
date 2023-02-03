@@ -187,6 +187,7 @@ return [
          * Package Service Providers...
          */
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -213,6 +214,8 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         'Carbon' => 'Carbon\Carbon',
+        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'faker' => 'Faker\Factory',
     ])->toArray(),
 
 ];

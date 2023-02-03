@@ -66,7 +66,7 @@
                                         <a class="dropdown-item view-data" id="{{$data->slug}}" url="{{ url('recipients', $data->slug) }}" href="#"  data-toggle="modal" data-target="#view-penerima"><i class="dw dw-eye"></i> View</a>
                                         <a class="dropdown-item edit-data" id="edit-{{$data->slug}}" url="{{ route('recipients.edit', $data->slug) }}" aksi="{{ route('recipients.update', $data->slug) }}" href="#"><i class="dw dw-edit2"></i> Edit</a>
                                         <a class="dropdown-item delete-data" href="#" data-toggle="modal" url="{{ route('recipients.destroy', $data->slug) }}" idx="{{$data->slug}}" data-target="#confirm-hapus"><i class="dw dw-delete-3"></i>Delete</a>
-                                        <a class="dropdown-item qr-data" href="{{ route('recipients.qr', $data->slug) }}"  target="_blank" data-toggle="modalin" url="{{ route('recipients.qr', $data->slug) }}" idx="{{$data->slug}}" data-target="#modal-qr-penerimaaiai"><i class="dw dw-compass"></i>Kode QR</a>
+                                        <a class="dropdown-item qr-data" href="{{ route('recipients.qr', $data->slug) }}"  target="_blank" data-toggle="modalin" url="{{ route('recipients.qr', $data->slug) }}" idx="{{$data->slug}}" data-target="#modal-qr-penerimaasas"><i class="dw dw-compass"></i>Kode QR</a>
 
                                     </div>
                                 </div>
@@ -387,6 +387,11 @@
                             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                     <div class="p-6 bg-white border-b border-gray-200 mx-auto" id="qr-penerima">
+                                        @php
+                                            if (isset($slugpenerimaini)){
+                                            echo QrIt($slugpenerimaini);}
+
+                                        @endphp
                                     </div>
                                 </div>
                             </div>

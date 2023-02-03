@@ -3,8 +3,7 @@
     use App\Models\Pokmas as Po;
     use App\Models\Log as l;
     use Carbon\Carbon;
-
-
+    use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
     function logit($ket){
         $logger = l::create([
@@ -71,5 +70,10 @@
     function count_kel():int
     {
         return P::where('status_trima', 'Menerima')->get()->groupBy('Rts.Kelurahan')->count();
+    }
+
+    function QrIt($data)
+    {
+        return QrCode::size(300)->errorCorrection('H')->generate(url('/penerima/qr/'+$data));
     }
 ?>

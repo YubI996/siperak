@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Auth;
+use PDF;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class RecipientController extends Controller
@@ -234,10 +235,22 @@ class RecipientController extends Controller
 
     public function qr($slug)
     {
-        $qrCode = QrCode::color(22, 84, 193)->size(500)->style('round')->eye('circle')->eyeColor(0, 22, 84, 193, 56, 163, 7)->eyeColor(1, 22, 84, 193, 56, 163, 7)->eyeColor(2, 22, 84, 193, 56, 163, 7)->errorCorrection('H')->generate(url('/penerima/qr/'.$slug.''));
-        $image = svg($qrCode);
-        // return response($image)->header('Content-Type', 'image/png')->header('Content-Disposition', 'inline; filename=qr-code.png');
-        // return $qrcode;
+        $p = Recipient::with('Histories')->where('slug', $slug)->get();
+        $p = $p->first();
+        $nama = $p->nama;
+        $sejak = $p->get_latest_history()->first()->created_at;
+        $image = \QrCode::format('png')
+                    ->merge(asset('storage/logo/logo-bontang.png'), 0.3, true)
+                    ->size(200)->errorCorrection('H')
+                    ->generate(url('/penerima/qr/'.$slug));
+        $data = 'kierkode/qr--' . $slug . '.png';
+        Storage::disk('public')->put($data, $image);
+        // view()->share('data', $data);
+        $pdf = PDF::loadView('qrcode', compact(['data', 'nama', 'sejak']));
+        return $pdf->stream('kodeqr.pdf');
+        // dd($hasil);
+        // return response()
+        //         ->view('qrcode');
     }
 
 
