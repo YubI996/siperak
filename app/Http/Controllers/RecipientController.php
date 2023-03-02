@@ -253,5 +253,22 @@ class RecipientController extends Controller
         //         ->view('qrcode');
     }
 
+    public function get_penerima()
+    {
+        $penerimas = Recipient::whereHas('Rts', function($q)
+        {
+            $q->whereHas('Kelurahan', function($qr)
+            {
+                // $qr->where('nama_kel', "Belimbing");
+                $qr->where('nama_kel', Auth::user()->Rts->Kelurahan->nama_kel);
+            });
+        })->get();
+        if ($penerimas->isEmpty()) {
+            return response()->json([
+                'error' => 'Data Penerima tidak ditemukan!'
+            ]);
+        }
+        Return response()->json($penerimas);
+    }
 
 }

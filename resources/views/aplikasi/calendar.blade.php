@@ -1,4 +1,4 @@
-                @extends('admin::layouts.app')
+                 @extends('admin::layouts.app')
                 @section('custom-css')
                     <link rel="stylesheet" type="text/css" href="{{asset('admin/src/plugins/fullcalendar/fullcalendar.css')}}" />
                 @endsection

@@ -99,34 +99,79 @@
             <form name="input-Pengantaran" id="input-Pengantaran" method="POST" action="" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Nama Lengkap</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Penerima</label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" type="text" placeholder="Nama Lengkap" id="nama" name="nama"/>
+                        <select class="custom-select" name="penerima" id="penerima">
+                            <option selected="0">Pilih penerima...</option>
+                            {{-- @forelse ($kecs as $dc) --}}
+                            {{-- <option value="{{$dc->id}}">Kecamatan {{$dc->nama_kec}}</option> --}}
+                            {{-- @empty --}}
+                            <option value="">Data Penerima tidak ditemukan</option>
+                            {{-- @endforelse --}}
+                        </select>
+                    </div>
+                </div>
+                <input class="form-control" type="hidden" id="menu" name="menu" value="10"/>
+                <input class="form-control" type="hidden" id="pengantar" name="pengantar" value="4"/>
+
+                <div class="form-group row">
+                    <label class="col-sm-12 col-md-2 col-form-label">Status Pengantaran</label>
+                            <div class="custom-control custom-radio mb-5">
+                                <input type="radio" id="Belum diantar" name="status"
+                                    class="custom-control-input" value="Belum diantar" />
+                                <label class="custom-control-label" for="Belum diantar">Belum Diantarkan.</label>
+                            </div>
+                            <div class="custom-control custom-radio mb-5">
+                                <input type="radio" id="Sudah diantar" name="status"
+                                    class="custom-control-input" value="Sudah diantar" />
+                                <label class="custom-control-label" for="Sudah diantar">Sudah Diantarkan.</label>
+                            </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-12 col-md-2 col-form-label">Pengaduan</label>
+                    <div class="col-sm-12 col-md-10">
+                        <input class="form-control" type="text" placeholder="Pengaduan terkait menu" id="pengaduan" name="pengaduan"/>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Tanggal Lahir</label>
-                    <div class="col-sm-12 col-md-10">
-                        <input class="form-control " placeholder="Pilih tanggal lahir" type="date" name="bd" id="bd"/>
+                    <label class="col-sm-12 col-md-2 col-form-label">Dokumentasi Pengantaran</label>
+                    <div class="custom-file col-sm-12 col-md-10">
+                        <input type="file" class="form-control-file form-control height-auto" name="foto_Pengantaran" id="ft_p"/>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Jenis Kelamin</label>
-                            <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="jk1" name="jenkel"
-                                    class="custom-control-input" value="Laki-laki" />
-                                <label class="custom-control-label" for="jk1">Laki-laki</label>
-                            </div>
-                            <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="jk2" name="jenkel"
-                                    class="custom-control-input" value="Perempuan" />
-                                <label class="custom-control-label" for="jk2">Perempuan</label>
-                            </div>
+                    <label class="col-sm-12 col-md-2 col-form-label">Total konsumsi karbohidrat</label>
+                    <div class="col-sm-12 col-md-10">
+                        <input class="form-control" name="karbo_consmd" value="50" step="5" type="range" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+                        <output>50</output>%
+                    </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Nomor Induk Kependudukan (NIK)</label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Total konsumsi Protein Hewani</label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" type="number" placeholder="Nomor Induk Kependudukan(NIK)" id="nik" name="nik"/>
+                        <input class="form-control" name="karbo_consmd" value="50" step="5" type="range" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+                        <output>50</output>%
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-12 col-md-2 col-form-label">Total konsumsi Protein Nabati</label>
+                    <div class="col-sm-12 col-md-10">
+                        <input class="form-control" name="karbo_consmd" value="50" step="5" type="range" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+                        <output>50</output>%
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-12 col-md-2 col-form-label">Total konsumsi Sayur</label>
+                    <div class="col-sm-12 col-md-10">
+                        <input class="form-control" name="karbo_consmd" value="50" step="5" type="range" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+                        <output>50</output>%
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-12 col-md-2 col-form-label">Total konsumsi Buah</label>
+                    <div class="col-sm-12 col-md-10">
+                        <input class="form-control" name="karbo_consmd" value="50" step="5" type="range" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+                        <output>50</output>%
                     </div>
                 </div>
                 <div class="form-group row">
@@ -145,35 +190,6 @@
                     <label class="col-sm-12 col-md-2 col-form-label">Penyakit</label>
                     <div class="col-sm-12 col-md-10">
                         <input class="form-control" type="text" placeholder="Penyakit" id="penyakit" name="penyakit"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Kecamatan</label>
-                    <div class="col-sm-12 col-md-10">
-                        <select class="custom-select" name="kec" id="kec" onchange="popKel(this.options[this.selectedIndex].value)">
-                            <option selected="0">Pilih Kecamatan...</option>
-                            {{-- @forelse ($kecs as $dc) --}}
-                            {{-- <option value="{{$dc->id}}">Kecamatan {{$dc->nama_kec}}</option> --}}
-                            {{-- @empty --}}
-                            <option value="">Data Kecamatan tidak ditemukan</option>
-                            {{-- @endforelse --}}
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Kelurahan</label>
-                    <div class="col-sm-12 col-md-10">
-                        <select class="custom-select col-12" name="kel" id="kel" onchange="popRt(this.options[this.selectedIndex].value)">
-
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Rukun Tetangga (RT)</label>
-                    <div class="col-sm-12 col-md-10">
-                        <select class="custom-select col-12" name="rt" id="rt">
-
-                        </select>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -224,21 +240,7 @@
                                 <label class="custom-control-label" for="tmpt3">Menumpang</label>
                             </div>
                 </div>
-                <div class="form-group row ">
-                    <label class="col-sm-12 col-md-2 col-form-label">Koordinat Rumah Pengantaran</label>
-                    <div class="col-sm-12 col-md-10 ">
-                        <div id="map"></div>
-                        <input class="form-control" type="hidden" id="long" name="long"/>
-                        <input class="form-control" type="hidden" id="lat" name="lat" />
-                        <input class="form-control" type="hidden" id="actor" name="actor"  value="{{Auth::user()->id}}"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Alasan Pengajuan</label>
-                    <div class="col-sm-12 col-md-10">
-                        <input class="form-control" type="text" placeholder="Isi alasan pengajuan" id="alasan" name="alasan"/>
-                    </div>
-                </div>
+
 
                 <div class="form-group row">
                     <div class="col-md-10 col-sm-12"></div>
@@ -422,8 +424,33 @@
         <script>
             $(document).ready(function() {
                 $("#alert").hide();
-                $("#form-box").hide();
+                // $("#form-box").hide();
+                $("#tambah-button").click;
                 $("#kembali-button").hide();
+                $.ajax({
+                    url: "{{url('fetch-penerima')}}",
+                    type: "GET",
+                    // data: {
+                    //     _token: '{{csrf_token()}}'
+                    // },
+                    dataType: 'json',
+                    success: function (result) {
+                        // console.log(result.includes("error"));
+                        if (result.includes("error")) {
+                            alert("Data penerima dalam kelurahan tidak ditemukan");
+                        } else {
+                            $('#penerima').html('<option value="">-- Pilih Penerima --</option>');
+                            $.each(result, function (key, value) {
+                                const PenerimaOption = '<option value="' + value.id + '" >'  + value.nama + '</option>';
+                                $("#penerima").append(PenerimaOption);
+                            });
+                        }
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log('Error:', errorThrown);
+                    }
+                })
                 // $("#myWish").click(function showAlert() {
                 //     $("#alert").fadeTo(10000, 10000).slideUp(10000, function() {
                 //     $("#alert").slideUp(10000);
@@ -461,6 +488,7 @@
                     }
                 });
             });
+
             $(".view-data").click(function(){
                     // $('body').on('click', '#view-data', function (){
                     var userURL = $(this).attr('url');
@@ -508,7 +536,8 @@
                             $('#carouselPengantaran .gambar-rumah').attr("src",  '');
                             $('#carouselPengantaran .gambar-rumah').attr("src", data.foto_rumah != null ? linkAsset+"/foto_rumah/"+ data.foto_rumah : "{{asset('admin/vendors/images/img404.gif')}}");
                     })
-                });
+            });
+
             $("#tambah-button").click(function(){
 
                 $(".text-blue,.judul-form").text('Input Data Pengantaran');
@@ -524,6 +553,7 @@
                 $("#tambah-button").hide();
                 $("#kembali-button").show();
             });
+
             $(".edit-data").click(function(){
                 // conditioning
                 $(".text-blue,.judul-form").text('Edit Data Pengantaran');
@@ -603,6 +633,6 @@
             });
 
         </script>
-        @include('peta.index')
-        @include('aplikasi.dropdown')
+        {{-- @include('peta.index')
+        @include('aplikasi.dropdown') --}}
 @endsection

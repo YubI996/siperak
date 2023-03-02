@@ -22,23 +22,17 @@
                     success: function (result) {
                         $('#kel').html('<option value="">-- Pilih Kelurahan --</option>');
                         $.each(result.kels, function (key, value) {
-                            if(selected !== null){
-                                if (value.id === selected) {
-                                    $("#kel").append('<option value="' + value
-                                    .id + '" Selected>' +'Kelurahan '+ value.nama_kel + '</option>');
-                                }
-                                else{
-                                $("#kel").append('<option value="' + value
-                                .id + '">' +'Kelurahan '+ value.nama_kel + '</option>');}
-                            }
-                            else{
-                                $("#kel").append('<option value="' + value
-                                .id + '">' +'Kelurahan '+ value.nama_kel + '</option>');
-                            }
+                            const selectedKelurahan = value.id === selected ? 'selected' : '';
+                            const kelurahanOption = '<option value="' + value.id + '" ' + selectedKelurahan + '>' + 'Kelurahan ' + value.nama_kel + '</option>';
+                            $("#kel").append(kelurahanOption);
                         });
                         $('#rt').html('<option value="">-- Pilih Rukun Tetangga --</option>');
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log('Error:', errorThrown);
                     }
                 });
+
             }
 
             /*------------------------------------------

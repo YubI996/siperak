@@ -7,6 +7,7 @@ use App\Http\Controllers\RecipientController;
 use App\Http\Controllers\PokmasController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\KecamatanController;
 use App\Http\Controllers\PilihRTController;
 use App\Models\User;
 
@@ -61,9 +62,13 @@ Route::get('table', function(){
     ]);
 })->name('datatable');
 //ROUTES TEMPLATE
-Route::get('/celendar', function () {
+Route::get('/calendar', function () {
     return view('aplikasi.calendar');
 })->name('calendar');
+
+Route::get('/dash', function () {
+    return view('aplikasi.dashboard2');
+})->name('dash');
 
 Route::get('/form2', function () {
     return view('aplikasi.create');
@@ -71,6 +76,7 @@ Route::get('/form2', function () {
 
 Route::get('api/pokmas', [PokmasController::class, 'fetchPokmas'])->name('api.pokmas');
 
+Route::get('fetch-penerima', [RecipientController::class, 'get_penerima']);
 Route::post('api/fetch-kelurahan', [PilihRTController::class, 'fetchKel']);
 Route::post('api/fetch-rt', [PilihRTController::class, 'fetchRt']);
 
@@ -79,6 +85,7 @@ Route::resource('pokmases', PokmasController::class)->middleware(['auth']);
 Route::resource('users', UserController::class)->middleware(['auth']);
 Route::resource('deliveries', DeliveryController::class)->middleware(['auth']);
 Route::resource('menus', MenuController::class)->middleware(['auth']);
+Route::resource('kecamatan', KecamatanController::class)->middleware(['auth']);
 
 Route::get('penerima/{slug}', [DeliveryController::class, 'create'])->middleware('role');
 Route::get('recipients/qr/{slug}', [RecipientController::class, 'qr'])->name('recipients.qr');

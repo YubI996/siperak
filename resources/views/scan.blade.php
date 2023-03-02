@@ -16,8 +16,10 @@
         </div>
     </div>
     @push('custom-scripts')
+        {{-- <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.0.4/build/html5-qrcode.min.js" type="text/javascript"></script> --}}
         <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
         <script>
+            // import Html5Qrcode from 'html5-qrcode';
             const html5QrCode = new Html5Qrcode(/* element id */ "reader");
 
             function onScanSuccess(decodedText, decodedResult) {

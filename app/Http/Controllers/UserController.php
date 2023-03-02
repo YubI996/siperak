@@ -126,4 +126,10 @@ class UserController extends Controller
             return back()->with(['warning' => 'Data Gagal Dihapus!']);
         }
     }
+
+    public function get_pengantar()
+    {
+        $pengirims = User::where('role_id', 8)->get();
+        Return response()->json($pengirims);
+    }
 }
