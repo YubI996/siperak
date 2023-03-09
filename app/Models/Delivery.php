@@ -9,6 +9,20 @@ class Delivery extends Model
 {
     use HasFactory;
 
+    protected $table = 'deliveries';
+    protected $fillable = [
+        'penerima',
+        'menu',
+        'pengantar',
+        'status',
+        'dok',
+        'pengaduan',
+        'karbo_consmd',
+        'l_hwn_consmd',
+        'l_nbt_consmd',
+        'sayur_consmd',
+        'buah_consmd'
+    ];
     public function Menus()
     {
         return $this->BelongsTo(Menu::class, 'menu');

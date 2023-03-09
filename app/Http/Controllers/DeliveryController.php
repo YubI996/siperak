@@ -37,7 +37,32 @@ class DeliveryController extends Controller
      */
     public function store(StoreDeliveryRequest $request)
     {
-        //
+        // dd($request);
+        $input = $request->all();
+        $dok = $request->file();
+        if (count($dok) > 0){
+            foreach ($dok as  $val) {
+                $filenameWithExt = $val->getClientOriginalName();
+                $filenameWithExt = str_replace('-', '_', $filenameWithExt);
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $extension = $val->getClientOriginalExtension();
+                $filenameSimpan = $filename.'_'.$input["menu"].$input["penerima"].'.'.$extension;
+                $path = $val->storeAs('public/dok_deliv', $filenameSimpan);
+                // array_fill($fileField,1,$path);
+                $input["dok"] = $filenameSimpan;
+                // dd($input);
+            }
+        }
+        $delivery = D::create($input);
+        $pengiriman = $delivery->save();
+        if($pengiriman){
+            logit('Input data pengiriman. Records: |'.$delivery->id.'|');//fungsi ada di Helpers
+            return back()->with('success', 'Data pengiriman berhasil disimpan.');
+
+        }
+        else{
+            return back()->with('warning', 'Data pengiriman gagal disimpan.');
+        }
     }
 
     /**
