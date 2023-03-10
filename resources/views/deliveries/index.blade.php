@@ -35,11 +35,9 @@
                 <table class="data-table table stripe hover nowrap">
                     <thead>
                         <tr>
-                            <th class="table-plus datatable-nosort">Pengantaran</th>
-                            <th>Nama</th>
-                            <th>Umur</th>
-                            <th>Alamat</th>
-                            <th>Penyakit</th>
+                            <th>Pokmas</th>
+                            <th>Penerima</th>
+                            <th>Pengantar</th>
                             <th>Status</th>
                             <th class="datatable-nosort">Action</th>
                         </tr>
@@ -47,14 +45,10 @@
                     <tbody>
                         @forelse ($Dvs as $data)
                             <tr>
-                            <td class="table-plus">
-                                <img class="border-radius-100 shadow" style="max-height: 12vh; max-width:7vw" src="{{$data->foto_Pengantaran != null ? asset('storage/foto_Pengantaran/'.$data->foto_Pengantaran) : asset('admin/vendors/images/img404.gif')}}" alt="">
-                            </td>
-                            <td>{{$data->Pengantaran}}</td>
-                            <td>{{$data->menu}} Tahun</td>
-                            <td>{{$data->pengantar}}</td>
+                            <td>{{$data->Menus->Pokmas->nama.' RT '.$data->Menus->Pokmas->Rts->nama_rt.' '.$data->Menus->Pokmas->Rts->Kelurahan->nama_kel}}</td>
+                            <td>{{$data->Penerima->nama}} Tahun</td>
+                            <td>{{$data->Pengantar->name}}</td>
                             <td>{{$data->status}}</td>
-                            <td>{{$data->pengaduan}}</td>
                             <td>
                                 <div class="dropdown">
                                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle"
@@ -62,9 +56,9 @@
                                         <i class="dw dw-more"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                                        <a class="dropdown-item view-data" id="{{$data->id}}" url="{{ url('recipients', $data->id) }}" href="#"  data-toggle="modal" data-target="#view-Pengantaran"><i class="dw dw-eye"></i> View</a>
-                                        <a class="dropdown-item edit-data" id="edit-{{$data->id}}" url="{{ route('recipients.edit', $data->id) }}" aksi="{{ route('recipients.update', $data->id) }}" href="#"><i class="dw dw-edit2"></i> Edit</a>
-                                        <a class="dropdown-item delete-data" href="#" data-toggle="modal" url="{{ route('recipients.destroy', $data->id) }}" idx="{{$data->id}}" data-target="#confirm-hapus"><i class="dw dw-delete-3"></i>
+                                        <a class="dropdown-item view-data" id="{{$data->id}}" url="{{ url('deliveries', $data->id) }}" href="#"  data-toggle="modal" data-target="#view-Pengantaran"><i class="dw dw-eye"></i> View</a>
+                                        <a class="dropdown-item edit-data" id="edit-{{$data->id}}" url="{{ route('deliveries.edit', $data->id) }}" aksi="{{ route('deliveries.update', $data->id) }}" href="#"><i class="dw dw-edit2"></i> Edit</a>
+                                        <a class="dropdown-item delete-data" href="#" data-toggle="modal" url="{{ route('deliveries.destroy', $data->id) }}" idx="{{$data->id}}" data-target="#confirm-hapus"><i class="dw dw-delete-3"></i>
                                             Delete</a>
                                     </div>
                                 </div>
@@ -117,12 +111,12 @@
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Status Pengantaran</label>
                             <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="Belum diantar" name="status"
+                                <input type="radio" id="Belum_diantar" name="status"
                                     class="custom-control-input" value="Belum diantar" />
                                 <label class="custom-control-label" for="Belum diantar">Belum Diantarkan.</label>
                             </div>
                             <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="Sudah diantar" name="status"
+                                <input type="radio" id="Sudah_diantar" name="status"
                                     class="custom-control-input" value="Sudah diantar" />
                                 <label class="custom-control-label" for="Sudah diantar">Sudah Diantarkan.</label>
                             </div>
@@ -142,35 +136,35 @@
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Total konsumsi karbohidrat</label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" name="karbo_consmd" value="0.5" step="0.25" type="range" min="0" max="1" oninput="this.nextElementSibling.value = this.value">
+                        <input class="form-control" id="karbo_consmd" name="karbo_consmd" value="0.5" step="0.25" type="range" min="0" max="1" oninput="this.nextElementSibling.value = this.value">
                         <output></output>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Total konsumsi Protein Hewani</label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" name="l_hwn_consmd" value="0.5" step="0.25" type="range" min="0" max="1" oninput="this.nextElementSibling.value = this.value">
+                        <input class="form-control" id="l_hwn_consmd" name="l_hwn_consmd" value="0.5" step="0.25" type="range" min="0" max="1" oninput="this.nextElementSibling.value = this.value">
                         <output></output>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Total konsumsi Protein Nabati</label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" name="l_nbt_consmd" value="0.5" step="0.25" type="range" min="0" max="1" oninput="this.nextElementSibling.value = this.value">
+                        <input class="form-control" id="l_nbt_consmd" name="l_nbt_consmd" value="0.5" step="0.25" type="range" min="0" max="1" oninput="this.nextElementSibling.value = this.value">
                         <output></output>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Total konsumsi Sayur</label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" name="sayur_consmd" value="0.5" step="0.25" type="range" min="0" max="1" oninput="this.nextElementSibling.value = this.value">
+                        <input class="form-control" id="sayur_consmd" name="sayur_consmd" value="0.5" step="0.25" type="range" min="0" max="1" oninput="this.nextElementSibling.value = this.value">
                         <output></output>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Total konsumsi Buah</label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" name="buah_consmd" value="0.5" step="0.25" type="range" min="0" max="1" oninput="this.nextElementSibling.value = this.value">
+                        <input class="form-control" id="buah_consmd" name="buah_consmd" value="0.5" step="0.25" type="range" min="0" max="1" oninput="this.nextElementSibling.value = this.value">
                         <output></output>
                     </div>
                 </div>
@@ -503,54 +497,23 @@
 
                 // populating fields
                 var userURL = $(this).attr('url');
+
                 $.get(userURL, function (data) {
-                    data = data.Pengantaran
+                    data = data[0];
                     // console.log(data);
-                $("#nama").val(data.nama);
-                $("#bd").val(data.bd);
-                if (data.jenkel == 'Laki-laki') {
-                    $("#jk1").attr("checked", true);
+                $("#pengantar").val(data.pengantar);
+                $("#menu").val(data.menu);
+                if (data.status == 'Sudah diantar') {
+                    $("#Sudah_diantar").attr("checked", true);
                 }else{
-                    $("#jk2").attr("checked", true);
+                    $("#Belum_diantar").attr("checked", true);
                 }
-                $("#nik").val(data.nik);
-                $("#alamat").val(data.alamat);
-                $("#pekerjaan").val(data.pekerjaan);
-                $("#penyakit").val(data.penyakit);
-                $("#hp").val(data.no_hp);
-                // $("#ft_p").val(data.foto_Pengantaran);
-                // $("#ft_ktp").val(data.foto_ktp);
-                // $("#ft_kk").val(data.foto_kk);
-                // $("#ft_rumah").val(data.foto_rumah);
-                switch (data.status_rumah) {
-                    case 'Milik Sendiri':
-                        $("#tmpt1").attr("checked", true);
-                        break;
-                    case 'Mengontrak/Menyewa':
-                        $("#tmpt2").attr("checked", true);
-                        break;
-                    case 'Menumpang':
-                        $("#tmpt3").attr("checked", true);
-                        break;
-                    default:
-                        break;
-                }
-                // $("#tmpt2").attr("checked", true);
-                // $("#tmpt3").attr("checked", true);
-                $("#kec").val(data.rts.Kelurahan.kecamatan_id);
-                $("#kec option[value='"+data.rts.Kelurahan.kecamatan_id+"']").attr("selected",true);
-                popKel(data.rts.Kelurahan.kecamatan_id, data.rts.kelurahan_id);
-                $("#kel").val(data.rts.kelurahan_id);
-                $("#kel option[value='"+data.rts.kelurahan_id+"']").attr("selected",true);
-                popRt(data.rts.kelurahan_id, data.rts.id);
-                // console.log($("#kel").value);
-                $("#rt").val(data.rts.id);
-                $("#rt option[value='"+data.rts.id+"']").attr("selected",true);
-                // console.log(data.long);
-                $("#alasan").val(data.histories[0].alasan);
-                $("#long").val(data.long);
-                $("#lat").val(data.lat);
-                markerPengantaran(data.lat, data.long)
+                $("#karbo_consmd").val(data.karbo_consmd);
+                $("#l_hwn_consmd").val(data.l_hwn_consmd);
+                $("#l_nbt_consmd").val(data.l_nbt_consmd);
+                $("#sayur_consmd").val(data.sayur_consmd);
+                $("#buah_consmd").val(data.buah_consmd);
+                $("#pengaduan").val(data.pengaduan);
                 })
                 // EO populating fields
             });

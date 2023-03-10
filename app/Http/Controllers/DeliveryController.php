@@ -15,7 +15,7 @@ class DeliveryController extends Controller
      */
     public function index()
     {
-        $Dvs = D::with('Penerima', 'Pengantar', 'Menus')->get();
+        $Dvs = D::with('Penerima', 'Pengantar', 'Menus.Pokmas')->get();
         return view('deliveries.index', compact(['Dvs']));
     }
 
@@ -82,9 +82,11 @@ class DeliveryController extends Controller
      * @param  \App\Models\Delivery  $delivery
      * @return \Illuminate\Http\Response
      */
-    public function edit(Delivery $delivery)
+    public function edit(D $delivery)
     {
-        //
+        // $data['penerima'] = D::find(->with('Histories','Rts.Kelurahan.Kecamatan')->first();
+        $delivery = D::where('id', $delivery->id)->with('Penerima', 'Pengantar', 'Menus.Pokmas.Rts.Kelurahan.Kecamatan')->get();
+        return response()->json($delivery);
     }
 
     /**
@@ -96,7 +98,7 @@ class DeliveryController extends Controller
      */
     public function update(UpdateDeliveryRequest $request, Delivery $delivery)
     {
-        //
+        dd($request);
     }
 
     /**
