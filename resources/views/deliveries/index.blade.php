@@ -441,7 +441,28 @@
                             $('#carouselPengantaran .gambar-rumah').attr("src", data.foto_rumah != null ? linkAsset+"/foto_rumah/"+ data.foto_rumah : "{{asset('admin/vendors/images/img404.gif')}}");
                     })
             });
-
+            function listpenerima(selectedValue) {
+                $.ajax({
+                    url: "{{url('fetch-penerima')}}",
+                    type: "GET",
+                    dataType: 'json',
+                    success: function (result) {
+                    if (result.includes("error")) {
+                        alert("Data penerima dalam kelurahan tidak ditemukan");
+                    } else {
+                        $('#penerima').html('<option value="">-- Pilih Penerima --</option>');
+                        $.each(result, function (key, value) {
+                        const selected = value.id === selectedValue ? 'selected' : '';
+                        const PenerimaOption = '<option value="' + value.id + '" ' + selected + '>'  + value.nama + '</option>';
+                        $("#penerima").append(PenerimaOption);
+                        });
+                    }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('Error:', errorThrown);
+                    }
+                });
+            }
             $("#tambah-button").click(function(){
 
                 $(".text-blue,.judul-form").text('Input Data Pengantaran');
@@ -452,30 +473,7 @@
                     // $("#input-Pengantaran").remove($(".patcher"));
                     patcher.remove();
                 }
-                $.ajax({
-                    url: "{{url('fetch-penerima')}}",
-                    type: "GET",
-                    // data: {
-                    //     _token: '{{csrf_token()}}'
-                    // },
-                    dataType: 'json',
-                    success: function (result) {
-                        // console.log(result.includes("error"));
-                        if (result.includes("error")) {
-                            alert("Data penerima dalam kelurahan tidak ditemukan");
-                        } else {
-                            $('#penerima').html('<option value="">-- Pilih Penerima --</option>');
-                            $.each(result, function (key, value) {
-                                const PenerimaOption = '<option value="' + value.id + '" >'  + value.nama + '</option>';
-                                $("#penerima").append(PenerimaOption);
-                            });
-                        }
-
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log('Error:', errorThrown);
-                    }
-                });
+                listpenerima();
                 $("#form-box").show();
                 $("#data-box").hide();
                 $("#tambah-button").hide();
@@ -500,7 +498,7 @@
 
                 $.get(userURL, function (data) {
                     data = data[0];
-                    // console.log(data);
+                    // console.log(data.penerima.id);
                 $("#pengantar").val(data.pengantar);
                 $("#menu").val(data.menu);
                 if (data.status == 'Sudah diantar') {
@@ -514,7 +512,18 @@
                 $("#sayur_consmd").val(data.sayur_consmd);
                 $("#buah_consmd").val(data.buah_consmd);
                 $("#pengaduan").val(data.pengaduan);
+                if (result.includes("error")) {
+                            alert("Data penerima dalam kelurahan tidak ditemukan");
+                        } else {
+                            $('#penerima').html('<option value="">-- Pilih Penerima --</option>');
+                            $.each(result, function (key, value) {
+                                const PenerimaOption = '<option value="' + value.id + '" >'  + value.nama + '</option>';
+                                $("#penerima").append(PenerimaOption);
+                            });
+                        }
                 })
+                listpenerima(data.Penerima.id);;
+                // $("#penerima option[ value]").val(data.penerima.id).change();
                 // EO populating fields
             });
 
@@ -525,7 +534,7 @@
                 $("#kembali-button").hide();
                 $('input').each(function() {
                     $(this).val("");
-                    console.log($(this));
+                    // console.log($(this));
                 });
             });
 
