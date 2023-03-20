@@ -52,7 +52,7 @@ Route::get('/scan', function () {
 
 Route::get('/home2', function () {
     return view('aplikasi.dashboard2');
-})->name('home2');
+})->middleware(['auth'])->name('home2');
 
 Route::get('qrcode',[QrGenerator::class, 'index'])->name('qrcode');
 
@@ -88,4 +88,5 @@ Route::resource('menus', MenuController::class)->middleware(['auth']);
 Route::resource('kecamatan', KecamatanController::class)->middleware(['auth']);
 
 Route::get('penerima/{slug}', [DeliveryController::class, 'create'])->middleware('role');
+Route::get('/profil/{slug}', [RecipientController::class, 'profil'])->name('recipients.profil');
 Route::get('recipients/qr/{slug}', [RecipientController::class, 'qr'])->name('recipients.qr');

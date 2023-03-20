@@ -29,6 +29,9 @@ class RecipientController extends Controller
     {
         $penerima = Recipient::with('Histories')->get();
         $kecs = Kecamatan::all();
+        if ((Session()->get('showIt')!== NULL)){
+            echo Session()->get('showIt');
+        }
         return view('recipients.index', compact('penerima', 'kecs'));
     }
 
@@ -113,6 +116,30 @@ class RecipientController extends Controller
     {
         $data['penerima'] = Recipient::where('slug', $slug)->with('Histories','Rts.Kelurahan.Kecamatan')->first();
         return response()->json($data);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Recipient  $Recipient
+     * @return \Illuminate\Http\Response
+     */
+    public function profil($slug)
+    {
+        // dd(Auth::user() === NULL);
+        if (Auth::user() === NULL) {
+            $data = Recipient::select('nama', 'foto_penerima', 'jenkel', 'alamat', 'penyakit', 'status_rumah', 'status_trima')
+                            ->where('slug', $slug)
+                            ->get();
+        }
+        else {
+            return redirect()->route('recipients.index')->with('slug', $slug);
+                // $data = Recipient::where('slug', $slug)->with('Histories','Rts.Kelurahan.Kecamatan')->get();
+
+        }
+
+        return view('profil', compact('data'));
+        // return view('profil');
     }
 
     /**

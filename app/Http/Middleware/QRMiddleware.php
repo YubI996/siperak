@@ -16,16 +16,11 @@ class QRMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->user() === NULL) {
-                return response()->view('profil');
-        } else {
-            if($request->user()->role_id == 1){
+        if ($request->user() !== NULL && $request->user()->role_id == 8) {
                 return $next($request);
-            }
-            else {
-                return redirect()->route('recipients.show',$request->route('slug'));
-            }
         }
-        return $next($request);
+        else {
+            return redirect()->route('recipients.profil',$request->route('slug'));
+        }
     }
 }
