@@ -32,7 +32,7 @@
     <!-- Simple Datatable start -->
         <div class="card-box mb-30" id="data-box">
             <div class="pb-20">
-                <table class="data-table table stripe hover nowrap">
+                <table class="data-table table stripe hover nowrap" id="dataTable">
                     <thead>
                         <tr>
                             <th class="table-plus datatable-nosort">Penerima</th>
@@ -370,7 +370,8 @@
     @if(!empty(Session::get('slug')))
         <script>
         $(function() {
-            $('.view-data').attr("url", "{{ url('recipients', "++") }}");
+            $('.view-data').attr("url", "{{ url('recipients', "+<?php echo Session::get('slug'); ?>+") }}");
+            $(".view-data").show();
         });
         </script>
     @endif
@@ -471,6 +472,9 @@
                 $("#alert").hide();
                 $("#form-box").hide();
                 $("#kembali-button").hide();
+                var dT = $("#dataTable").datatable();
+                console.log(dT);
+                dT.search("Possimus officia id").draw();
                 // $("#myWish").click(function showAlert() {
                 //     $("#alert").fadeTo(10000, 10000).slideUp(10000, function() {
                 //     $("#alert").slideUp(10000);
