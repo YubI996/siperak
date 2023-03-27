@@ -3,18 +3,6 @@
 @section('custom-css')
     <link rel="stylesheet" type="text/css" href="{{asset('admin/src/plugins/datatables/css/dataTables.bootstrap4.min.css')}}" />
 	<link rel="stylesheet" type="text/css" href="{{asset('admin/src/plugins/datatables/css/responsive.bootstrap4.min.css')}}" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
-    <style>
-        .leaflet-container{
-            height: 73.5vh;
-                width: 90vw;
-                max-width: 101%;
-                max-height: 100%;
-                z-index: 1;
-                /* padding-left: 82vw */
-        }
-    </style>
 @endsection
 @section('title', 'Pengantaran')
 @section('item')
@@ -110,16 +98,14 @@
 
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Status Pengantaran</label>
-                            <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="Belum_diantar" name="status"
-                                    class="custom-control-input" value="Belum diantar" />
-                                <label class="custom-control-label" for="Belum diantar">Belum Diantarkan.</label>
-                            </div>
-                            <div class="custom-control custom-radio mb-5">
-                                <input type="radio" id="Sudah_diantar" name="status"
-                                    class="custom-control-input" value="Sudah diantar" />
-                                <label class="custom-control-label" for="Sudah diantar">Sudah Diantarkan.</label>
-                            </div>
+                    <div class="custom-control custom-radio mb-5">
+                        <input type="radio" id="Belum_diantar" name="status" class="custom-control-input" value="Belum diantar" />
+                        <label class="custom-control-label" for="Belum_diantar">Belum Diantarkan.</label>
+                    </div>
+                    <div class="custom-control custom-radio mb-5">
+                        <input type="radio" id="Sudah_diantar" name="status" class="custom-control-input" value="Sudah diantar" />
+                        <label class="custom-control-label" for="Sudah_diantar">Sudah Diantarkan.</label>
+                    </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Pengaduan</label>

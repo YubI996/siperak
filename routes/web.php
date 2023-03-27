@@ -87,6 +87,6 @@ Route::resource('deliveries', DeliveryController::class)->middleware(['auth']);
 Route::resource('menus', MenuController::class)->middleware(['auth']);
 Route::resource('kecamatan', KecamatanController::class)->middleware(['auth']);
 
-Route::get('penerima/{slug}', [DeliveryController::class, 'create'])->middleware('role');
-Route::get('/profil/{slug}', [RecipientController::class, 'profil'])->name('recipients.profil');
+Route::get('penerima/{slug}', [DeliveryController::class, 'catat'])->middleware('role');
+Route::get('/profil/qr/{slug}', [RecipientController::class, 'profil'])->name('recipients.profil');
 Route::get('recipients/qr/{slug}', [RecipientController::class, 'qr'])->name('recipients.qr');

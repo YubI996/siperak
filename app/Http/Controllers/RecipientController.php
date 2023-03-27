@@ -127,15 +127,18 @@ class RecipientController extends Controller
     public function profil($slug)
     {
         // dd(Auth::user() === NULL);
-        if (Auth::user() === NULL) {
+        $usernow = Auth::user();
+        if ($usernow === NULL) {
             $data = Recipient::select('nama', 'foto_penerima', 'jenkel', 'alamat', 'penyakit', 'status_rumah', 'status_trima')
                             ->where('slug', $slug)
                             ->get();
         }
-        else {
+        elseif ($usernow->role_id == 1) {
+            $data = Recipient::where('slug', $slug)->get();
+        }
+        else{
             return redirect()->route('recipients.index')->with('slug', $slug);
                 // $data = Recipient::where('slug', $slug)->with('Histories','Rts.Kelurahan.Kecamatan')->get();
-
         }
 
         return view('profil', compact('data'));

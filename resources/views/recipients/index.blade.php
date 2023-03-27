@@ -367,14 +367,6 @@
                 </div>
             </div>
         </div>
-    @if(!empty(Session::get('slug')))
-        <script>
-        $(function() {
-            $('.view-data').attr("url", "{{ url('recipients', "+<?php echo Session::get('slug'); ?>+") }}");
-            $(".view-data").show();
-        });
-        </script>
-    @endif
     {{-- akhir modal view --}}
 
     {{-- modal qr --}}

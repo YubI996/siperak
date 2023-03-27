@@ -43,3 +43,4 @@ class Delivery extends Model
         return $this->BelongsTo(Recipient::class, 'penerima');
     }
 }
+

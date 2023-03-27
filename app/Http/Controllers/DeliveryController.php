@@ -26,7 +26,7 @@ class DeliveryController extends Controller
      */
     public function create()
     {
-        return "delivery controller";
+        // return view('deliveries.index', compact(['Dvs']));
     }
 
     /**
@@ -71,7 +71,7 @@ class DeliveryController extends Controller
      * @param  \App\Models\Delivery  $delivery
      * @return \Illuminate\Http\Response
      */
-    public function show(Delivery $delivery)
+    public function show(D $delivery)
     {
         //
     }
@@ -84,6 +84,7 @@ class DeliveryController extends Controller
      */
     public function edit(D $delivery)
     {
+
         // $data['penerima'] = D::find(->with('Histories','Rts.Kelurahan.Kecamatan')->first();
         $delivery = D::where('id', $delivery->id)->with('Penerima', 'Pengantar', 'Menus.Pokmas.Rts.Kelurahan.Kecamatan')->get();
         return response()->json($delivery);
@@ -96,9 +97,42 @@ class DeliveryController extends Controller
      * @param  \App\Models\Delivery  $delivery
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateDeliveryRequest $request, Delivery $delivery)
+    public function update(UpdateDeliveryRequest $request, D $delivery)
     {
-        dd($request);
+        $input = $request->all();
+        //check if image is uploaded
+        $files = $request->file();
+        $wkt = now()->timestamp;
+        if (count($files) > 0) {
+
+            //upload new files
+            foreach ($files as $fileField => $val) {
+            $filenameWithExt = $val->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $val->getClientOriginalExtension();
+            $filenameSimpan = $filename.'_'.$wkt.'.'.$extension;
+            $path = $val->storeAs('public/dok_deliv/', $filenameSimpan);
+            $input[$fileField] = $filenameSimpan;
+
+            //delete old image
+            Storage::delete('public/dok_deliv/'.$delivery->$fileField);
+            }
+        $delivery->fill($input);
+            $changes = $delivery->getDirty();
+            $hasil = $delivery->save();
+            // $delivery->update(Input::all());
+        } else {
+            //update post without file
+            $delivery->fill($input);
+            $changes = $delivery->getDirty();
+            $hasil = $delivery->save();
+        }
+        if($hasil){
+            return back()->with(['success' => 'Pengantaran berhasil dicatat!']);
+        }
+        else{
+            return back()->with(['warning' => 'Pengantaran gagal dicatat!']);
+        }
     }
 
     /**
@@ -107,8 +141,17 @@ class DeliveryController extends Controller
      * @param  \App\Models\Delivery  $delivery
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Delivery $delivery)
+    public function destroy(D $delivery)
     {
         //
+    }
+
+    public function catat($slug)
+    {
+        $Dv = D::with('Penerima', 'Pengantar', 'Menus.Pokmas.Rts.Kelurahan.Kecamatan')
+        ->whereHas('Penerima', function ($query) use ($slug) {
+            $query->where('slug', $slug);})
+        ->first();
+        return view('deliveries.create', compact('Dv'));
     }
 }
