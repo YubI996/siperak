@@ -301,4 +301,15 @@ class RecipientController extends Controller
         Return response()->json($penerimas);
     }
 
+    public function upStat(Request $request)
+    {
+        dd($request);
+        $rId = Recipient::where('slug', $slug)->value('id');
+        $hist = new History();
+        $history->recipient = $rId;
+        $history->status_trima = 'Menerima';
+        $history->alasan = 'Some reason';
+        $history->actor = 2;
+        $history->save();
+    }
 }

@@ -54,7 +54,29 @@
                             <td>{{$data->getage()}} Tahun</td>
                             <td>{{$data->alamat}}</td>
                             <td>{{$data->penyakit}}</td>
-                            <td>{{get_status_trima($data->slug) ?? 'Data tidak ada.'}}</td>
+                            <td>
+                                @php
+                                    $status = get_status_trima($data->slug);
+                                    switch ($status) {
+                                        case 'Menerima':
+                                            $badge = "badge-success";
+                                            break;
+                                        case 'Diajukan':
+                                            $badge = "badge-warning";
+                                            break;
+
+                                        default:
+                                            $badge = "badge-secondary";
+                                            break;
+                                    }
+                                @endphp
+                                <span style=" cursor:pointer;" class="badge {{$badge}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Klik untuk mengubah status">
+                                    <a id="upStat" data-toggle="modal" data-target="#ubah-status" url="{{ route('recipients.upStat', $data->slug) }}" slug="{{$data->slug}}">
+                                        {{get_status_trima($data->slug) ?? 'Data tidak ada.'}}
+                                    </a>
+                                </span>
+                                <br>
+                            </td>
                             {{-- <td>{{$data->Histories[0]->status_trima ?? 'Data tidak ada.'}}</td> --}}
                             <td>
                                 <div class="dropdown">
@@ -66,7 +88,7 @@
                                         <a class="dropdown-item view-data" id="{{$data->slug}}" url="{{ url('recipients', $data->slug) }}" href="#"  data-toggle="modal" data-target="#view-penerima"><i class="dw dw-eye"></i> View</a>
                                         <a class="dropdown-item edit-data" id="edit-{{$data->slug}}" url="{{ route('recipients.edit', $data->slug) }}" aksi="{{ route('recipients.update', $data->slug) }}" href="#"><i class="dw dw-edit2"></i> Edit</a>
                                         <a class="dropdown-item delete-data" href="#" data-toggle="modal" url="{{ route('recipients.destroy', $data->slug) }}" idx="{{$data->slug}}" data-target="#confirm-hapus"><i class="dw dw-delete-3"></i>Delete</a>
-                                        <a class="dropdown-item qr-data" href="{{ route('recipients.qr', $data->slug) }}"  target="_blank" data-toggle="modalin" url="{{ route('recipients.qr', $data->slug) }}" idx="{{$data->slug}}" data-target="#modal-qr-penerimaasas"><i class="dw dw-compass"></i>Kode QR</a>
+                                        <a class="dropdown-item qr-data" href="{{ route('recipients.qr', $data->slug) }}"  target="_blank" url="{{ route('recipients.qr', $data->slug) }}" idx="{{$data->slug}}"><i class="dw dw-compass"></i>Kode QR</a>
 
                                     </div>
                                 </div>
@@ -370,37 +392,52 @@
     {{-- akhir modal view --}}
 
     {{-- modal qr --}}
-        <div class="modal fade bs-example-modal-lg" id="modal-qr-penerima" tabindex="-1"
-            role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" >
-            <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal fade" id="ubah-status" tabindex="-1" role="dialog"
+            aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="myLargeModalLabel">
-                            Kode QR penerima bantuan
-                        </h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                            ×
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                                    <div class="p-6 bg-white border-b border-gray-200 mx-auto" id="qr-penerima">
-                                        @php
-                                            if (isset($slugpenerimaini)){
-                                            echo QrIt($slugpenerimaini);}
-
-                                        @endphp
-                                    </div>
-                                </div>
+                    <div class="login-box bg-white box-shadow border-radius-10">
+                        <div class="login-title">
+                            <h2 class="text-center text-primary">
+                                Ubah status penerima
+                            </h2>
+                        </div>
+                        <form id="form-upstat" action="" method="POST">
+                        @csrf
+                        {{-- @method("PUT") --}}
+                        <div class="col d-flex flex-column justify-content-center form-group">
+                            <div class="form-group-row">
+                                <label for="status">Status Baru</label>
+                                <select
+                                    class="selectpicker form-control my-auto"
+                                    data-size="5"
+                                    required
+                                    id="status">
+                                    <option value="" disabled selected>Pilih status</option>
+                                    <optgroup label="Keputusan" data-max-options="2">
+                                        <option value="Menerima">Terima</option>
+                                        <option value="Ditolak">Tolak</option>
+                                    </optgroup>
+                                    <optgroup label="Kondisi" data-max-options="2">
+                                        <option value="Menolak">Menolak</option>
+                                        <option value="Meninggal">Meninggal</option>
+                                        <option value="Pindah">Pindah</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="form-group-row">
+                                <label for="alasan">Alasan</label>
+                                <input class="form-control" type="text" name="alasan" id="alasan">
+                            </div>
+                            <br>
+                            <input type="hidden" name="recipient" id="recipient" value="">
+                            <input type="hidden" name="actor" id="actor" value="{{Auth::id()}}">
+                            <div class="form-group-row mt-auto">
+                                <button data-dismiss="modal" class="form-control btn btn-secondary mx-auto">Batal</button>
+                                <button type="submit" class="form-control btn btn-primary mx-auto">Simpan</button>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                            Tutup
-                        </button>
+                    </form>
                     </div>
                 </div>
             </div>
@@ -479,6 +516,13 @@
                 $(".confirm-hapus").attr("url", $(this).attr('url'));
                 $(".confirm-hapus").attr("idx", $(this).attr('idx'));
             });
+            $("#upStat").click(function () {
+                console.log("jalan");
+                var url_rec = $(this).attr("url");
+                var slug = $(this).attr("slug");
+                $("#form-upstat").attr("action",url_rec);
+                $("#recipient").attr("value",slug);
+            })
             $(".confirm-hapus").click(function(){
                 var url_hapus = $(this).attr("url");
                 var idx =  $(this).attr("idx");

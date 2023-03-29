@@ -13,7 +13,7 @@ class StoreHistoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class StoreHistoryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'recipient_id' => 'required|exists:recipients,id',
+            'status_trima' => 'required|in:Diajukan,Menerima,Ditolak,Menolak,Pindah,Meninggal,Dihapus',
+            'alasan' => 'nullable',
+            'actor_id' => 'required|exists:users,id',
         ];
     }
 }

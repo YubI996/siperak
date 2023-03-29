@@ -80,13 +80,17 @@ Route::get('fetch-penerima', [RecipientController::class, 'get_penerima']);
 Route::post('api/fetch-kelurahan', [PilihRTController::class, 'fetchKel']);
 Route::post('api/fetch-rt', [PilihRTController::class, 'fetchRt']);
 
-Route::resource('recipients', RecipientController::class)->middleware(['auth']);
-Route::resource('pokmases', PokmasController::class)->middleware(['auth']);
-Route::resource('users', UserController::class)->middleware(['auth']);
-Route::resource('deliveries', DeliveryController::class)->middleware(['auth']);
-Route::resource('menus', MenuController::class)->middleware(['auth']);
-Route::resource('kecamatan', KecamatanController::class)->middleware(['auth']);
+Route::middleware(['auth'])->group(function () {
+    Route::resource('recipients', RecipientController::class);
+    Route::resource('pokmases', PokmasController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('deliveries', DeliveryController::class);
+    Route::resource('menus', MenuController::class);
+    Route::resource('kecamatan', KecamatanController::class);
+    Route::resource('histories', HistoryController::class);
+});
 
 Route::get('penerima/{slug}', [DeliveryController::class, 'catat'])->middleware('role');
 Route::get('/profil/qr/{slug}', [RecipientController::class, 'profil'])->name('recipients.profil');
 Route::get('recipients/qr/{slug}', [RecipientController::class, 'qr'])->name('recipients.qr');
+Route::post('update-status/', [RecipientController::class, 'upStat'])->name('recipients.upStat');

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('recipient')->constrained()->onUpdate('cascade');
-            $table->enum('status_trima',['Diajukan', 'Menerima', 'Menolak', 'Pindah', 'Meninggal', 'Dihapus'])->default('Diajukan');
+            $table->enum('status_trima',['Diajukan', 'Menerima', 'Ditolak', 'Menolak', 'Pindah', 'Meninggal', 'Dihapus'])->default('Diajukan');
             $table->string('alasan')->default('-')->nullable();
             $table->foreignId('actor')->constrained('users')->onUpdate('cascade');
             $table->timestamps();

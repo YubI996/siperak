@@ -36,7 +36,11 @@ class HistoryController extends Controller
      */
     public function store(StoreHistoryRequest $request)
     {
-        //
+        dd($request);
+        History::create($request->all());
+
+
+        return back()->with(['success' => 'Status berhasil diperbarui!']);
     }
 
     /**
