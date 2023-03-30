@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\History;
+use App\Models\Recipient;
 use App\Http\Requests\StoreHistoryRequest;
 use App\Http\Requests\UpdateHistoryRequest;
 
@@ -36,11 +37,21 @@ class HistoryController extends Controller
      */
     public function store(StoreHistoryRequest $request)
     {
-        dd($request);
-        History::create($request->all());
+        $idrec = Recipient::where('slug', $request->slug)->value('id');
+        // dd($request->slug);
+        $input[] = $request->all();
+        $input= $input[0];
+        unset($input["slug"]);
+        $input["recipient"] = $idrec;
+        $hasil = History::create($input);
+        if ($hasil) {
+            return back()->with(['success' => 'Status berhasil diperbarui!']);
+        }
+        else{
+            return back()->with(['warning' => 'Status gagal diperbarui!']);
+        }
 
 
-        return back()->with(['success' => 'Status berhasil diperbarui!']);
     }
 
     /**

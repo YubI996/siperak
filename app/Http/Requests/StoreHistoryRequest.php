@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class StoreHistoryRequest extends FormRequest
 {
@@ -24,10 +25,15 @@ class StoreHistoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'recipient_id' => 'required|exists:recipients,id',
+            'slug' => 'required',
             'status_trima' => 'required|in:Diajukan,Menerima,Ditolak,Menolak,Pindah,Meninggal,Dihapus',
             'alasan' => 'nullable',
-            'actor_id' => 'required|exists:users,id',
+            'actor' => 'required|exists:users,id',
         ];
+    }
+
+    protected function valfailed(Validator $validator)
+    {
+        return back()->with(['warning' => 'validasi gagal!']);
     }
 }

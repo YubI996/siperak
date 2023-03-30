@@ -70,12 +70,15 @@
                                             break;
                                     }
                                 @endphp
-                                <span style=" cursor:pointer;" class="badge {{$badge}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Klik untuk mengubah status">
-                                    <a id="upStat" data-toggle="modal" data-target="#ubah-status" url="{{ route('recipients.upStat', $data->slug) }}" slug="{{$data->slug}}">
-                                        {{get_status_trima($data->slug) ?? 'Data tidak ada.'}}
-                                    </a>
-                                </span>
-                                <br>
+                                <div id="upStat">
+                                    <span style=" cursor:pointer;" class="badge {{$badge}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Klik untuk mengubah status">
+                                        <a onclick="upStat('{{ route('histories.store') }}', '{{ $data->slug }}')" data-toggle="modal" data-target="#ubah-status" url="{{ route('histories.store') }}" slug="{{ $data->slug }}">
+                                        {{-- <a onclick="upStat('{{ route('histories.store') }}','$data_slug')"  data-toggle="modal" data-target="#ubah-status" url="{{ route('histories.store') }}" slug="{{$data->slug}}"> --}}
+                                            {{get_status_trima($data->slug) ?? 'Data tidak ada.'}}
+                                        </a>
+                                    </span>
+                                    <br>
+                                </div>
                             </td>
                             {{-- <td>{{$data->Histories[0]->status_trima ?? 'Data tidak ada.'}}</td> --}}
                             <td>
@@ -412,7 +415,8 @@
                                     class="selectpicker form-control my-auto"
                                     data-size="5"
                                     required
-                                    id="status">
+                                    id="status"
+                                    name="status_trima">
                                     <option value="" disabled selected>Pilih status</option>
                                     <optgroup label="Keputusan" data-max-options="2">
                                         <option value="Menerima">Terima</option>
@@ -430,7 +434,7 @@
                                 <input class="form-control" type="text" name="alasan" id="alasan">
                             </div>
                             <br>
-                            <input type="hidden" name="recipient" id="recipient" value="">
+                            <input type="hidden" name="slug" id="recipientslug" value="">
                             <input type="hidden" name="actor" id="actor" value="{{Auth::id()}}">
                             <div class="form-group-row mt-auto">
                                 <button data-dismiss="modal" class="form-control btn btn-secondary mx-auto">Batal</button>
@@ -501,9 +505,6 @@
                 $("#alert").hide();
                 $("#form-box").hide();
                 $("#kembali-button").hide();
-                var dT = $("#dataTable").datatable();
-                console.log(dT);
-                dT.search("Possimus officia id").draw();
                 // $("#myWish").click(function showAlert() {
                 //     $("#alert").fadeTo(10000, 10000).slideUp(10000, function() {
                 //     $("#alert").slideUp(10000);
@@ -516,13 +517,22 @@
                 $(".confirm-hapus").attr("url", $(this).attr('url'));
                 $(".confirm-hapus").attr("idx", $(this).attr('idx'));
             });
+            function upStat(url_rec, slug) {
+                // var url_rec = $("#upStat").attr("url");
+                // var slug = $("#upStat").attr("slug");
+                // console.log(slug);
+                $("#form-upstat").attr("action",url_rec);
+                $("#recipientslug").attr("value",slug);
+            }
             $("#upStat").click(function () {
-                console.log("jalan");
+                console.log("Aaaaaaaaaaaaa")
                 var url_rec = $(this).attr("url");
                 var slug = $(this).attr("slug");
+                console.log(slug);
                 $("#form-upstat").attr("action",url_rec);
-                $("#recipient").attr("value",slug);
-            })
+                $("#recipientslug").attr("value",slug);
+             });
+
             $(".confirm-hapus").click(function(){
                 var url_hapus = $(this).attr("url");
                 var idx =  $(this).attr("idx");

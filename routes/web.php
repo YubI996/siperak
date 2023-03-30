@@ -8,6 +8,7 @@ use App\Http\Controllers\PokmasController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\KecamatanController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\PilihRTController;
 use App\Models\User;
 
