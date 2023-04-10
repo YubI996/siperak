@@ -83,7 +83,7 @@
             <div class="col-md-8 mb-20">
                 <div class="card-box height-100-p pd-20">
                     <div class="d-flex flex-wrap justify-content-between align-items-center pb-0 pb-md-3">
-                        <div class="h5 mb-md-0">Hospital Activities</div>
+                        <div class="h5 mb-md-0">Aktivitas Penerimaan</div>
                         <div class="form-group mb-md-0">
                             <select class="form-control form-control-sm selectpicker">
                                 <option value="">Last Week</option>
@@ -93,7 +93,7 @@
                             </select>
                         </div>
                     </div>
-                    <div id="activities-chart"></div>
+                    <div id="aktivitas"></div>
                 </div>
             </div>
             <div class="col-md-4 mb-20">
@@ -243,18 +243,7 @@
             <div class="col-lg-4 col-md-6 mb-20">
                 <div class="card-box height-100-p pd-20 min-height-200px">
                     <div class="d-flex justify-content-between">
-                        <div class="h5 mb-0">Diseases Report</div>
-                        <div class="dropdown">
-                            <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle"
-                                data-color="#1b3133" href="#" role="button" data-toggle="dropdown">
-                                <i class="dw dw-more"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                                <a class="dropdown-item" href="#"><i class="dw dw-eye"></i> View</a>
-                                <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
-                                <a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a>
-                            </div>
-                        </div>
+                        <div class="h5 mb-0">Jenis Kelamin</div>
                     </div>
 
                     <div id="jenkel"></div>
@@ -262,15 +251,14 @@
             </div>
             <div class="col-lg-4 col-md-12 mb-20">
                 <div class="card-box height-100-p pd-20 min-height-200px">
-                    <div class="max-width-300 mx-auto">
-                        <img src="{{asset("admin/vendors/images/upgrade.svg")}}" alt="" />
+                    <div class="d-flex justify-content-between">
+                        <div class="h5 mb-0">Data Penyakit</div>
                     </div>
-                    <div class="text-center">
-                        <div class="h5 mb-1">Upgrade to Pro</div>
-                        <div class="font-14 weight-500 max-width-200 mx-auto pb-20" data-color="#a6a6a7">
-                            You can enjoy all our features by upgrading to pro.
-                        </div>
-                        <a href="#" class="btn btn-primary btn-lg">Upgrade</a>
+                    @php
+                        $penyakit_count = get_penyakit_count();
+                    @endphp
+                    <div>
+                        <div id="penyakit"></div>
                     </div>
                 </div>
             </div>
@@ -561,44 +549,73 @@
 	<script src="{{asset("admin/src/plugins/datatables/js/dataTables.bootstrap4.min.js")}}"></script>
 	<script src="{{asset("admin/src/plugins/datatables/js/dataTables.responsive.min.js")}}"></script>
 	<script src="{{asset("admin/src/plugins/datatables/js/responsive.bootstrap4.min.js")}}"></script>
-	<script src="{{asset("admin/vendors/scripts/dashboard3.js")}}"></script>
+	{{-- <script src="{{asset("admin/vendors/scripts/dashboard3.js")}}"></script> --}}
     <script src="{{asset("admin/src/plugins/highcharts-6.0.7/code/highcharts.js")}}"></script>
 	{{-- <script src="https://code.highcharts.com/highcharts-3d.js"></script> --}}
 	<script src="{{asset("admin/src/plugins/highcharts-6.0.7/code/highcharts-more.js")}}"></script>
 	{{-- <script src="{{asset("admin/vendors/scripts/highchart-setting.js")}}"></script> --}}
     <script>
-        // var data = {"Laki-laki":1};
-        let text = {{count_laki()}}
-        let raw = text.replace("&quot;", """);
-        var data = raw;
-        console.log(data);
-        Highcharts.chart('jenkel', {
-            chart: {
-                type: 'pie',
-                options3d: {
-                    enabled: true,
-                    alpha: 45
-                }
-                // ,
-                // width: 500,
-                // height: 500
-            },
+        // chart jenkel
+        let laki = {!! count_laki() !!};
+        let bini = {!! count_bini() !!};
+        var options = {
+        chart: {
+            type: 'pie',
+        },
+        series: [laki, bini],
+        labels: ['Laki-laki', 'Perempuan'],
+        };
+
+        var chart = new ApexCharts(document.querySelector('#jenkel'), options);
+
+        chart.render();
+        // chart penyakit
+        var options = {
+        chart: {
+            type: 'pie',
+
+        },
+        series: Object.values({!! json_encode($penyakit_count) !!}),
+        labels: Object.keys({!! json_encode($penyakit_count) !!}),
+        colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0']
+        }
+
+        var chart = new ApexCharts(document.querySelector("#penyakit"), options);
+        chart.render();
+
+        // chart penerimaan
+        // Call the getMonthlyCounts() function to retrieve the monthly counts data
+        const monthlyCounts = {!! json_encode(getMonthlyCounts()) !!};
+
+        // Convert the data to the format expected by ApexCharts
+        const chartData = Object.keys(monthlyCounts).map(key => ({ x: key, y: monthlyCounts[key] }));
+
+        // Define the chart options
+        const chartOptions = {
+        chart: {
+            type: 'line'
+        },
+        series: [
+            {
+            name: 'Monthly counts',
+            data: chartData
+            }
+        ],
+        xaxis: {
+            type: 'category',
+            categories: Object.keys(monthlyCounts)
+        },
+        yaxis: {
             title: {
-                text: 'Penerima Manfaat berdasarkan Jenis Kelamin'
-            },
-            // subtitle: {
-            //     text: '3D donut in Highcharts'
-            // },
-            plotOptions: {
-                pie: {
-                    innerSize: 0,
-                    depth: 15
-                }
-            },
-            series: [{
-                name: 'Jumlah penerima',
-                data: data
-            }]
-        });
+            text: 'Count'
+            }
+        }
+        };
+
+        // Create an ApexCharts instance with the chart options and data
+        const chart = new ApexCharts(document.querySelector('#aktivitas'), chartOptions);
+
+        // Render the chart
+        chart.render();
     </script>
 @endsection

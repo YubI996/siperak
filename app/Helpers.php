@@ -4,6 +4,7 @@
     use App\Models\Log as l;
     use Carbon\Carbon;
     use SimpleSoftwareIO\QrCode\Facades\QrCode;
+    use Illuminate\Support\Facades\DB;
 
     function logit($ket){
         $logger = l::create([
@@ -37,11 +38,70 @@
         return P::where('status_trima', 'Menerima')->count();
     }
 
+    function get_penyakit_count() {
+    $penyakit_count = P::where('status_trima', 'Menerima')
+                                    ->selectRaw('penyakit, count(*) as count')
+                                    ->groupBy('penyakit')
+                                    ->get()
+                                    ->pluck('count', 'penyakit')
+                                    ->toArray();
+    return $penyakit_count;
+    }
+
+    function getMonthlyCounts(){
+        // Get the oldest and newest history records
+        $oldestHistory = DB::table('histories')
+            ->orderBy('created_at', 'asc')
+            ->first();
+        $newestHistory = DB::table('histories')
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        // Determine the starting and ending months for the count
+        $startingMonth = new DateTime($oldestHistory->created_at);
+        $endingMonth = new DateTime($newestHistory->created_at);
+        $currentMonth = new DateTime();
+
+            // Initialize an empty array to store the monthly counts
+            $monthlyCounts = [];
+
+            while ($startingMonth <= $endingMonth && $startingMonth <= $currentMonth) {
+                // Format the month as a string
+                $monthName = $startingMonth->format('F Y');
+
+                // Count the number of 'Menerima' statuses for the given month
+                $count = DB::table('histories')
+                    ->where('status_trima', 'Menerima')
+                    ->whereMonth('created_at', '=', $startingMonth->format('m'))
+                    ->count();
+
+                // If there is no data for a month, use the count from the previous month
+                if ($count == 0 && count($monthlyCounts) > 0) {
+                    $lastMonthName = array_key_last($monthlyCounts);
+                    $count = $monthlyCounts[$lastMonthName];
+                }
+
+                // Add the count to the array
+                $monthlyCounts[$monthName] = $count;
+
+                // Move to the next month
+                $startingMonth->modify('+1 month');
+
+                // If there is no data for a month, use the count from the previous month
+                if ($count == 0 && count($monthlyCounts) > 1) {
+                    end($monthlyCounts);
+                    $lastMonthCount = current($monthlyCounts);
+                    $monthlyCounts[$monthName] = $lastMonthCount;
+                }
+            }
+
+            return $monthlyCounts;
+        }
+
     // Jumlah penerima Laki-laki
     function count_laki()
     {
-        return P::where('status_trima', 'Menerima')->get()->groupBy('jenkel')->map->count()->toJson();
-        // return P::where('status_trima', 'Menerima')->where('jenkel', 'Laki-laki')->count();
+        return P::where('status_trima', 'Menerima')->where('jenkel', 'Laki-laki')->count();
     }
 
     // Jumlah penerima Perempuan

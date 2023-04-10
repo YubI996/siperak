@@ -29,8 +29,17 @@
 
     @push('custom-scripts')
         <script type="module">
+            const video = document.getElementById('preview');
+            const camQrResult = document.getElementById('hasil');
             import QrScanner from '{{asset("admin/vendors/scripts/qr-scanner.min.js")}}';
-            let scanner = null;
+            let scanner = new QrScanner(video, result => setResult(camQrResult, result), {
+                                onDecodeError: error => {
+                                    camQrResult.textContent = error;
+                                    camQrResult.style.color = 'inherit';
+                                },
+                                highlightScanRegion: true,
+                                highlightCodeOutline: true,
+                            });
 
             document.getElementById('startScan').addEventListener('click', () => {
                 scanner = new QrScanner(document.getElementById('preview'), result => {
@@ -40,9 +49,13 @@
                     if (param !== "kosong") {
                     let url = "{{route('recipients.scan', 'ssss')}}";
                     url = url.replace('ssss', param);
-                    // console.log(url);
+                    // console.log(result);
                     window.location.replace(url);
                     }
+                    else{
+                        alert("Kode QR tidak dikenali atau bukan Kode QR aplikasi SIPeRak");
+                    }
+
                     scanner.stop();
                 });
                 scanner.start();
@@ -58,12 +71,14 @@
                  if (str.length === 61 && str.slice(0, 46) !== "https://siperak.bontangkota.go.id/penerima/qr/") {
                     return "kosong";
                 }
-
-                if (str.length === 60 && str.slice(0, 45) !== "http://siperak.bontangkota.go.id/penerima/qr/") {
+                else if (str.length === 60 && str.slice(0, 45) !== "http://siperak.bontangkota.go.id/penerima/qr/") {
+                    return "kosong";
+                }
+                else {
                     return "kosong";
                 }
 
-                // if both validations pass, extract the recipient's slug
+                // if all validations pass, extract the recipient's slug
                 return str.slice(-15);
             }
 
