@@ -4,45 +4,70 @@
             {{ __('Scanner') }}
         </h2>
     </x-slot>
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <input type="text" id="hasil">
-                    <div id="reader" width="75%"></div>
+                    <div class="flex flex-col items-center">
+                        <input type="text" id="hasil" class="mb-2 py-1 px-2 border rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-400">
+                        <div class="flex flex-col items-center">
+                            <video id="preview" class="h-80 w-full object-cover"></video>
+                            <div class="flex justify-center space-x-4 mt-4">
+                                <button id="startScan" class="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">
+                                    Start Scan
+                                </button>
+                                <button id="stopScan" class="bg-red-500 hover:bg-red-700 text-black font-bold py-2 px-4 rounded">
+                                    Stop Scan
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
     @push('custom-scripts')
-        {{-- <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.0.4/build/html5-qrcode.min.js" type="text/javascript"></script> --}}
-        <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-        <script>
-            // import Html5Qrcode from 'html5-qrcode';
-            const html5QrCode = new Html5Qrcode(/* element id */ "reader");
+        <script type="module">
+            import QrScanner from '{{asset("admin/vendors/scripts/qr-scanner.min.js")}}';
+            let scanner = null;
 
-            function onScanSuccess(decodedText, decodedResult) {
-            // handle the scanned code as you like, for example:
-            // console.log(`Code matched = ${decodedText}`, decodedResult);
-            $('#hasil').val(decodedText);
-            html5QrCode.stop();
+            document.getElementById('startScan').addEventListener('click', () => {
+                scanner = new QrScanner(document.getElementById('preview'), result => {
+                    // document.getElementById('hasil').value = result;
+                    let param = validateAndExtract(result);
+
+                    if (param !== "kosong") {
+                    let url = "{{route('recipients.scan', 'ssss')}}";
+                    url = url.replace('ssss', param);
+                    // console.log(url);
+                    window.location.replace(url);
+                    }
+                    scanner.stop();
+                });
+                scanner.start();
+            });
+
+            document.getElementById('stopScan').addEventListener('click', () => {
+                if (scanner !== null) {
+                    scanner.stop();
+                }
+            });
+
+            function validateAndExtract(str) {
+                 if (str.length === 61 && str.slice(0, 46) !== "https://siperak.bontangkota.go.id/penerima/qr/") {
+                    return "kosong";
+                }
+
+                if (str.length === 60 && str.slice(0, 45) !== "http://siperak.bontangkota.go.id/penerima/qr/") {
+                    return "kosong";
+                }
+
+                // if both validations pass, extract the recipient's slug
+                return str.slice(-15);
             }
-
-            function onScanFailure(error) {
-            // handle scan failure, usually better to ignore and keep scanning.
-            // for example:
-            console.warn(`Code scan error = ${error}`);
-            }
-
-            let html5QrcodeScanner = new Html5QrcodeScanner(
-            "reader",
-            { fps: 10, qrbox: {width: 250, height: 250} },
-            /* verbose= */ false);
-            html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-
-
 
         </script>
     @endpush
+
 </x-app-layout>

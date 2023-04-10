@@ -91,7 +91,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('histories', HistoryController::class);
 });
 
-Route::get('penerima/{slug}', [DeliveryController::class, 'catat'])->middleware('role');
+Route::get('penerima/{slug}', [DeliveryController::class, 'catat'])->name('recipients.scan')->middleware('role');
 Route::get('/profil/qr/{slug}', [RecipientController::class, 'profil'])->name('recipients.profil');
 Route::get('recipients/qr/{slug}', [RecipientController::class, 'qr'])->name('recipients.qr');
 Route::post('update-status/', [RecipientController::class, 'upStat'])->name('recipients.upStat');

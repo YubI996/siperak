@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Delivery as D;
 use App\Http\Requests\StoreDeliveryRequest;
 use App\Http\Requests\UpdateDeliveryRequest;
+use Illuminate\Support\Facades\Storage;
 
 class DeliveryController extends Controller
 {
@@ -127,11 +128,12 @@ class DeliveryController extends Controller
             $changes = $delivery->getDirty();
             $hasil = $delivery->save();
         }
+        $Dvs = D::with('Penerima', 'Pengantar', 'Menus.Pokmas')->get();
         if($hasil){
-            return back()->with(['success' => 'Pengantaran berhasil dicatat!']);
+            return view('deliveries.index', compact(['Dvs']))->with(['success' => 'Pengantaran berhasil dicatat!']);
         }
         else{
-            return back()->with(['warning' => 'Pengantaran gagal dicatat!']);
+            return view('deliveries.index', compact(['Dvs']))->with(['warning' => 'Pengantaran gagal dicatat!']);
         }
     }
 
@@ -149,9 +151,11 @@ class DeliveryController extends Controller
     public function catat($slug)
     {
         $Dv = D::with('Penerima', 'Pengantar', 'Menus.Pokmas.Rts.Kelurahan.Kecamatan')
-        ->whereHas('Penerima', function ($query) use ($slug) {
-            $query->where('slug', $slug);})
-        ->first();
+                ->whereHas('Penerima', function ($query) use ($slug) {
+                    $query->where('slug', $slug)->where('status', 'Belum diantar');
+                })
+    ->first();
+                // dd($Dv);
         return view('deliveries.create', compact('Dv'));
     }
 }

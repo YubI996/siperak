@@ -17,7 +17,7 @@
     },
     "dependencies": {
         "animate.css": "^4.1.1",
-        "html5-qrcode": "^2.3.4"
-    },
-    "type": "module"
+        "html5-qrcode": "^2.3.4",
+        "qr-scanner": "^1.4.2"
+    }
 }
