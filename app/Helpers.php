@@ -48,7 +48,7 @@
     return $penyakit_count;
     }
 
-    function getMonthlyCounts(){
+    function getMonthlyCounts($status_trima){
         // Get the oldest and newest history records
         $oldestHistory = DB::table('histories')
             ->orderBy('created_at', 'asc')
@@ -71,7 +71,7 @@
 
                 // Count the number of 'Menerima' statuses for the given month
                 $count = DB::table('histories')
-                    ->where('status_trima', 'Menerima')
+                    ->where('status_trima', $status_trima)
                     ->whereMonth('created_at', '=', $startingMonth->format('m'))
                     ->count();
 
@@ -98,6 +98,22 @@
             return $monthlyCounts;
         }
 
+        function getStatusRumahCounts() {
+            $counts = DB::table('recipients')
+                        ->select('status_rumah', DB::raw('count(*) as count'))
+                        ->where('status_trima', 'Menerima')
+                        ->groupBy('status_rumah')
+                        ->get();
+
+            $data = [];
+            foreach ($counts as $count) {
+                // $data["asa"] = $count->count;
+                $data[$count->status_rumah] = $count->count;
+            }
+            return $data;
+        }
+
+
     // Jumlah penerima Laki-laki
     function count_laki()
     {
@@ -117,9 +133,11 @@
         {
             return 0;
         }
-        return $rs->avg(function ($r) {
+        $avgAge = $rs->avg(function ($r) {
             return $r->getAge();
         });
+
+        return round($avgAge);
     }
 
     function get_pokmas():int
