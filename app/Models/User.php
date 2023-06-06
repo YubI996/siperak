@@ -18,10 +18,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'role',
+        'role_id',
         'name',
         'email',
         'password',
+        'rt_id',
     ];
 
     /**
@@ -42,4 +43,30 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function Rts()
+    {
+        return $this->BelongsTo(Rt::class, 'rt_id');
+    }
+
+    public function Role()
+    {
+        return $this->BelongsTo(Role::class, 'role_id');
+    }
+
+
+    public function Pokmas()
+    {
+        return $this->hasOne(User::class, 'id');
+    }
+
+    public function Histories()
+    {
+        return $this->HasMany(History::class);
+    }
+
+    public function Deliveries()
+    {
+        return $this->HasMany(Delivery::class);
+    }
 }

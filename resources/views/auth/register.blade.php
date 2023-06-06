@@ -23,7 +23,36 @@
             <div class="mt-4">
                 <x-label for="email" :value="__('Email')" />
 
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+                <x-input id="email" class="block mt-1 w-full border-black" type="email" name="email" :value="old('email')" required />
+            </div>
+
+            <!-- Kecamatan -->
+            <div class="mt-4">
+                <x-label for="kec" :value="__('Kecamatan')" />
+                <select class="block mt-1 w-full rounded border-green-500" name="kec" id="kec">
+                    <option selected="0">Pilih Kecamatan...</option>
+                    @forelse ($kecs as $dc)
+                    <option value="{{$dc->id}}">Kecamatan {{$dc->nama_kec}}</option>
+                    @empty
+                    <option value="">Data Kecamatan tidak ditemukan</option>
+                    @endforelse
+            </select>
+            </div>
+
+            <!-- Kelurahan -->
+            <div class="mt-4">
+                <x-label for="kel" :value="__('Kelurahan')" />
+                <select class="block mt-1 w-full rounded col-12" name="kel" id="kel">
+
+                </select>
+            </div>
+
+            <!-- RT -->
+            <div class="mt-4">
+                <x-label for="rt" :value="__('Rukun Tetangga')" />
+                <select class="block mt-1 w-full rounded col-12" name="rt_id" id="rt">
+
+                </select>
             </div>
 
             <!-- Password -->
@@ -38,7 +67,7 @@
 
             <!-- Confirm Password -->
             <div class="mt-4">
-                <x-label for="password_confirmation" :value="__('Confirm Password')" />
+                <x-label for="password_confirmation" :value="__('Konfirmasi Password')" />
 
                 <x-input id="password_confirmation" class="block mt-1 w-full"
                                 type="password"
@@ -47,13 +76,14 @@
 
             <div class="flex items-center justify-end mt-4">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
+                    {{ __('Sudah punya akun?') }}
                 </a>
 
                 <x-button class="ml-4">
-                    {{ __('Register') }}
+                    {{ __('Mendaftar') }}
                 </x-button>
             </div>
         </form>
+        @include('aplikasi.dropdown')
     </x-auth-card>
 </x-guest-layout>

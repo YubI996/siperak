@@ -13,7 +13,7 @@ class StorePokmasRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,20 @@ class StorePokmasRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nama' => 'required|string|max:30',
+            'alamat' => 'required|string|max:255',
+            'rt_id' => 'required|numeric',
+            'ketua' => 'required|numeric'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'nama.required' => 'Lengkapi kolom nama',
+            'alamat.required' => 'Lengkapi kolom alamat',
+            'rt_id.required' => 'Lengkapi kolom RT',
+            'ketua.required' => 'Lengkapi kolom ketua'
         ];
     }
 }

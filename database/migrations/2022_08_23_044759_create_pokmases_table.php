@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama',30)->comment('Nama pokmas')->default('pokmas');
             $table->string('alamat')->nullable();
-            $table->foreignId('rt_id')->onUpdate('cascade');
+            $table->foreignId('rt_id')->constrained('rts')->onUpdate('cascade');
             $table->foreignId('ketua')->constrained('users')->onUpdate('cascade');
             // $table->foreignId('user_id')->onDelete('cascade');
             $table->timestamps();

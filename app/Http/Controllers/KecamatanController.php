@@ -15,7 +15,10 @@ class KecamatanController extends Controller
      */
     public function index()
     {
-        //
+        $kecamatans = Kecamatan::with('Kelurahans.Rts')->get()->values();
+        // $kecs_json = $kecamatans->toJson();
+        return response()->json($kecamatans);
+
     }
 
     /**

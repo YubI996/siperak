@@ -4427,6 +4427,9 @@
         0.1919868, 117.5122118
       ]
     ]).addTo(map).bindPopup('Pulau Gusung.');
+
+
+
     function onMapClick(e) {
         popup
             .setLatLng(e.latlng)
