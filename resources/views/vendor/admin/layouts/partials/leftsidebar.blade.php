@@ -1,9 +1,9 @@
 @if (Auth::user() !== NULL)
     <div class="left-side-bar">
 		<div class="brand-logo">
-			<a href="#{{--index.html--}}">
-				<img src="{{asset('admin/vendors/images/deskapp-logo.svg')}}" alt="" class="dark-logo">
-				<img src="{{asset('admin/vendors/images/deskapp-logo-white.svg')}}" alt="" class="light-logo">
+			<a href="{{route('home2')}}">
+				<img src="{{asset('admin/vendors/images/siperak-logo.png')}}" alt="" class="dark-logo">
+				<img src="{{asset('admin/vendors/images/siperak-logo.png')}}" alt="" class="light-logo">
 			</a>
 			<div class="close-sidebar" data-toggle="left-sidebar-close">
 				<i class="ion-close-round"></i>
@@ -38,11 +38,11 @@
                                 <span class="micon dw dw-user-2"></span><span class="mtext">Pengantaran</span>
                             </a>
                         </li>
-                        <li>
+                        {{-- <li>
                             <a href="sitemap.html" class="dropdown-toggle no-arrow">
                                 <span class="micon dw dw-diagram"></span><span class="mtext">Sitemap</span>
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </div>
             </div>

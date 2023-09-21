@@ -356,7 +356,7 @@
             $(".confirm-hapus").click(function(){
                 var url_hapus = $(this).attr("url");
                 var idx =  $(this).attr("idx");
-                console.log(url_hapus);
+                // console.log(url_hapus);
                 $.ajax({
                     type: "delete",
                     // headers: {
@@ -370,8 +370,9 @@
                         _token: '{{csrf_token()}}'
                     },
                     success: function (response) {
-                        console.log(response);
-                        location.reload();
+                        // console.log(response);
+                        window.location.replace("{{route('deliveries.index')}}");
+                        // location.reload();
                     },
                     error: function(response) {
 
@@ -484,8 +485,10 @@
 
                 $.get(userURL, function (data) {
                     data = data[0];
-                    // console.log(data.penerima.id);
-                $("#pengantar").val(data.pengantar);
+                    var idp = data.penerima.id;
+                    // console.log(idp);
+                    console.log(data.menu);
+                $("#pengantar").val(data.pengantar.id);
                 $("#menu").val(data.menu);
                 if (data.status == 'Sudah diantar') {
                     $("#Sudah_diantar").attr("checked", true);
@@ -498,17 +501,17 @@
                 $("#sayur_consmd").val(data.sayur_consmd);
                 $("#buah_consmd").val(data.buah_consmd);
                 $("#pengaduan").val(data.pengaduan);
-                if (result.includes("error")) {
-                            alert("Data penerima dalam kelurahan tidak ditemukan");
-                        } else {
-                            $('#penerima').html('<option value="">-- Pilih Penerima --</option>');
-                            $.each(result, function (key, value) {
-                                const PenerimaOption = '<option value="' + value.id + '" >'  + value.nama + '</option>';
-                                $("#penerima").append(PenerimaOption);
-                            });
-                        }
+                // if (result.includes("error")) {
+                //             alert("Data penerima dalam kelurahan tidak ditemukan");
+                // } else {
+                //     $('#penerima').html('<option value="">-- Pilih Penerima --</option>');
+                //     $.each(result, function (key, value) {
+                //         const PenerimaOption = '<option value="' + value.id + '" >'  + value.nama + '</option>';
+                //         $("#penerima").append(PenerimaOption);
+                //     });
+                // }
+                        listpenerima(idp);
                 })
-                listpenerima(data.Penerima.id);;
                 // $("#penerima option[ value]").val(data.penerima.id).change();
                 // EO populating fields
             });

@@ -176,7 +176,7 @@
         </div>
 
 
-        <div class="table-responsive">
+        {{-- <div class="table-responsive">
             <table class="data-table table nowrap">
                 <thead>
                 <tr>
@@ -206,7 +206,7 @@
                 </tr>
                 </tbody>
             </table>
-        </div>
+        </div> --}}
 
 
         {{-- <div class="title pb-20 pt-20">

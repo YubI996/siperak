@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Diskominfo'),
+    'name' => env('APP_NAME', 'Siperak'),
 
     /*
     |--------------------------------------------------------------------------
@@ -196,7 +196,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
     ],
 
     /*
@@ -216,6 +216,7 @@ return [
         'Carbon' => 'Carbon\Carbon',
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'faker' => 'Faker\Factory',
+        'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
     ])->toArray(),
 
 ];

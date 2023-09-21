@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('slug')->unique()->nullable();
             $table->string('nama',100);
-            $table->string('nik',16)->nullable();
+            $table->string('nik',16)->unique()->nullable();
             $table->date('bd')->nullable();
             $table->string('foto_penerima')->nullable();
             $table->string('no_hp',16)->nullable();

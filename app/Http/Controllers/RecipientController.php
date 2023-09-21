@@ -17,6 +17,7 @@ use Illuminate\Support\Str;
 use Auth;
 use PDF;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Database\QueryException;
 
 class RecipientController extends Controller
 {
@@ -58,12 +59,13 @@ class RecipientController extends Controller
     public function store(Request $request)
     {
         // dd($request);
-        $this->validate($request, [
+        $validasi = $this->validate($request, [
             'foto_penerima' => 'image|nullable|max:10000',
             'foto_ktp' => 'image|nullable|max:10000',
             'foto_kk' => 'image|nullable|max:10000',
             'foto_rumah' => 'image|nullable|max:10000'
         ]);
+        // dd($validasi);
 
         $input = $request->all();
         // $slug = ["slug" => random_slug()];
@@ -84,9 +86,15 @@ class RecipientController extends Controller
         }
 
         // dd($input);
-        $recipient = Recipient::create($input);
-        $recipient->slug = $input["slug"];
-        $penerima = $recipient->save();
+        // $recipient = Recipient::create($input);
+        try {
+            $recipient = Recipient::create($input);
+            $recipient->slug = $input["slug"];
+            $penerima = $recipient->save();
+        } catch (\Exception $e) {
+            return back()->with('warning', __($e->errorInfo[2]));
+        }
+
         // dd($recipient);
         // Storage::disk('local')->put('foto_'.$request->id, $request->foto_penerima);
 
@@ -272,7 +280,8 @@ class RecipientController extends Controller
         $image = \QrCode::format('png')
                     ->merge(asset('storage/logo/logo-bontang.png'), 0.3, true)
                     ->size(200)->errorCorrection('H')
-                    ->generate(url('/penerima/qr/'.$slug));
+                    ->generate(url('/recipients/qr/'.$slug));
+                    // ->generate(url('/penerima/qr/'.$slug));
         $data = 'kierkode/qr--' . $slug . '.png';
         Storage::disk('public')->put($data, $image);
         // view()->share('data', $data);

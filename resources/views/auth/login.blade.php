@@ -32,6 +32,19 @@
                                 required autocomplete="current-password" />
             </div>
 
+            <!-- Captcha -->
+            <div class="mt-4">
+                <x-label for="captcha" :value="__('Captcha')" />
+
+                {!! NoCaptcha::renderJs() !!}
+                {!! NoCaptcha::display() !!}
+                @if ($errors->has('g-recaptcha-response'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                    </span>
+                @endif
+            </div>
+
             <!-- Remember Me -->
             <div class="block mt-4">
                 <label for="remember_me" class="inline-flex items-center">

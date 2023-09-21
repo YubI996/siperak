@@ -68,6 +68,11 @@
 							<div class="col-sm-12 col-md-10">
 								<input class="form-control" type="text" placeholder="Pekerjaan" id="pekerjaan" name="pekerjaan"/>
 							</div>
+                            @if ($errors->has('pekerjaan'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('pekerjaan') }}</strong>
+                                </span>
+                            @endif
 						</div>
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Penyakit</label>

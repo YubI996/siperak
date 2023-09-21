@@ -102,6 +102,7 @@ class DeliveryController extends Controller
     {
         $input = $request->all();
         //check if image is uploaded
+        // dd($input);
         $files = $request->file();
         $wkt = now()->timestamp;
         if (count($files) > 0) {
@@ -145,7 +146,21 @@ class DeliveryController extends Controller
      */
     public function destroy(D $delivery)
     {
-        //
+        $del = $delivery->delete();
+        if ($del) {
+            logit('Hapus data pengiriman. Records: |'.$delivery->id.'|');//fungsi ada di Helpers
+            // return back()->with(['success' => 'Data Berhasil Dihapus!']);
+            return response()->json([
+                'warning' => 'Data Berhasil Dihapus!'
+            ]);
+
+        }
+        else{
+            logit('Gagal hapus data pengiriman. Records: |'.$delivery->id.'|');
+            return response()->json([
+                'warning' => 'Data Gagal Dihapus!'
+            ]);
+        }
     }
 
     public function catat($slug)
